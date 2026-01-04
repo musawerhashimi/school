@@ -24,18 +24,18 @@
 // // FILE: entities/staff.ts
 // // ============================================
 // export interface Staff {
-//   id: string;
-//   name: string;
-//   role: string;
-//   department: string;
-//   image: string;
-//   email: string;
-//   phone: string;
-//   experience: string;
-//   officeHours: string;
-//   officeLocation: string;
-//   joinedDate: string;
-//   type: "staff";
+// id: string;
+// name: string;
+// role: string;
+// department: string;
+// image: string;
+// email: string;
+
+// experience: string;
+// officeHours: string;
+// officeLocation: string;
+
+// type: "staff";
 // }
 
 export type Teacher = {
@@ -48,6 +48,11 @@ export type Teacher = {
   email: string;
   experience: string;
   subjects: string[];
+  phone: string;
+  joinedDate: string;
+  education: string[];
+  bio: string;
+  linkedin?: string;
 };
 
 export type Staff = {
@@ -59,6 +64,10 @@ export type Staff = {
   department: string;
   email: string;
   experience: string;
+  phone: string;
+  joinedDate: string;
+  bio: string;
+  education: string[];
 };
 
 export type TeamMember = Teacher | Staff;

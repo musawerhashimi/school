@@ -71,7 +71,7 @@ function Navbar() {
         {
           name: t("nav.about.teachers"),
           key: "nav.about.teachers",
-          page: "teachers",
+          page: "team",
           icon: Users,
         },
       ],

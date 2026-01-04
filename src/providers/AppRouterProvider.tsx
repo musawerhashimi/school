@@ -14,6 +14,7 @@ import AwardsAndAchievements from "../pages/Achievements/AwardsAndAchievements";
 import ContactUs from "../pages/Contact/ContactUs";
 import Gallery from "../pages/Media/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
+import TeamProfilePage from "../pages/About/team/TeamProfilePage";
 function AppRouterProvider() {
   const router = createBrowserRouter([
     {
@@ -33,7 +34,8 @@ function AppRouterProvider() {
         { path: "/news-and-events", element: <NewsAndEvents /> },
         { path: "/contact", element: <ContactUs /> },
         { path: "/gallery", element: <Gallery /> },
-        { path: "/teachers", element: <TeacherList /> },
+        { path: "/team", element: <TeacherList /> },
+        { path: "/team/:id", element: <TeamProfilePage /> },
         {
           path: "/awards-and-achievements",
           element: <AwardsAndAchievements />,

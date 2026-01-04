@@ -123,7 +123,7 @@ export default function TeacherList() {
               onClick={() => handleFilterChange("all")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
                 mainFilter === "all"
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105"
+                  ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg scale-105"
                   : "bg-card text-text-secondary border-2 border-border hover:border-primary hover:text-primary"
               }`}
             >
@@ -134,7 +134,7 @@ export default function TeacherList() {
               onClick={() => handleFilterChange("teachers")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
                 mainFilter === "teachers"
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105"
+                  ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg scale-105"
                   : "bg-card text-text-secondary border-2 border-border hover:border-primary hover:text-primary"
               }`}
             >
@@ -145,38 +145,35 @@ export default function TeacherList() {
               onClick={() => handleFilterChange("staff")}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${
                 mainFilter === "staff"
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105"
+                  ? "bg-gradient-to-r from-primary to-secondary text-white shadow-lg scale-105"
                   : "bg-card text-text-secondary border-2 border-border hover:border-primary hover:text-primary"
               }`}
             >
               <Briefcase className="w-5 h-5" />
               Staff
             </button>
+            {/* Subcategory Dropdown */}
+            {mainFilter !== "all" && (
+              <div className="relative">
+                <select
+                  value={subCategory}
+                  onChange={(e) => handleSubCategoryChange(e.target.value)}
+                  className="w-full md:w-64 pl-4 pr-10 py-3.5 bg-card border-2 border-border rounded-xl text-text-primary font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all appearance-none cursor-pointer"
+                >
+                  {getSubCategories().map((cat) => (
+                    <option key={cat} value={cat === "All" ? "all" : cat}>
+                      {cat === "All"
+                        ? `All ${
+                            mainFilter === "teachers" ? "Teachers" : "Stuff"
+                          }`
+                        : cat}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary pointer-events-none" />
+              </div>
+            )}
           </div>
-
-          {/* Subcategory Dropdown */}
-          {mainFilter !== "all" && (
-            <div className="relative">
-              <select
-                value={subCategory}
-                onChange={(e) => handleSubCategoryChange(e.target.value)}
-                className="w-full md:w-64 pl-4 pr-10 py-3.5 bg-card border-2 border-border rounded-xl text-text-primary font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all appearance-none cursor-pointer"
-              >
-                {getSubCategories().map((cat) => (
-                  <option key={cat} value={cat === "All" ? "all" : cat}>
-                    {cat === "All"
-                      ? `All ${
-                          mainFilter === "teachers"
-                            ? "Departments"
-                            : "Departments"
-                        }`
-                      : cat}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary pointer-events-none" />
-            </div>
-          )}
         </div>
 
         {/* Results Count */}
