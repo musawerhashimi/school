@@ -1,0 +1,306 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out;
+}
+
+@theme {
+  /* Brand */
+  --color-primary: var(--color-blue-600);
+  --color-primary-dark: var(--color-blue-800);
+  --color-secondary: var(--color-emerald-500);
+  --color-accent: var(--color-amber-500);
+
+  /* Layout */
+  --color-background: var(--color-white);
+  --color-surface: var(--color-slate-50);
+  --color-card: var(--color-white);
+
+  /* Text */
+  --color-text-primary: var(--color-slate-800);
+  --color-text-secondary: var(--color-slate-500);
+
+  /* Borders */
+  --color-border: var(--color-slate-200);
+
+  /* Muted / disabled */
+  --color-muted: var(--color-slate-400);
+
+  /* Hover / active surfaces */
+  --color-surface-hover: var(--color-slate-100);
+
+  /* Focus / ring */
+  --color-focus: var(--color-blue-500);
+
+  /* Status */
+  --color-success: var(--color-emerald-500);
+  --color-warning: var(--color-amber-500);
+  --color-error: var(--color-red-500);
+  --color-info: var(--color-blue-500);
+
+  /* Soft status backgrounds */
+  --color-info-soft: var(--color-blue-100);
+  --color-success-soft: var(--color-emerald-100);
+  --color-warning-soft: var(--color-amber-100);
+  --color-error-soft: var(--color-red-100);
+
+  /* Destructive actions */
+  --color-danger: var(--color-red-500);
+}
+
+[data-theme="dark"] {
+  /* Brand */
+  --color-primary: var(--color-blue-500);
+  --color-primary-dark: var(--color-blue-600);
+  --color-secondary: var(--color-emerald-500);
+  --color-accent: var(--color-amber-400);
+
+  /* Layout */
+  --color-background: var(--color-slate-900);
+  --color-surface: var(--color-slate-800);
+  --color-card: var(--color-slate-700);
+
+  /* Text */
+  --color-text-primary: var(--color-slate-100);
+  --color-text-secondary: var(--color-slate-300);
+
+  /* Borders */
+  --color-border: var(--color-slate-600);
+
+  /* Muted / disabled */
+  --color-muted: var(--color-slate-500);
+
+  /* Hover / active surfaces */
+  --color-surface-hover: var(--color-slate-700);
+
+  /* Focus / ring */
+  --color-focus: var(--color-blue-400);
+
+  /* Status */
+  --color-success: var(--color-emerald-400);
+  --color-warning: var(--color-amber-400);
+  --color-error: var(--color-red-400);
+  --color-info: var(--color-blue-400);
+
+  /* Soft status backgrounds */
+  --color-info-soft: var(--color-blue-900);
+  --color-success-soft: var(--color-emerald-900);
+  --color-warning-soft: var(--color-amber-900);
+  --color-error-soft: var(--color-red-900);
+
+  /* Destructive actions */
+  --color-danger: var(--color-red-400);
+}
+
+
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animation Classes */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.5s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+/* Component Specific Styles */
+@layer components {
+  /* Card Component */
+  .card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Button Primary */
+  .btn-primary {
+    background-color: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--primary-dark);
+  }
+
+  /* Button Secondary */
+  .btn-secondary {
+    background-color: var(--secondary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    opacity: 0.9;
+  }
+
+  /* Input Field */
+  .input-field {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .badge-primary {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .badge-secondary {
+    background-color: var(--secondary);
+    color: white;
+  }
+
+  .badge-accent {
+    background-color: var(--accent);
+    color: white;
+  }
+}

@@ -1,0 +1,56 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppLayout from "../components/layout/AppLayout";
+
+import NewsAndEvents from "../pages/Media/NewsAndEvents";
+
+import Testimonials from "../pages/Achievements/Testimonials";
+import Careers from "../pages/Careers/Careers";
+import SecurityPrivacyPage from "../pages/Contact/SecurityAndPrivacy";
+import Home from "../pages/Home/Home";
+import NotFoundPage from "../pages/PageNotFounded";
+import About from "../pages/About/About";
+import AcademicPrograms from "../pages/Academic/AcademicPrograms";
+import AwardsAndAchievements from "../pages/Achievements/AwardsAndAchievements";
+import ContactUs from "../pages/Contact/ContactUs";
+import Gallery from "../pages/Media/Gallery";
+import TeacherList from "../pages/About/team/TeacherList";
+function AppRouterProvider() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        // <PrivateRoute>
+        //   <AppInitializer>
+        <AppLayout />
+        //   </AppInitializer>
+        // </PrivateRoute>
+      ),
+      errorElement: <NotFoundPage />,
+      children: [
+        { index: true, element: <Home /> },
+        { path: "/about", element: <About /> },
+        { path: "/academic-programs", element: <AcademicPrograms /> },
+        { path: "/news-and-events", element: <NewsAndEvents /> },
+        { path: "/contact", element: <ContactUs /> },
+        { path: "/gallery", element: <Gallery /> },
+        { path: "/teachers", element: <TeacherList /> },
+        {
+          path: "/awards-and-achievements",
+          element: <AwardsAndAchievements />,
+        },
+        { path: "/testimonials", element: <Testimonials /> },
+        { path: "/careers", element: <Careers /> },
+        { path: "/security-privacy-page", element: <SecurityPrivacyPage /> },
+      ],
+    },
+    // Add a catch-all route that redirects to login for unauthenticated users
+  ]);
+
+  return (
+    // <AuthProvider>
+    <RouterProvider router={router} />
+    // </AuthProvider>
+  );
+}
+
+export default AppRouterProvider;
