@@ -195,7 +195,11 @@
     "teacher.page.title":"Our Team",
     "teacher.page.subtitle":"Meet our dedicated educators and staff members",
     "Search teachers or subjects":"Search Our Team",
-    "BeingProcessed":"Being Processed..."
+    "BeingProcessed":"Being Processed...",
+    "about.awards.stats.totalAwards": "Total Awards",
+    "about.awards.stats.years": "Years of Excellence",
+    "about.awards.stats.national": "National Awards",
+    "about.awards.stats.international": "International Awards"
 
 
 }

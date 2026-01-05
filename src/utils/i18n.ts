@@ -9,8 +9,8 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    lng: "da", // ✅ DEFAULT LANGUAGE (FARSI / DARI)
-    fallbackLng: "da",
+    lng: "en", // ✅ DEFAULT LANGUAGE (FARSI / DARI)
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false,
     },

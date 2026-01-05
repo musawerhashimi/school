@@ -1,6 +1,6 @@
 import { ArrowRight, Award, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { awardsData } from "../../data/aboutPageData";
+import { awardsData, totalaward } from "../../data/aboutPageData";
 
 export default function AwardsSection() {
   const { t } = useTranslation();
@@ -83,22 +83,37 @@ export default function AwardsSection() {
         {/* Stats Section */}
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
           <div className="text-center p-6 bg-card border border-border rounded-xl">
-            <div className="text-4xl font-bold text-accent mb-2">50+</div>
-            <div className="text-text-secondary text-sm">Total Awards</div>
-          </div>
-          <div className="text-center p-6 bg-card border border-border rounded-xl">
-            <div className="text-4xl font-bold text-primary mb-2">15</div>
+            <div className="text-4xl font-bold text-accent mb-2">
+              {totalaward.Total_Awards}
+            </div>
             <div className="text-text-secondary text-sm">
-              Years of Excellence
+              {" "}
+              {t("about.awards.stats.totalAwards")}
             </div>
           </div>
           <div className="text-center p-6 bg-card border border-border rounded-xl">
-            <div className="text-4xl font-bold text-secondary mb-2">10</div>
-            <div className="text-text-secondary text-sm">National Awards</div>
+            <div className="text-4xl font-bold text-primary mb-2">
+              {totalaward.YearsOf_Excellence}
+            </div>
+            <div className="text-text-secondary text-sm">
+              {t("about.awards.stats.years")}
+            </div>
           </div>
           <div className="text-center p-6 bg-card border border-border rounded-xl">
-            <div className="text-4xl font-bold text-accent mb-2">5</div>
-            <div className="text-text-secondary text-sm">International</div>
+            <div className="text-4xl font-bold text-secondary mb-2">
+              {totalaward.National_Awards}
+            </div>
+            <div className="text-text-secondary text-sm">
+              {t("about.awards.stats.national")}
+            </div>
+          </div>
+          <div className="text-center p-6 bg-card border border-border rounded-xl">
+            <div className="text-4xl font-bold text-accent mb-2">
+              {totalaward.International_Awards}
+            </div>
+            <div className="text-text-secondary text-sm">
+              {t("about.awards.stats.international")}
+            </div>
           </div>
         </div>
       </div>

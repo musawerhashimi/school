@@ -1,5 +1,7 @@
+import type { Leadership, TotalAward, AwardType } from "../entities/Award";
+
 // Leadership Team Data
-export const leadershipData = [
+export const leadershipData: Leadership[] = [
   {
     name: "Dr. Ahmed Hassan",
     role: "Principal",
@@ -38,11 +40,15 @@ export const leadershipData = [
   },
 ];
 
-// Awards and Recognition Data
-export const awardsData = [
+export const totalaward: TotalAward = {
+  International_Awards: 12,
+  National_Awards: 20,
+  Total_Awards: 32,
+  YearsOf_Excellence: 15,
+};
+export const awardsData: AwardType[] = [
   {
-    image:
-      "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800&q=80",
+    image: "images/product-2.jpg",
     year: "2024",
     title: "National Excellence Award",
     description:
@@ -50,8 +56,7 @@ export const awardsData = [
     category: "Academic Excellence",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+    image: "images/product-3.jpg",
     year: "2023",
     title: "Innovation in Education",
     description:
@@ -59,8 +64,7 @@ export const awardsData = [
     category: "Technology & Innovation",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&q=80",
+    image: "images/product.jpg",
     year: "2023",
     title: "Best STEM Program",
     description:
@@ -68,8 +72,7 @@ export const awardsData = [
     category: "STEM Excellence",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80",
+    image: "images/bg-1.jpg",
     year: "2022",
     title: "Academic Achievement",
     description:
@@ -77,8 +80,7 @@ export const awardsData = [
     category: "Student Success",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=800&q=80",
+    image: "images/bg-2.jpg",
     year: "2022",
     title: "International Recognition",
     description:
@@ -86,8 +88,7 @@ export const awardsData = [
     category: "Global Education",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&q=80",
+    image: "images/bg-4.jpg",
     year: "2021",
     title: "Sports Excellence",
     description:

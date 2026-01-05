@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { leadershipData } from "../../data/aboutPageData";
+import { Link } from "react-router-dom";
 
 export default function LeadershipSection() {
   const { t } = useTranslation();
@@ -45,15 +46,15 @@ export default function LeadershipSection() {
 
         {/* View More Button */}
         <div className="text-center mt-16">
-          <a
-            href="/"
+          <Link
+            to="/team"
             className="inline-flex items-center space-x-3 bg-gradient-to-r from-primary via-accent to-secondary text-white px-10 py-4 rounded-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group"
           >
             <span className="font-semibold text-lg">
               {t("about.leadership.viewMore")}
             </span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

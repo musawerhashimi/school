@@ -197,6 +197,10 @@
     "teacher.page.title":"تیم ما",
     "teacher.page.subtitle":"با معلمان و کارکنان تخصصی ما آشنا شوید",
      "Search teachers or subjects":"جستوجوی تیم ما",
-     "BeingProcessed":"در حال پردازش..."
+     "BeingProcessed":"در حال پردازش...",
+      "about.awards.stats.totalAwards": "مجموع جوایز",
+      "about.awards.stats.years": "سال‌های برتری",
+      "about.awards.stats.national": "جوایز ملی",
+      "about.awards.stats.international": "جوایز بین‌المللی"
 
 }

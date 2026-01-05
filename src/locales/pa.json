@@ -195,7 +195,12 @@
   "teacher.page.title": "ښوونکي او کارکوونکي",
   "teacher.page.subtitle": "زموږ له وقف شوو ښوونکو او کارکوونکو سره وپېژنئ",
    "Search teachers or subjects":"د ښوونکو او موضوعاتو لپاره جستوجو",
-   "BeingProcessed":"په پروسه کې دی..."
+   "BeingProcessed":"په پروسه کې دی...",
+
+  "about.awards.stats.totalAwards": "ټولې جایزې",
+  "about.awards.stats.years": "د غوره والي کلونه",
+  "about.awards.stats.national": "ملي جایزې",
+  "about.awards.stats.international": "نړیوالې جایزې"
 }
 
 
