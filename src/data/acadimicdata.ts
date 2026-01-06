@@ -76,28 +76,28 @@ export const academicPrograms = [
 
 export const classSchedules = [
   {
-    grade: "Grade 9",
+    class: 9,
     time: "08:00 AM - 02:00 PM",
-    periods: 7,
-    breakTime: "11:00 AM",
+    periods: 6,
+    number_of_class: 5,
   },
   {
-    grade: "Grade 10",
+    class: 10,
     time: "08:00 AM - 02:00 PM",
-    periods: 7,
-    breakTime: "11:00 AM",
+    periods: 6,
+    number_of_class: 5,
   },
   {
-    grade: "Grade 11",
+    class: 11,
     time: "08:00 AM - 02:30 PM",
     periods: 8,
-    breakTime: "11:30 AM",
+    number_of_class: "11:30 AM",
   },
   {
-    grade: "Grade 12",
+    class: 12,
     time: "08:00 AM - 02:30 PM",
     periods: 8,
-    breakTime: "11:30 AM",
+    number_of_class: "11:30 AM",
   },
 ];
 

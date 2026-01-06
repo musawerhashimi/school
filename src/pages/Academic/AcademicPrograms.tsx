@@ -20,6 +20,7 @@ import TabNavigation from "../../components/layout/TabNavigation";
 import ProgramCard from "./ProgramCard";
 import SectionHeading from "./SectionHeading";
 import ProgramDetailModal from "./ProgramDetailModal";
+import { Link } from "react-router-dom";
 
 // Main Component
 const AcademicPrograms = () => {
@@ -123,7 +124,7 @@ const AcademicPrograms = () => {
                   className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-shadow"
                 >
                   <h3 className="text-2xl font-bold text-text-primary mb-4">
-                    {schedule.grade}
+                    Class {schedule.class}
                   </h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between py-2 border-b border-border">
@@ -144,16 +145,21 @@ const AcademicPrograms = () => {
                     </div>
                     <div className="flex items-center justify-between py-2">
                       <span className="text-text-secondary flex items-center gap-2">
-                        <Calendar className="w-5 h-5" /> Break Time
+                        <Calendar className="w-5 h-5" /> Number of Class
                       </span>
                       <span className="font-semibold text-text-primary">
-                        {schedule.breakTime}
+                        {schedule.number_of_class}
                       </span>
                     </div>
                   </div>
-                  <button className="w-full mt-6 bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
-                    View Detailed Schedule
-                  </button>
+                  <div className="mt-4 flex text-center">
+                    <Link
+                      to={`/class/${schedule.class}`}
+                      className="w-full mt-6 bg-primary text-white px-3 py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+                    >
+                      View Detailed Schedule
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>
