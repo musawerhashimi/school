@@ -302,7 +302,7 @@ export default function TimetableTemplate() {
       <>
         <div className="max-w-7xl mx-auto ">
           {/* Class Selector */}
-          <div className="w-full flex justify-end my-4 ">
+          <div className="w-full flex justify-center md:justify-end my-4 ">
             <div className="relative">
               <select
                 value={activeClass}
