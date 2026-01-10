@@ -16,6 +16,7 @@ import Gallery from "../pages/Media/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
 import TeamProfilePage from "../pages/About/team/TeamProfilePage";
 import TimetableTemplate from "../pages/Academic/AcademicProgram/Timtable";
+import ProgramDetails from "../pages/Academic/ProgramDetails";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -33,6 +34,10 @@ function AppRouterProvider() {
         { index: true, element: <Home /> },
         { path: "/about", element: <About /> },
         { path: "/academic-programs", element: <AcademicPrograms /> },
+        {
+          path: "/academic-programs/program-details",
+          element: <ProgramDetails />,
+        },
         {
           path: "/class/:id",
           element: <TimetableTemplate />,
