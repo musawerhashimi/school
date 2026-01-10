@@ -13,7 +13,7 @@ export default function ExamScheduleComponent() {
   const [activeTab] = useState("exams");
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background ">
       <div className="max-w-6xl mx-auto">
         {activeTab === "exams" && (
           <div>

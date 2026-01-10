@@ -4,6 +4,7 @@ import { useState } from "react";
 import { academicPrograms } from "../../../data/acadimicdata";
 import type { Program } from "../../../entities/program";
 import ProgramDetailModal from "./ProgramDetailModal";
+import SectionHeading from "./SectionHeading";
 
 export default function Programs() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,6 +21,10 @@ export default function Programs() {
   return (
     <>
       <div className="mb-12">
+        <SectionHeading
+          title="Programs Offered"
+          subtitle="Explore our diverse range of academic programs."
+        />
         <div className="relative max-w-7xl">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-secondary w-5 h-5" />
           <input
