@@ -9,13 +9,14 @@ import SecurityPrivacyPage from "../pages/Contact/SecurityAndPrivacy";
 import Home from "../pages/Home/Home";
 import NotFoundPage from "../pages/PageNotFounded";
 import About from "../pages/About/About";
-import AcademicPrograms from "../pages/Academic/AcademicPrograms";
+import AcademicPrograms from "../pages/Academic/AcademicProgram/AcademicPrograms";
 import AwardsAndAchievements from "../pages/Achievements/AwardsAndAchievements";
 import ContactUs from "../pages/Contact/ContactUs";
 import Gallery from "../pages/Media/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
 import TeamProfilePage from "../pages/About/team/TeamProfilePage";
-import TimetableTemplate from "../pages/Academic/Timtable";
+import TimetableTemplate from "../pages/Academic/AcademicProgram/Timtable";
+
 function AppRouterProvider() {
   const router = createBrowserRouter([
     {

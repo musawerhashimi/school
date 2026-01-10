@@ -1,5 +1,5 @@
 import { BookOpen, Award, ChevronRight } from "lucide-react";
-import type { Program } from "../../entities/program";
+import type { Program } from "../../../entities/program";
 
 export default function ProgramDetailModal({
   program,

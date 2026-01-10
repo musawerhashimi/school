@@ -1,5 +1,8 @@
-// Mock Data
-export const academicPrograms = [
+import type { AcademicPrograms } from "../entities/AcadimicProgram";
+import type { ClassSchedules } from "../entities/classtimetable";
+import type { SyllabusDownloads } from "../entities/ExamSchedule";
+
+export const academicPrograms: AcademicPrograms = [
   {
     id: 1,
     title: "Science & Technology",
@@ -74,7 +77,7 @@ export const academicPrograms = [
   },
 ];
 
-export const classSchedules = [
+export const classSchedules: ClassSchedules = [
   {
     class: 9,
     time: "08:00 AM - 02:00 PM",
@@ -100,55 +103,41 @@ export const classSchedules = [
     number_of_class: "11:30 AM",
   },
 ];
-
-export const examSchedule = [
-  {
-    exam: "First Term Exam",
-    date: "November 15-25, 2024",
-    subjects: "All Subjects",
-    duration: "10 Days",
-  },
-  {
-    exam: "Mid-Year Exam",
-    date: "February 10-20, 2025",
-    subjects: "All Subjects",
-    duration: "10 Days",
-  },
-  {
-    exam: "Final Exam",
-    date: "June 5-20, 2025",
-    subjects: "All Subjects",
-    duration: "15 Days",
-  },
-  {
-    exam: "Practical Exams",
-    date: "May 25-30, 2025",
-    subjects: "Science & Arts",
-    duration: "5 Days",
-  },
-];
-
-export const syllabusDownloads = [
+export const syllabusDownloads: SyllabusDownloads = [
   {
     title: "Grade 9 Syllabus 2024-25",
+    description:
+      "Comprehensive curriculum guide covering all core subjects for freshman year including Mathematics, Science, English, and Social Studies.",
     size: "2.4 MB",
-    subject: "All Subjects",
   },
   {
     title: "Grade 10 Syllabus 2024-25",
+    description:
+      "Detailed syllabus for sophomore year with enhanced focus on analytical thinking and subject specialization preparation.",
     size: "2.6 MB",
-    subject: "All Subjects",
   },
   {
     title: "Grade 11 Syllabus 2024-25",
+    description:
+      "Junior year academic framework with stream-specific subjects and college preparation modules.",
     size: "2.8 MB",
-    subject: "All Subjects",
   },
   {
     title: "Grade 12 Syllabus 2024-25",
+    description:
+      "Senior year curriculum designed for board exam excellence and higher education readiness.",
     size: "3.1 MB",
-    subject: "All Subjects",
   },
-  { title: "Science Program Guide", size: "1.8 MB", subject: "Science" },
-  { title: "Arts Program Guide", size: "1.5 MB", subject: "Arts" },
+  {
+    title: "Science Program Guide",
+    description:
+      "In-depth guide to our Science stream covering Physics, Chemistry, Biology, and Mathematics with lab requirements.",
+    size: "1.8 MB",
+  },
+  {
+    title: "Arts Program Guide",
+    description:
+      "Complete overview of Humanities stream including History, Political Science, Economics, and elective options.",
+    size: "1.5 MB",
+  },
 ];
