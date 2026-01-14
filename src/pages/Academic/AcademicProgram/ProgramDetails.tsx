@@ -1,20 +1,6 @@
-// import { useState } from "react";
-// import ProgramDetailModal from "./AcademicProgram/ProgramDetailModal";
-// import type { Program } from "../../entities/program";
-
-// export default function ProgramDetails() {
-//   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
-//   return (
-//     <ProgramDetailModal
-//       program={selectedProgram}
-//       onClose={() => setSelectedProgram(null)}
-//     />
-//   );
-// }
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import ProgramDetailModal from "./AcademicProgram/ProgramDetailModal";
+import ProgramDetailModal from "./ProgramDetailModal";
 
 export default function ProgramDetails() {
   const location = useLocation();

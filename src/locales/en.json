@@ -199,7 +199,45 @@
     "about.awards.stats.totalAwards": "Total Awards",
     "about.awards.stats.years": "Years of Excellence",
     "about.awards.stats.national": "National Awards",
-    "about.awards.stats.international": "International Awards"
+    "about.awards.stats.international": "International Awards",
+
+     "studentProjects.title": "Student Projects",
+    "studentProjects.subtitle": "Showcasing creativity, innovation, and academic excellence from our talented students",
+    "studentProjects.recent": "Recent Projects",
+    "studentProjects.allProjects": "All Projects",
+    "studentProjects.filters.search": "Search projects...",
+    "studentProjects.filters.category": "Category",
+    "studentProjects.filters.year": "Year",
+    "studentProjects.filters.grade": "Grade",
+    "studentProjects.filters.sortBy": "Sort By",
+    "studentProjects.filters.newest": "Newest First",
+    "studentProjects.filters.oldest": "Oldest First",
+    "studentProjects.filters.all": "All",
+    "studentProjects.filters.reset": "Reset Filters",
+    "studentProjects.card.viewDetails": "View Details",
+    "studentProjects.card.collaborators": "Collaborators",
+    "studentProjects.card.collaborator": "Collaborator",
+    "studentProjects.card.by": "By",
+    "studentProjects.noResults": "No projects found",
+    "studentProjects.noResultsDesc": "Try adjusting your filters or search terms",
+    "studentProjects.detail.overview": "Project Overview",
+    "studentProjects.detail.students": "Project Team",
+    "studentProjects.detail.category": "Category",
+    "studentProjects.detail.grade": "Grade Level",
+    "studentProjects.detail.date": "Completion Date",
+    "studentProjects.detail.awards": "Awards & Recognition",
+    "studentProjects.detail.gallery": "Project Gallery",
+    "studentProjects.detail.backToProjects": "Back to Projects",
+    "studentProjects.categories.science": "Science & Technology",
+    "studentProjects.categories.arts": "Arts & Literature",
+    "studentProjects.categories.mathematics": "Mathematics",
+    "studentProjects.categories.engineering": "Engineering",
+    "studentProjects.categories.social": "Social Studies",
+    "studentProjects.categories.environment": "Environmental Studies"
+    
+    
+    
+    
 
 
 }

@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import React from "react";
 
-function PageHeader({
+export default function PageHeader({
   title,
   subtitle,
   image,
@@ -14,7 +14,7 @@ function PageHeader({
 }) {
   return (
     <div className="relative text-text-secondary h-96 w-full overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/70 to-background/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/70 to-background/60 z-10" />
       <img src={image} alt={title} className="w-full h-full object-cover" />
       <div className="absolute z-20 top-20 w-full">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -49,5 +49,3 @@ function PageHeader({
     </div>
   );
 }
-
-export default PageHeader;

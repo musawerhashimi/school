@@ -16,7 +16,9 @@ import Gallery from "../pages/Media/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
 import TeamProfilePage from "../pages/About/team/TeamProfilePage";
 import TimetableTemplate from "../pages/Academic/AcademicProgram/Timtable";
-import ProgramDetails from "../pages/Academic/ProgramDetails";
+import ProgramDetails from "../pages/Academic/AcademicProgram/ProgramDetails";
+import StudentProjects from "../pages/Academic/StudentProject/StudentProject";
+import ProjectDetail from "../pages/Academic/StudentProject/ProjectDetail";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -54,6 +56,8 @@ function AppRouterProvider() {
         { path: "/testimonials", element: <Testimonials /> },
         { path: "/careers", element: <Careers /> },
         { path: "/security-privacy-page", element: <SecurityPrivacyPage /> },
+        { path: "/student-projects", element: <StudentProjects /> },
+        { path: "/student-projects/:id", element: <ProjectDetail /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users
