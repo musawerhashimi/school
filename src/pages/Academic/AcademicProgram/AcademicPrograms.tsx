@@ -65,7 +65,7 @@ export default function AcademicPrograms() {
         breadcrumb={["Home", "Academics Programs"]}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 py-8">
+      <div className="relative   px-4 md:mx-6 py-8">
         {/* Enhanced Tab Navigation Container */}
         <div className="relative mb-8">
           {/* Decorative Elements */}
