@@ -236,6 +236,15 @@
     "studentProjects.categories.mathematics": "ریاضیات",
     "studentProjects.categories.engineering": "انجینری",
     "studentProjects.categories.social": "علوم اجتماعی",
-    "studentProjects.categories.environment": "علوم محیط زیست"
+    "studentProjects.categories.environment": "علوم محیط زیست",
+    "library.title": "کتابخانه آنلاین",
+    "library.subtitle": "دسترسی به کتاب‌های دیجیتال، مقالات و منابع آموزشی",
+    "library.searchPlaceholder": "جستجوی کتاب‌ها بر اساس عنوان...",
+    "library.action.view": "مشاهده آنلاین",
+    "library.action.byCategory": "بر اساس دسته بندی",
+    "library.action.allCategories": "همه دسته بندی‌ها",
+    "library.action.allBooks": "همه کتاب‌ها",
+    "library.results": "کتاب یافت شد",
+    "library.noResults": "هیچ کتابی با معیارهای شما یافت نشد"
 
 }

@@ -101,12 +101,7 @@ function Navbar() {
           page: "online-library",
           icon: BookOpen,
         },
-        {
-          name: t("nav.academics.libraryServices"),
-          key: "nav.academics.libraryServices",
-          page: "library-services",
-          icon: Building,
-        },
+
         {
           name: t("nav.academics.educationalTrips"),
           key: "nav.academics.educationalTrips",

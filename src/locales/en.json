@@ -233,11 +233,14 @@
     "studentProjects.categories.mathematics": "Mathematics",
     "studentProjects.categories.engineering": "Engineering",
     "studentProjects.categories.social": "Social Studies",
-    "studentProjects.categories.environment": "Environmental Studies"
-    
-    
-    
-    
-
-
+    "studentProjects.categories.environment": "Environmental Studies",
+    "library.title": "Online Library",
+    "library.subtitle": "Access digital books, articles, and educational resources",
+    "library.searchPlaceholder": "Search books by title...",
+    "library.action.view": "View Online",
+    "library.action.byCategory": "By Category",
+    "library.action.allCategories": "All Categories",
+    "library.action.allBooks": "All Books",
+    "library.results": "book found",
+    "library.noResults": "No books found matching your criteria"
 }

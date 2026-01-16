@@ -234,7 +234,18 @@
     "studentProjects.categories.mathematics": "ریاضي",
     "studentProjects.categories.engineering": "انجینري",
     "studentProjects.categories.social": "ټولنیز علوم",
-    "studentProjects.categories.environment": "د چاپیریال علوم"
+    "studentProjects.categories.environment": "د چاپیریال علوم",
+        
+  "library.title": "آنلاین کتابتون",
+  "library.subtitle": "د ډیجیټل کتابونو، مقالو، او تعلیمي سرچینو ته لاسرسی",
+  "library.searchPlaceholder": "د کتابونو په سرلیک لټون وکړئ...",
+  "library.action.view": "آنلاین وګورئ",
+  "library.action.byCategory": "د کټګورۍ له مخې",
+  "library.action.allCategories": "ټولې کټګورۍ",  
+  "library.action.allBooks": "ټول کتابونه",
+  "library.results": "کتابونه موندل شوي",
+  "library.noResults": "ستاسو د معیارونو سره هیڅ کتاب ونه موندل شو"
+  
 }
 
 
