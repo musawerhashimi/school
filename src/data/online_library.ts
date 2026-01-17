@@ -2,12 +2,12 @@ import type { Book, BookCategory } from "../entities/OnlineLibrary";
 
 // Categories Data
 export const bookCategories: BookCategory[] = [
-  { id: 1, name: "Science", color: "bg-blue-100 text-blue-700" },
-  { id: 2, name: "History", color: "bg-amber-100 text-amber-700" },
-  { id: 3, name: "Literature", color: "bg-purple-100 text-purple-700" },
-  { id: 4, name: "Technology", color: "bg-green-100 text-green-700" },
-  { id: 5, name: "Mathematics", color: "bg-red-100 text-red-700" },
-  { id: 6, name: "Philosophy", color: "bg-indigo-100 text-indigo-700" },
+  { id: 1, name: "Science"  },
+  { id: 2, name: "History" },
+  { id: 3, name: "Literature" },
+  { id: 4, name: "Technology" },
+  { id: 5, name: "Mathematics"},
+  { id: 6, name: "Philosophy" },
 ];
 // Sample Books Data
 export const booksData: Book[] = [

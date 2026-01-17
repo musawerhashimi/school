@@ -245,6 +245,27 @@
     "library.action.allCategories": "همه دسته بندی‌ها",
     "library.action.allBooks": "همه کتاب‌ها",
     "library.results": "کتاب یافت شد",
-    "library.noResults": "هیچ کتابی با معیارهای شما یافت نشد"
+    "library.noResults": "هیچ کتابی با معیارهای شما یافت نشد",
+   "educationalTrips.searchPlaceholder": "جستجوی سفرها بر اساس عنوان...",
+    "educationalTrips.title": "سفرهای آموزشی",
+  "educationalTrips.subtitle":
+    "تجربه‌های یادگیری غنی بیرون از صنف از طریق اکتشاف فرهنگی، علمی و محیط‌زیستی",
+  "educationalTrips.filter.all": "همه سفرها",
+  "educationalTrips.filter.cultural": "فرهنگی",
+  "educationalTrips.filter.scientific": "علمی",
+  "educationalTrips.filter.historical": "تاریخی",
+  "educationalTrips.filter.environmental": "محیط‌زیستی",
+  "educationalTrips.upcoming": "سفرهای آینده",
+  "educationalTrips.past": "سفرهای گذشته",
+  "educationalTrips.location": "موقعیت",
+  "educationalTrips.duration": "مدت زمان",
+  "educationalTrips.gradeLevels": "سطوح صنف",
+  "educationalTrips.objectives": "اهداف آموزشی",
+  "educationalTrips.participants": "شرکت‌کنندگان",
+  "educationalTrips.viewGallery": "دیدن گالری",
+  "educationalTrips.status.upcoming": "آینده",
+  "educationalTrips.status.completed": "تکمیل شده",
+  "educationalTrips.status.ongoing": "در حال اجرا",
+  "educationalTrips.action.allTrips": "همه سفرها"
 
 }

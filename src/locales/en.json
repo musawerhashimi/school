@@ -242,5 +242,27 @@
     "library.action.allCategories": "All Categories",
     "library.action.allBooks": "All Books",
     "library.results": "book found",
-    "library.noResults": "No books found matching your criteria"
+    "library.noResults": "No books found matching your criteria",
+
+
+    "educationalTrips.title": "Educational Trips",
+  "educationalTrips.subtitle":
+    "Enriching learning experiences beyond the classroom through cultural, scientific, and environmental exploration",
+  "educationalTrips.filter.all": "All Trips",
+  "educationalTrips.filter.cultural": "Cultural",
+  "educationalTrips.filter.scientific": "Scientific",
+  "educationalTrips.filter.historical": "Historical",
+  "educationalTrips.filter.environmental": "Environmental",
+  "educationalTrips.upcoming": "Upcoming Trips",
+  "educationalTrips.past": "Past Trips",
+  "educationalTrips.location": "Location",
+  "educationalTrips.duration": "Duration",
+  "educationalTrips.gradeLevels": "Grade Levels",
+  "educationalTrips.searchPlaceholder": "Search trips by title...",
+  "educationalTrips.participants": "Participants",
+  "educationalTrips.viewGallery": "View Gallery",
+  "educationalTrips.status.upcoming": "Upcoming",
+  "educationalTrips.status.completed": "Completed",
+  "educationalTrips.status.ongoing": "Ongoing",
+  "educationalTrips.action.allTrips": "All Trips"
 }

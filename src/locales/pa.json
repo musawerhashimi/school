@@ -244,7 +244,29 @@
   "library.action.allCategories": "ټولې کټګورۍ",  
   "library.action.allBooks": "ټول کتابونه",
   "library.results": "کتابونه موندل شوي",
-  "library.noResults": "ستاسو د معیارونو سره هیڅ کتاب ونه موندل شو"
+  "library.noResults": "ستاسو د معیارونو سره هیڅ کتاب ونه موندل شو",
+
+"educationalTrips.searchPlaceholder": "د سفرونو په سرلیک لټون وکړئ...",
+   "educationalTrips.title": "تعلیمي سفرونه",
+  "educationalTrips.subtitle":
+    "له ټولګي بهر د کلتوري، علمي او چاپېریالي سپړنو له لارې د زده کړې تجربې پیاوړې کول",
+  "educationalTrips.filter.all": "ټول سفرونه",
+  "educationalTrips.filter.cultural": "کلتوري",
+  "educationalTrips.filter.scientific": "علمي",
+  "educationalTrips.filter.historical": "تاریخي",
+  "educationalTrips.filter.environmental": "چاپېریالي",
+  "educationalTrips.upcoming": "راتلونکي سفرونه",
+  "educationalTrips.past": "تېر سفرونه",
+  "educationalTrips.location": "ځای",
+  "educationalTrips.duration": "موده",
+  "educationalTrips.gradeLevels": "د ټولګي کچې",
+  "educationalTrips.objectives": "تعلیمي موخې",
+  "educationalTrips.participants": "ګډونوال",
+  "educationalTrips.viewGallery": "ګالري وګورئ",
+  "educationalTrips.status.upcoming": "راتلونکی",
+  "educationalTrips.status.completed": "بشپړ شوی",
+  "educationalTrips.status.ongoing": "روان",
+  "educationalTrips.action.allTrips": "ټول سفرونه"
   
 }
 

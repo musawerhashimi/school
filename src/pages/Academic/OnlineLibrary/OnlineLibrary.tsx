@@ -1,114 +1,8 @@
-// import React from "react";
-// import { useState } from "react";
-// import { booksData } from "../../../data/online_library";
-
 import { Search, X, Eye, BookOpen, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { bookCategories, booksData } from "../../../data/online_library";
 import BookSkeleton from "./BookSkilton";
 import { t } from "i18next";
-
-// import { BookOpen, Eye } from "lucide-react";
-
-// import BookSkeleton from "./BookSkilton";
-// import { useTranslation } from "react-i18next";
-// import PageHeader from "../../../components/layout/PageHeader";
-
-// export default function OnlineLibrary() {
-//   const { t } = useTranslation();
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   // Simulate loading
-//   React.useEffect(() => {
-//     const timer = setTimeout(() => setIsLoading(false), 1500);
-//     return () => clearTimeout(timer);
-//   }, []);
-
-//   return (
-//     <div className="min-h-screen bg-background">
-//       {/* Header Section */}
-//       <PageHeader
-//         title={t("library.title")}
-//         subtitle={t("library.subtitle")}
-//         breadcrumb={[]}
-//         image="images/slide2.jpg"
-//       />
-
-//       {/* Books Grid */}
-//       <div className="max-w-7xl mx-auto px-4 py-12">
-//         {isLoading ? (
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-//             {[...Array(8)].map((_, index) => (
-//               <BookSkeleton key={index} />
-//             ))}
-//           </div>
-//         ) : booksData.length > 0 ? (
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-//             {booksData.map((book) => (
-//               <div
-//                 key={book.id}
-//                 className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group"
-//               >
-//                 {/* Book Cover */}
-//                 <div className="relative overflow-hidden h-80 bg-surface">
-//                   <img
-//                     src={book.coverImage}
-//                     alt={book.title}
-//                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-//                   />
-//                 </div>
-
-//                 {/* Book Info */}
-//                 <div className="p-4">
-//                   <h3 className="text-lg font-bold text-text-primary mb-1 line-clamp-2">
-//                     {book.title}
-//                   </h3>
-//                   <p className="text-sm text-text-secondary mb-2">
-//                     {book.author}
-//                   </p>
-//                   <p className="text-sm text-text-secondary line-clamp-2 mb-3">
-//                     {book.description}
-//                   </p>
-
-//                   {/* Metadata */}
-//                   <div className="flex flex-wrap gap-2 mb-4">
-//                     <span className="px-2 py-1 bg-info-soft text-info text-xs rounded-md font-medium">
-//                       {book.category}
-//                     </span>
-
-//                     <span className="px-2 py-1 bg-warning-soft text-text-primary text-xs rounded-md font-medium">
-//                       {book.language}
-//                     </span>
-//                     <span className="px-2 py-1 bg-surface text-text-secondary text-xs rounded-md font-medium">
-//                       {book.publicationYear}
-//                     </span>
-//                   </div>
-
-//                   {/* Action Buttons */}
-//                   <div className="flex gap-2">
-//                     <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-secondary text-white rounded-lg font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-//                       <Eye className="w-4 h-4" />
-//                       <span className="text-sm">
-//                         {t("library.action.view")}
-//                       </span>
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         ) : (
-//           <div className="text-center py-20">
-//             <BookOpen className="w-16 h-16 mx-auto text-muted mb-4" />
-//             <p className="text-xl text-text-secondary">
-//               {t("library.noResults")}
-//             </p>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
 
 export default function OnlineLibrary() {
   const [isLoading, setIsLoading] = useState(true);
@@ -249,11 +143,6 @@ export default function OnlineLibrary() {
                       }}
                       className="w-full px-4 py-2.5 text-left hover:bg-surface-hover flex items-center gap-2"
                     >
-                      <span
-                        className={`w-3 h-3 rounded-full ${
-                          category.color.split(" ")[0]
-                        }`}
-                      />
                       <span className="font-medium">{category.name}</span>
                     </button>
                   ))}
@@ -306,7 +195,7 @@ export default function OnlineLibrary() {
                     <div className="flex flex-wrap gap-2 mb-5">
                       {category && (
                         <span
-                          className={`px-3 py-1 ${category.color} text-xs rounded-full font-medium`}
+                          className={`px-3 py-1 bg-accent text-xs rounded-full font-medium`}
                         >
                           {category.name}
                         </span>
