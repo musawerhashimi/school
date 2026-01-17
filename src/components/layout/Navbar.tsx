@@ -16,7 +16,6 @@ import {
   Trophy,
   Users,
   Award,
-  Building,
   Camera,
   Clock,
   HandHeart,
@@ -314,7 +313,7 @@ function Navbar() {
     return item.children.some(
       (child) =>
         location.pathname === `/${child.page}` ||
-        location.pathname === child.page
+        location.pathname === child.page,
     );
   };
 
