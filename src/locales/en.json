@@ -373,5 +373,31 @@
     },
     "loading": "Loading competitions...",
     "error": "Failed to load competitions"
-  }
+    
+  },
+  "sportsTeams.pageTitle": "Sports Teams",
+    "sportsTeams.pageDescription": "Discover our talented sports teams competing in various disciplines. From football to martial arts, our students showcase exceptional athletic abilities and teamwork.",
+    "sportsTeams.allCategories": "All Sports",
+    "sportsTeams.noTeamsFound": "No teams found in this category",
+    "sportsTeams.viewDetails": "View Team Details",
+    "sportsTeams.establishedIn": "Established in",
+    "sportsTeams.members": "Members",
+    "sportsTeams.achievements": "Achievements",
+    
+    "sportsTeams.detail.aboutTeam": "About the Team",
+    "sportsTeams.detail.coach": "Head Coach",
+    "sportsTeams.detail.experience": "Experience",
+    "sportsTeams.detail.certifications": "Certifications",
+    "sportsTeams.detail.teamMembers": "Team Members",
+    "sportsTeams.detail.jerseyNumber": "Jersey #",
+    "sportsTeams.detail.teamAchievements": "Team Achievements",
+    "sportsTeams.detail.noAchievements": "Our team is working hard to achieve great things!",
+    "sportsTeams.detail.trainingSchedule": "Training Schedule",
+    "sportsTeams.detail.facilities": "Training Facilities",
+    "sportsTeams.detail.backToTeams": "Back to All Teams",
+    "sportsTeams.detail.joinTeam": "Join Our Team",
+    "sportsTeams.detail.contactCoach": "Contact Coach",
+    "sportsTeams.detail.joinTeamDescription": "Interested in joining ? Get in touch with us today!",
+    "sportsTeams.detail.teamNotFound": "Team Not Found",
+    "Contact Us": "Contact Us"
 }

@@ -376,6 +376,32 @@
     },
     "loading": "در حال بارگذاری مسابقات...",
     "error": "بارگذاری مسابقات ناموفق بود"
-  }
+    
+  },
+  "sportsTeams.pageTitle": "تیم‌های ورزشی",
+  "sportsTeams.pageDescription": "تیم‌های با استعداد ورزشی ما را که در رشته‌های مختلف رقابت می‌کنند، کشف کنید. از فوتبال گرفته تا هنرهای رزمی، دانش‌آموزان ما توانایی‌های ورزشی استثنایی و کار تیمی را به نمایش می‌گذارند.",
+  "sportsTeams.allCategories": "همه ورزش‌ها",
+  "sportsTeams.noTeamsFound": "هیچ تیمی در این دسته یافت نشد",
+  "sportsTeams.viewDetails": "مشاهده جزئیات تیم",
+  "sportsTeams.establishedIn": "تاسیس در سال",
+  "sportsTeams.members": "اعضا",
+  "sportsTeams.achievements": "دستاوردها",
+  
+  "sportsTeams.detail.aboutTeam": "درباره تیم",
+  "sportsTeams.detail.coach": "مربی اصلی",
+  "sportsTeams.detail.experience": "تجربه",
+  "sportsTeams.detail.certifications": "گواهینامه‌ها",
+  "sportsTeams.detail.teamMembers": "اعضای تیم",
+  "sportsTeams.detail.jerseyNumber": "شماره پیراهن",
+  "sportsTeams.detail.teamAchievements": "دستاوردهای تیم",
+  "sportsTeams.detail.noAchievements": "تیم ما سخت کار می‌کند تا به موفقیت‌های بزرگ دست یابد!",
+  "sportsTeams.detail.trainingSchedule": "برنامه تمرینی",
+  "sportsTeams.detail.facilities": "امکانات تمرینی",
+  "sportsTeams.detail.backToTeams": "بازگشت به همه تیم‌ها",
+  "sportsTeams.detail.joinTeam": "به تیم ما بپیوندید",
+  "sportsTeams.detail.contactCoach": "تماس با مربی",
+  "sportsTeams.detail.teamNotFound": "تیم یافت نشد",
+  "sportsTeams.detail.joinTeamDescription": "اگر علاقه‌مند به پیوستن به تیم ما هستید، لطفاً با ما تماس بگیرید.",
+  "Contact Us": "تماس با ما"
 
 }

@@ -23,6 +23,8 @@ import OnlineLibrary from "../pages/Academic/OnlineLibrary/OnlineLibrary";
 import EducationalTrips from "../pages/Academic/EducatinalTrip/EducationalTrip";
 import CompetitionsContests from "../pages/Academic/CompetitionsContests/CompetitionsContests";
 import CompetitionDetail from "../pages/Academic/CompetitionsContests/CompetitionDetail";
+import SportsTeamsPage from "../pages/StudentsActivities/SportTeams/SportsTeams";
+import SportsTeamDetail from "../pages/StudentsActivities/SportTeams/SportsTeamDetail";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -65,10 +67,9 @@ function AppRouterProvider() {
         { path: "/online-library", element: <OnlineLibrary /> },
         { path: "/educational-trips", element: <EducationalTrips /> },
         { path: "/competitions-contests", element: <CompetitionsContests /> },
-        {
-          path: "/competitions-contests/:id",
-          element: <CompetitionDetail />,
-        },
+        { path: "/competitions-contests/:id", element: <CompetitionDetail /> },
+        { path: "/sports-teams", element: <SportsTeamsPage /> },
+        { path: "/sports-teams/:id", element: <SportsTeamDetail /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users

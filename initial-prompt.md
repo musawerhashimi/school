@@ -9,8 +9,32 @@ school name: Sultan Zoy High School
 first i want to make the front end public website content which is relatively easier.
 
 i want you to generate some of the parts of the project with beautiful UI/UX and typed functions(rcf) and components.
-and also make the static data into sprate(bro sprate) part file ,
-and also define t for the all text(static content) like this format in {t(about.awards.viewMore)} in json like this> "about.awards.viewMore": "View All Awards", it be for 3 language en,da(dari afg) and pa(pashto afg) the jsone must be in sprate file
+and also make the static data into sprate(bro sprate) part file , i want to add translation to data that after comning from api like this
+==========
+in component:> const { t, i18n } = useTranslation();
+const lang = i18n.language as "en" | "da" | "pa";
+
+<h3 className="text-2xl font-bold text-text-primary mb-3 group-hover:text-primary transition-colors duration-300">
+              {trip.title[lang]}
+            </h3>
+            
+type:> title: { en: string; da: string; pa: string };
+Data:>
+title: {
+en: "National Museum of Afghanistan Visit",
+da: "بازدید از موزیم ملی افغانستان",
+pa: "د افغانستان ملي موزیم لیدنه",
+},
+==============================
+
+and also define t for the all text(static content) like this format in
+en.json
+{
+"explorePrograms": "Explore Programs",
+"scheduleVisit": "Schedule a Visit", in json like this> "about.awards.viewMore": "View All Awards",
+}
+in file i use like this const {t}= useTranslatio();
+it be for 3 language en,da(dari afg) and pa(pashto afg) the jsone must be in sprate file
 
 ---
 
@@ -517,6 +541,6 @@ Recommended Sections for the School Website (Sultan Zoy High School)
 right now i have completed the Home, About, Academic Programs, News And Events, Contact Us, Gallery, teacher profile, Awards and achievements and testimonials pages and have these plus other components.
 Navbar, Footer, CTASection, PageHeader and others which can be imported from components/ or components/layout/
 
-now i want you to make the Competitions Contests section good.
+now i want you to make the Sport Teams section good.
 
 if you have any question or do not understand any part, tell me, if no then go.

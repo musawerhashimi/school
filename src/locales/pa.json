@@ -375,8 +375,32 @@
     },
     "loading": "سیالۍ بارېږي...",
     "error": "د سیالیو بارول ناکام شول"
-  }
   
+  },
+     "sportsTeams.pageTitle": "سپورټ ټیمونه",
+  "sportsTeams.pageDescription": "زموږ په بیلابیلو برخو کې سیالۍ کوونکي هوښیار سپورټ ټیمونه وپیژنئ. له فوټبال څخه تر مارشل آرټس پورې، زموږ زده کوونکي غوره ورزشي وړتیاوې او ټیمي کار ښیي.",
+  "sportsTeams.allCategories": "ټول سپورټونه",
+  "sportsTeams.noTeamsFound": "په دې کټګورۍ کې هیڅ ټیم ونه موندل شو",
+  "sportsTeams.viewDetails": "د ټیم توضیحات وګورئ",
+  "sportsTeams.establishedIn": "جوړ شوی په",
+  "sportsTeams.members": "غړي",
+  "sportsTeams.achievements": "لاسته راوړنې",
+  
+  "sportsTeams.detail.aboutTeam": "د ټیم په اړه",
+  "sportsTeams.detail.coach": "اصلي روزونکی",
+  "sportsTeams.detail.experience": "تجربه",
+  "sportsTeams.detail.certifications": "سندونه",
+  "sportsTeams.detail.teamMembers": "د ټیم غړي",
+  "sportsTeams.detail.jerseyNumber": "جرسي شمېره",
+  "sportsTeams.detail.teamAchievements": "د ټیم لاسته راوړنې",
+  "sportsTeams.detail.noAchievements": "زموږ ټیم سخته کار کوي ترڅو لویو شیانو ته ورسیږي!",
+  "sportsTeams.detail.trainingSchedule": "د روزنې مهالویش",
+  "sportsTeams.detail.facilities": "د روزنې امکانات",
+  "sportsTeams.detail.backToTeams": "ټولو ټیمونو ته بیرته",
+  "sportsTeams.detail.joinTeam": "زموږ ټیم سره یوځای شئ",
+  "sportsTeams.detail.contactCoach": "روزونکي سره اړیکه",
+  "sportsTeams.detail.joinTeamDescription": "که تاسو زموږ د سپورټ ټیم سره یوځای کیدو کې علاقه لرئ، مهرباني وکړئ زموږ د روزونکي سره اړیکه ونیسئ.",
+  "Contact Us": "موږ سره اړیکه ونیسئ"
 }
 
 
