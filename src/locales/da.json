@@ -266,6 +266,116 @@
   "educationalTrips.status.upcoming": "آینده",
   "educationalTrips.status.completed": "تکمیل شده",
   "educationalTrips.status.ongoing": "در حال اجرا",
-  "educationalTrips.action.allTrips": "همه سفرها"
+  "educationalTrips.action.allTrips": "همه سفرها",
+
+
+  "competitions.detail.notFound": "مسابقه یافت نشد",
+  "competitions": {
+    "pageTitle": "مسابقات و رقابت‌ها",
+    "pageSubtitle": "در مسابقات هیجان‌انگیز شرکت کنید و استعدادهای خود را به نمایش بگذارید",
+    "breadcrumb": {
+      "home": "خانه",
+      "competitions": "مسابقات"
+    },
+    "search": {
+      "placeholder": "جستجوی مسابقات...",
+      "noResults": "هیچ مسابقه‌ای یافت نشد",
+      "noResultsDesc": "لطفاً جستجو یا فیلترهای خود را تنظیم کنید"
+    },
+    "filters": {
+      "all": "همه",
+      "category": "دسته‌بندی",
+      "status": "وضعیت"
+    },
+    "categories": {
+      "all": "همه دسته‌ها",
+      "academic": "علمی",
+      "cultural": "فرهنگی",
+      "athletic": "ورزشی",
+      "arts": "هنری",
+      "science": "علوم",
+      "technology": "تکنالوژی"
+    },
+    "status": {
+      "all": "همه وضعیت‌ها",
+      "upcoming": "آینده",
+      "ongoing": "جاری",
+      "completed": "تکمیل شده"
+    },
+    "card": {
+      "viewDetails": "مشاهده جزئیات",
+      "register": "ثبت‌نام کنید",
+      "registrationClosed": "ثبت‌نام بسته شد",
+      "completed": "تکمیل شده",
+      "spotsLeft": "جا باقی مانده",
+      "deadline": "مهلت ثبت‌نام",
+      "eventDate": "تاریخ رویداد"
+    },
+    "detail": {
+      "backToList": "بازگشت به مسابقات",
+      "overview": "نمای کلی",
+      "eligibility": "معیارهای واجد شرایط بودن",
+      "rules": "قوانین و راهنمایی‌ها",
+      "prizes": "جوایز و افتخارات",
+      "winners": "برندگان",
+      "registerNow": "ثبت‌نام برای مسابقه",
+      "registrationClosed": "دوره ثبت‌نام پایان یافت",
+      "eventCompleted": "رویداد تکمیل شد",
+      "details": {
+        "category": "دسته‌بندی",
+        "status": "وضعیت",
+        "startDate": "تاریخ شروع",
+        "endDate": "تاریخ پایان",
+        "registrationDeadline": "مهلت ثبت‌نام",
+        "location": "مکان",
+        "organizer": "سازمان‌دهنده",
+        "contact": "تماس",
+        "participants": "شرکت‌کنندگان",
+        "teamEvent": "رویداد تیمی",
+        "teamSize": "اندازه تیم",
+        "members": "اعضا"
+      },
+      "noWinners": "برندگان پس از مسابقه اعلام خواهند شد",
+      "position": "موقعیت",
+      "studentName": "نام دانش‌آموز",
+      "grade": "صنف"
+    },
+    "registration": {
+      "title": "ثبت‌نام مسابقه",
+      "subtitle": "فورم زیر را برای ثبت‌نام پر کنید",
+      "studentInfo": "اطلاعات دانش‌آموز",
+      "parentInfo": "اطلاعات والدین/سرپرست",
+      "teamInfo": "اعضای تیم",
+      "studentName": "نام کامل دانش‌آموز",
+      "studentId": "شماره دانش‌آموزی",
+      "grade": "صنف",
+      "email": "آدرس ایمیل",
+      "phone": "شماره تلفن",
+      "parentName": "نام والدین/سرپرست",
+      "parentPhone": "تلفن والدین/سرپرست",
+      "parentEmail": "ایمیل والدین/سرپرست",
+      "teamMember": "عضو تیم",
+      "addMember": "افزودن عضو تیم",
+      "removeMember": "حذف",
+      "additionalInfo": "اطلاعات اضافی (اختیاری)",
+      "additionalInfoPlaceholder": "هر گونه نیاز یا اطلاعات خاص...",
+      "termsAgree": "من با قوانین و شرایط مسابقه موافقم",
+      "submit": "ارسال ثبت‌نام",
+      "cancel": "لغو",
+      "successTitle": "ثبت‌نام موفقیت‌آمیز!",
+      "successMessage": "ثبت‌نام شما دریافت شد. ما از طریق ایمیل با جزئیات بیشتر با شما تماس خواهیم گرفت.",
+      "close": "بستن",
+      "validation": {
+        "required": "این فیلد الزامی است",
+        "email": "آدرس ایمیل نامعتبر",
+        "phone": "شماره تلفن نامعتبر",
+        "studentId": "فرمت شماره دانش‌آموزی نامعتبر",
+        "teamSize": "تیم باید بین {{min}} و {{max}} عضو داشته باشد",
+        "termsRequired": "شما باید با شرایط و ضوابط موافقت کنید"
+      }
+    },
+    "loading": "در حال بارگذاری مسابقات...",
+    "error": "بارگذاری مسابقات ناموفق بود"
+  }
 
 }

@@ -266,7 +266,116 @@
   "educationalTrips.status.upcoming": "راتلونکی",
   "educationalTrips.status.completed": "بشپړ شوی",
   "educationalTrips.status.ongoing": "روان",
-  "educationalTrips.action.allTrips": "ټول سفرونه"
+  "educationalTrips.action.allTrips": "ټول سفرونه",
+
+"competitions.detail.notFound": "سیالي ونه موندل شوه",
+  "competitions": {
+    "pageTitle": "سیالۍ او مقابلې",
+    "pageSubtitle": "په زړه پورې سیالیو کې برخه واخلئ او خپل استعدادونه وښایاست",
+    "breadcrumb": {
+      "home": "کور",
+      "competitions": "سیالۍ"
+    },
+    "search": {
+      "placeholder": "سیالۍ ولټوئ...",
+      "noResults": "هیڅ سیالي ونه موندل شوه",
+      "noResultsDesc": "مهرباني وکړئ خپل لټون یا فلټرونه تنظیم کړئ"
+    },
+    "filters": {
+      "all": "ټول",
+      "category": "کټګورۍ",
+      "status": "حالت"
+    },
+    "categories": {
+      "all": "ټولې کټګورۍ",
+      "academic": "علمي",
+      "cultural": "کلتوري",
+      "athletic": "ورزشي",
+      "arts": "هنري",
+      "science": "ساینس",
+      "technology": "ټکنالوژي"
+    },
+    "status": {
+      "all": "ټول حالتونه",
+      "upcoming": "راتلونکی",
+      "ongoing": "روان",
+      "completed": "بشپړ شوی"
+    },
+    "card": {
+      "viewDetails": "تفصیلات وګورئ",
+      "register": "اوس ثبت نوم وکړئ",
+      "registrationClosed": "ثبت نوم بند شو",
+      "completed": "بشپړ شوی",
+      "spotsLeft": "ځایونه پاتې دي",
+      "deadline": "د ثبت نوم وروستۍ نېټه",
+      "eventDate": "د پېښې نېټه"
+    },
+    "detail": {
+      "backToList": "سیالیو ته بیرته",
+      "overview": "عمومي کتنه",
+      "eligibility": "د وړتیا معیارونه",
+      "rules": "قواعد او لارښوونې",
+      "prizes": "جایزې او وياړونه",
+      "winners": "بریالي",
+      "registerNow": "د سیالۍ لپاره ثبت نوم وکړئ",
+      "registrationClosed": "د ثبت نوم موده پای ته ورسېده",
+      "eventCompleted": "پېښه بشپړه شوه",
+      "details": {
+        "category": "کټګورۍ",
+        "status": "حالت",
+        "startDate": "د پیل نېټه",
+        "endDate": "د پای نېټه",
+        "registrationDeadline": "د ثبت نوم وروستۍ نېټه",
+        "location": "ځای",
+        "organizer": "تنظیم کوونکی",
+        "contact": "اړیکه",
+        "participants": "ګډون کوونکي",
+        "teamEvent": "ټیمي پېښه",
+        "teamSize": "د ټیم اندازه",
+        "members": "غړي"
+      },
+      "noWinners": "بریالي به د سیالۍ وروسته اعلان شي",
+      "position": "موقعیت",
+      "studentName": "د زده کوونکي نوم",
+      "grade": "ټولګی"
+    },
+    "registration": {
+      "title": "د سیالۍ ثبت نوم",
+      "subtitle": "د ثبت نوم لپاره لاندې فورمه ډکه کړئ",
+      "studentInfo": "د زده کوونکي معلومات",
+      "parentInfo": "د مور او پلار/سرپرست معلومات",
+      "teamInfo": "د ټیم غړي",
+      "studentName": "د زده کوونکي بشپړ نوم",
+      "studentId": "د زده کوونکي شمېره",
+      "grade": "ټولګی",
+      "email": "د بریښنالیک پته",
+      "phone": "د تلیفون شمېره",
+      "parentName": "د مور او پلار/سرپرست نوم",
+      "parentPhone": "د مور او پلار/سرپرست تلیفون",
+      "parentEmail": "د مور او پلار/سرپرست بریښنالیک",
+      "teamMember": "د ټیم غړی",
+      "addMember": "د ټیم غړی اضافه کړئ",
+      "removeMember": "لرې کړئ",
+      "additionalInfo": "اضافي معلومات (اختیاري)",
+      "additionalInfoPlaceholder": "هر ډول ځانګړي اړتیاوې یا معلومات...",
+      "termsAgree": "زه د سیالۍ قواعدو او شرطونو سره موافق یم",
+      "submit": "ثبت نوم وسپارئ",
+      "cancel": "لغوه کړئ",
+      "successTitle": "ثبت نوم بریالی شو!",
+      "successMessage": "ستاسو ثبت نوم ترلاسه شو. موږ به د بریښنالیک له لارې د نورو تفصیلاتو سره تاسو سره اړیکه ونیسو.",
+      "close": "وتړئ",
+      "validation": {
+        "required": "دا ډګر اړین دی",
+        "email": "ناباوره بریښنالیک پته",
+        "phone": "ناباوره تلیفون شمېره",
+        "studentId": "د زده کوونکي شمېرې ناباوره بڼه",
+        "teamSize": "ټیم باید د {{min}} او {{max}} تر منځ غړي ولري",
+        "termsRequired": "تاسو باید له شرطونو او ضوابطو سره موافق شئ"
+      }
+    },
+    "loading": "سیالۍ بارېږي...",
+    "error": "د سیالیو بارول ناکام شول"
+  }
   
 }
 

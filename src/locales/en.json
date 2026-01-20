@@ -264,5 +264,114 @@
   "educationalTrips.status.upcoming": "Upcoming",
   "educationalTrips.status.completed": "Completed",
   "educationalTrips.status.ongoing": "Ongoing",
-  "educationalTrips.action.allTrips": "All Trips"
+  "educationalTrips.action.allTrips": "All Trips",
+
+  "competitions.detail.notFound": "Competition not found",
+  "competitions": {
+    "pageTitle": "Competitions & Contests",
+    "pageSubtitle": "Participate in exciting competitions and showcase your talents",
+    "breadcrumb": {
+      "home": "Home",
+      "competitions": "Competitions"
+    },
+    "search": {
+      "placeholder": "Search competitions...",
+      "noResults": "No competitions found",
+      "noResultsDesc": "Try adjusting your search or filters"
+    },
+    "filters": {
+      "all": "All",
+      "category": "Category",
+      "status": "Status"
+    },
+    "categories": {
+      "all": "All Categories",
+      "academic": "Academic",
+      "cultural": "Cultural",
+      "athletic": "Athletic",
+      "arts": "Arts",
+      "science": "Science",
+      "technology": "Technology"
+    },
+    "status": {
+      "all": "All Status",
+      "upcoming": "Upcoming",
+      "ongoing": "Ongoing",
+      "completed": "Completed"
+    },
+    "card": {
+      "viewDetails": "View Details",
+      "register": "Register Now",
+      "registrationClosed": "Registration Closed",
+      "completed": "Completed",
+      "spotsLeft": "spots left",
+      "deadline": "Registration Deadline",
+      "eventDate": "Event Date"
+    },
+    "detail": {
+      "backToList": "Back to Competitions",
+      "overview": "Overview",
+      "eligibility": "Eligibility Criteria",
+      "rules": "Rules & Guidelines",
+      "prizes": "Prizes & Awards",
+      "winners": "Winners",
+      "registerNow": "Register for Competition",
+      "registrationClosed": "Registration Period Ended",
+      "eventCompleted": "Event Completed",
+      "details": {
+        "category": "Category",
+        "status": "Status",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "registrationDeadline": "Registration Deadline",
+        "location": "Location",
+        "organizer": "Organized By",
+        "contact": "Contact",
+        "participants": "Participants",
+        "teamEvent": "Team Event",
+        "teamSize": "Team Size",
+        "members": "members"
+      },
+      "noWinners": "Winners will be announced after the competition",
+      "position": "Position",
+      "studentName": "Student Name",
+      "grade": "Grade"
+    },
+    "registration": {
+      "title": "Competition Registration",
+      "subtitle": "Fill out the form below to register",
+      "studentInfo": "Student Information",
+      "parentInfo": "Parent/Guardian Information",
+      "teamInfo": "Team Members",
+      "studentName": "Student Full Name",
+      "studentId": "Student ID",
+      "grade": "Grade",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "parentName": "Parent/Guardian Name",
+      "parentPhone": "Parent/Guardian Phone",
+      "parentEmail": "Parent/Guardian Email",
+      "teamMember": "Team Member",
+      "addMember": "Add Team Member",
+      "removeMember": "Remove",
+      "additionalInfo": "Additional Information (Optional)",
+      "additionalInfoPlaceholder": "Any special requirements or information...",
+      "termsAgree": "I agree to the competition rules and terms",
+      "submit": "Submit Registration",
+      "cancel": "Cancel",
+      "successTitle": "Registration Successful!",
+      "successMessage": "Your registration has been received. We'll contact you via email with further details.",
+      "close": "Close",
+      "validation": {
+        "required": "This field is required",
+        "email": "Invalid email address",
+        "phone": "Invalid phone number",
+        "studentId": "Invalid student ID format",
+        "teamSize": "Team must have between {{min}} and {{max}} members",
+        "termsRequired": "You must agree to the terms and conditions"
+      }
+    },
+    "loading": "Loading competitions...",
+    "error": "Failed to load competitions"
+  }
 }

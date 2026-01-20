@@ -21,6 +21,8 @@ import StudentProjects from "../pages/Academic/StudentProject/StudentProject";
 import ProjectDetail from "../pages/Academic/StudentProject/ProjectDetail";
 import OnlineLibrary from "../pages/Academic/OnlineLibrary/OnlineLibrary";
 import EducationalTrips from "../pages/Academic/EducatinalTrip/EducationalTrip";
+import CompetitionsContests from "../pages/Academic/CompetitionsContests/CompetitionsContests";
+import CompetitionDetail from "../pages/Academic/CompetitionsContests/CompetitionDetail";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -62,15 +64,23 @@ function AppRouterProvider() {
         { path: "/student-projects/:id", element: <ProjectDetail /> },
         { path: "/online-library", element: <OnlineLibrary /> },
         { path: "/educational-trips", element: <EducationalTrips /> },
+        { path: "/competitions-contests", element: <CompetitionsContests /> },
+        {
+          path: "/competitions-contests/:id",
+          element: <CompetitionDetail />,
+        },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users
   ]);
 
   return (
-    // <AuthProvider>
-    <RouterProvider router={router} />
-    // </AuthProvider>
+    <>
+      {/* <AuthProvider> */}
+
+      <RouterProvider router={router} />
+      {/* </AuthProvider> */}
+    </>
   );
 }
 

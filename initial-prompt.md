@@ -9,7 +9,7 @@ school name: Sultan Zoy High School
 first i want to make the front end public website content which is relatively easier.
 
 i want you to generate some of the parts of the project with beautiful UI/UX and typed functions(rcf) and components.
-and also make the static data into sprate part file ,
+and also make the static data into sprate(bro sprate) part file ,
 and also define t for the all text(static content) like this format in {t(about.awards.viewMore)} in json like this> "about.awards.viewMore": "View All Awards", it be for 3 language en,da(dari afg) and pa(pashto afg) the jsone must be in sprate file
 
 ---
@@ -517,6 +517,6 @@ Recommended Sections for the School Website (Sultan Zoy High School)
 right now i have completed the Home, About, Academic Programs, News And Events, Contact Us, Gallery, teacher profile, Awards and achievements and testimonials pages and have these plus other components.
 Navbar, Footer, CTASection, PageHeader and others which can be imported from components/ or components/layout/
 
-now i want you to make the Online Library section good.
+now i want you to make the Competitions Contests section good.
 
 if you have any question or do not understand any part, tell me, if no then go.

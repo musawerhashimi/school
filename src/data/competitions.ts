@@ -1,0 +1,257 @@
+// data/competitions.ts
+
+import type { Competition, CompetitionCategory } from "../entities/Competition";
+export const competitionCategories: CompetitionCategory[] = [
+  { id: "1", name: "Mathematics" },
+  { id: "2", name: "Science" },
+  { id: "3", name: "Debate" },
+  { id: "4", name: "Sports" },
+  { id: "technology", name: "Technology" },
+  { id: "arts", name: "Arts" },
+];
+export const competitions: Competition[] = [
+  {
+    id: "1",
+    title: "National Math Olympiad 2026",
+
+    description:
+      "Test your mathematical prowess in this prestigious national competition.",
+
+    category_id: "1",
+    status: "upcoming",
+    image:
+      "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&h=500&fit=crop",
+    startDate: "2026-03-15",
+    endDate: "2026-03-15",
+    registrationDeadline: "2026-03-01",
+    eligibility: [
+      "Students in grades 9-12",
+      "Must have minimum 3.5 GPA in mathematics",
+      "Prior mathematics competition experience preferred",
+    ],
+    rules: [
+      "Individual participation only",
+      "No calculators or electronic devices allowed",
+      "Duration: 3 hours",
+      "Multiple choice and written response format",
+      "Questions will be in English",
+    ],
+    prizes: [
+      {
+        position: "1st Place",
+        award: "Gold Medal + $500 Scholarship",
+        description: "Full scholarship opportunity",
+      },
+      { position: "2nd Place", award: "Silver Medal + $300 Scholarship" },
+      { position: "3rd Place", award: "Bronze Medal + $200 Scholarship" },
+      { position: "Top 10", award: "Certificate of Excellence" },
+    ],
+    organizer: "Mathematics Department",
+    maxParticipants: 100,
+    currentParticipants: 45,
+    location: "Main Auditorium",
+    isTeamEvent: false,
+    teamSize: { min: 1, max: 1 },
+    winners: [],
+  },
+  {
+    id: "2",
+    title: "Annual Science Fair 2026",
+
+    description: "Showcase your innovative science projects and research.",
+    category_id: "2",
+    status: "ongoing",
+    image:
+      "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=500&fit=crop",
+    startDate: "2026-02-01",
+    endDate: "2026-02-28",
+    registrationDeadline: "2026-01-25",
+    eligibility: [
+      "All grade levels welcome",
+      "Individual or team projects accepted",
+      "Original research required",
+    ],
+    rules: [
+      "Projects must demonstrate scientific method",
+      "Display board required (size specifications provided)",
+      "Oral presentation to judges (10 minutes)",
+      "Safety protocols must be followed",
+      "No hazardous materials",
+    ],
+    prizes: [
+      { position: "1st Place", award: "Trophy + Lab Equipment Grant $1000" },
+      { position: "2nd Place", award: "Trophy + $600" },
+      { position: "3rd Place", award: "Trophy + $400" },
+      { position: "Best Innovation", award: "Special Recognition Award" },
+    ],
+    organizer: "Science Department",
+    maxParticipants: 50,
+    currentParticipants: 38,
+    location: "Science Lab Building",
+    isTeamEvent: true,
+    teamSize: { min: 1, max: 3 },
+  },
+  {
+    id: "3",
+    title: "Inter-School Debate Championship",
+
+    description: "Sharpen your critical thinking and public speaking skills.",
+    category_id: "3",
+    status: "upcoming",
+    image:
+      "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=500&fit=crop",
+    startDate: "2026-04-10",
+    endDate: "2026-04-12",
+    registrationDeadline: "2026-03-20",
+    eligibility: [
+      "Grades 10-12",
+      "Teams of 3 students",
+      "Strong communication skills required",
+    ],
+    rules: [
+      "Oxford-style debate format",
+      "Topics announced 2 weeks before competition",
+      "Each speaker gets 7 minutes",
+      "Rebuttal time: 3 minutes per team",
+      "Professional attire required",
+    ],
+    prizes: [
+      { position: "Champion Team", award: "Trophy + $800 Team Prize" },
+      { position: "Runner-up", award: "Trophy + $500" },
+      { position: "Best Speaker", award: "Individual Award + $200" },
+    ],
+    organizer: "Language & Literature Department",
+    maxParticipants: 60,
+    currentParticipants: 24,
+    location: "Conference Hall",
+    isTeamEvent: true,
+    teamSize: { min: 3, max: 3 },
+  },
+  {
+    id: "4",
+    title: "Spring Athletic Meet 2025",
+    description:
+      "Compete in track and field events and demonstrate athletic excellence.",
+    category_id: "4",
+    status: "completed",
+    image:
+      "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&h=500&fit=crop",
+    startDate: "2025-05-15",
+    endDate: "2025-05-17",
+    registrationDeadline: "2025-04-30",
+    eligibility: [
+      "All students grades 6-12",
+      "Medical clearance required",
+      "Age-appropriate events",
+    ],
+    rules: [
+      "Standard track and field regulations",
+      "Multiple event participation allowed",
+      "Proper athletic attire mandatory",
+      "Sportsmanship code must be followed",
+    ],
+    prizes: [
+      { position: "Gold Medalists", award: "Gold Medal + Certificate" },
+      { position: "Silver Medalists", award: "Silver Medal + Certificate" },
+      { position: "Bronze Medalists", award: "Bronze Medal + Certificate" },
+      { position: "Overall Champion House", award: "Championship Trophy" },
+    ],
+    organizer: "Physical Education Department",
+    location: "School Sports Ground",
+    isTeamEvent: false,
+    winners: [
+      {
+        id: "w1",
+        studentName: "Ahmad Rahimi",
+        grade: "11",
+        position: "100m Sprint - Gold",
+      },
+      {
+        id: "w2",
+        studentName: "Fatima Azizi",
+        grade: "10",
+        position: "Long Jump - Gold",
+      },
+      {
+        id: "w3",
+        studentName: "Hassan Karimi",
+        grade: "12",
+        position: "400m - Gold",
+      },
+    ],
+  },
+  {
+    id: "5",
+    title: "Coding Challenge 2026",
+    description:
+      "Put your programming skills to the test in this hackathon-style event.",
+    category_id: "2",
+    status: "upcoming",
+    image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=500&fit=crop",
+    startDate: "2026-03-20",
+    endDate: "2026-03-22",
+    registrationDeadline: "2026-03-10",
+    eligibility: [
+      "Grades 9-12",
+      "Basic programming knowledge required",
+      "Teams of 2-4 students",
+    ],
+    rules: [
+      "Must use provided development tools",
+      "Original code only - no plagiarism",
+      "Project presentation required",
+      "All code must be submitted via Git",
+      "Mentorship available during event",
+    ],
+    prizes: [
+      {
+        position: "1st Place",
+        award: "Laptops for team + Internship opportunity",
+      },
+      { position: "2nd Place", award: "Tablets for team + $400" },
+      { position: "3rd Place", award: "Tech accessories + $250" },
+      { position: "Best Innovation", award: "Special Prize + Recognition" },
+    ],
+    organizer: "Computer Science Department",
+    maxParticipants: 80,
+    currentParticipants: 52,
+    location: "Computer Lab",
+    isTeamEvent: true,
+    teamSize: { min: 2, max: 4 },
+  },
+  {
+    id: "6",
+    title: "Art Exhibition Contest",
+    description: "Express your creativity through visual arts.",
+    category_id: "4",
+    status: "ongoing",
+    image:
+      "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&h=500&fit=crop",
+    startDate: "2026-02-10",
+    endDate: "2026-02-25",
+    registrationDeadline: "2026-02-05",
+    eligibility: [
+      "All grade levels",
+      "Original artwork only",
+      "Maximum 3 submissions per student",
+    ],
+    rules: [
+      "Artwork must be school-appropriate",
+      "Proper labeling with name and grade",
+      "Framing/mounting is student's responsibility",
+      "Work must be ready for display",
+      'Theme: "Heritage and Innovation"',
+    ],
+    prizes: [
+      { position: "Best in Show", award: "Grand Prize $500 + Art supplies" },
+      { position: "Category Winners", award: "$200 each + Certificate" },
+      { position: "People's Choice", award: "$150 + Certificate" },
+    ],
+    organizer: "Arts Department",
+    maxParticipants: 100,
+    currentParticipants: 67,
+    location: "School Art Gallery",
+    isTeamEvent: false,
+  },
+];
