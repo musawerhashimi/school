@@ -133,12 +133,7 @@ function Navbar() {
           page: "cultural-performing-arts",
           icon: Star,
         },
-        {
-          name: t("nav.students.artsCrafts"),
-          key: "nav.students.artsCrafts",
-          page: "arts-crafts",
-          icon: ImageIcon,
-        },
+
         {
           name: t("nav.students.recreational"),
           key: "nav.students.recreational",
@@ -428,7 +423,9 @@ function Navbar() {
                             {child.icon && (
                               <child.icon className="w-4 h-4 me-2 opacity-70" />
                             )}
-                            <span className="text-start">{child.name}</span>
+                            <span className="text-start text-nowrap">
+                              {child.name}
+                            </span>
                           </button>
                         ))}
                       </div>

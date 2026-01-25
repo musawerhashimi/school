@@ -115,12 +115,12 @@ const SportsTeamDetail = () => {
               <div className="flex items-start gap-6">
                 <img
                   src={team.coach.photo}
-                  alt={team.coach.name[lang]}
+                  alt={team.coach.name}
                   className="w-24 h-24 rounded-full object-cover border-4 border-primary"
                 />
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-text-primary mb-2">
-                    {team.coach.name[lang]}
+                    {team.coach.name}
                   </h3>
                   <p className="text-text-secondary mb-4">
                     <span className="font-semibold text-primary">
@@ -167,12 +167,12 @@ const SportsTeamDetail = () => {
                   >
                     <img
                       src={member.photo}
-                      alt={member.name[lang]}
+                      alt={member.name}
                       className="w-16 h-16 rounded-full object-cover"
                     />
                     <div className="flex-1">
                       <h4 className="font-bold text-text-primary">
-                        {member.name[lang]}
+                        {member.name}
                       </h4>
                       <p className="text-sm text-text-secondary">
                         {member.position[lang]}
@@ -229,17 +229,6 @@ const SportsTeamDetail = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Training Schedule */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-text-primary mb-4 flex items-center">
-                <Calendar className="w-5 h-5 mr-2 text-primary" />
-                {t("sportsTeams.detail.trainingSchedule")}
-              </h3>
-              <p className="text-text-secondary">
-                {team.trainingSchedule[lang]}
-              </p>
-            </div>
-
             {/* Facilities */}
             {team.facilities && (
               <div className="bg-card border border-border rounded-2xl p-6">

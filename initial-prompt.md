@@ -541,6 +541,6 @@ Recommended Sections for the School Website (Sultan Zoy High School)
 right now i have completed the Home, About, Academic Programs, News And Events, Contact Us, Gallery, teacher profile, Awards and achievements and testimonials pages and have these plus other components.
 Navbar, Footer, CTASection, PageHeader and others which can be imported from components/ or components/layout/
 
-now i want you to make the Sport Teams section good.
+now i want you to make the Performing Arts & Cultural section good.
 
 if you have any question or do not understand any part, tell me, if no then go.

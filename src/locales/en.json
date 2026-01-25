@@ -399,5 +399,47 @@
     "sportsTeams.detail.contactCoach": "Contact Coach",
     "sportsTeams.detail.joinTeamDescription": "Interested in joining ? Get in touch with us today!",
     "sportsTeams.detail.teamNotFound": "Team Not Found",
-    "Contact Us": "Contact Us"
+    "Contact Us": "Contact Us",
+      "performingArts": {
+    "hero": {
+      "badge": "Arts & Culture",
+      "title": "Performing Arts & Cultural Programs",
+      "description": "Discover the rich cultural heritage and artistic excellence at Sultan Zoy High School. Our performing arts programs celebrate Afghan traditions while nurturing creativity and talent in music, theater, visual arts, and dance.",
+      "viewEvents": "View Upcoming Events",
+      "watchPerformances": "Watch Performances"
+    },
+    "programs": {
+      "title": "Our Art Programs",
+      "description": "Explore diverse artistic disciplines that help students express themselves and preserve cultural heritage",
+      "students": "Students"
+    },
+    "events": {
+      "title": "Upcoming Cultural Events",
+      "subtitle": "Join us in celebrating art, culture, and creativity",
+      "viewAll": "View All Events",
+      "featured": "Featured",
+      "learnMore": "Learn More",
+      "types": {
+        "performance": "Performance",
+        "exhibition": "Exhibition",
+        "workshop": "Workshop",
+        "competition": "Competition"
+      }
+    },
+    "highlights": {
+      "title": "Performance Highlights",
+      "subtitle": "Watch our students' outstanding performances and artistic achievements"
+    },
+    "showcase": {
+      "title": "Student Showcase",
+      "subtitle": "Celebrating our talented young artists and their remarkable achievements",
+      "award": "Award Winner"
+    },
+    "cta": {
+      "title": "Join Our Arts Community",
+      "description": "Whether you're interested in music, theater, visual arts, or cultural programs, we welcome students of all skill levels to explore their creativity.",
+      "joinProgram": "Join a Program",
+      "contactUs": "Contact Us"
+    }
+  }
 }

@@ -11,11 +11,7 @@ export interface SportCategory {
 
 export interface TeamMember {
   id: string;
-  name: {
-    en: string;
-    da: string;
-    pa: string;
-  };
+  name: string;
   position: {
     en: string;
     da: string;
@@ -27,11 +23,7 @@ export interface TeamMember {
 
 export interface Coach {
   id: string;
-  name: {
-    en: string;
-    da: string;
-    pa: string;
-  };
+  name: string;
   photo: string;
   experience: {
     en: string;
@@ -79,11 +71,7 @@ export interface SportsTeam {
   members: TeamMember[];
   achievements: Achievement[];
   establishedYear: number;
-  trainingSchedule: {
-    en: string;
-    da: string;
-    pa: string;
-  };
+
   facilities?: {
     en: string[];
     da: string[];
