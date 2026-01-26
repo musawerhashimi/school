@@ -89,7 +89,7 @@ export const performanceHighlightsData: PerformanceHighlight[] = [
     },
     videoThumbnail:
       "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=600&fit=crop",
-    videoUrl: "#",
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
     date: "2025-08-19",
   },
   {
@@ -106,7 +106,7 @@ export const performanceHighlightsData: PerformanceHighlight[] = [
     },
     videoThumbnail:
       "https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=800&h=600&fit=crop",
-    videoUrl: "#",
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
     date: "2025-12-20",
   },
   {
@@ -123,7 +123,7 @@ export const performanceHighlightsData: PerformanceHighlight[] = [
     },
     videoThumbnail:
       "https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&h=600&fit=crop",
-    videoUrl: "#",
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
     date: "2025-11-15",
   },
 ];
