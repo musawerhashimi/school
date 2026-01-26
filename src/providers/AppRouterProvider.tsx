@@ -26,6 +26,8 @@ import CompetitionDetail from "../pages/Academic/CompetitionsContests/Competitio
 import SportsTeamsPage from "../pages/StudentsActivities/SportTeams/SportsTeams";
 import SportsTeamDetail from "../pages/StudentsActivities/SportTeams/SportsTeamDetail";
 import PerformingArtsPage from "../pages/StudentsActivities/Arts/Arts";
+import RecreationalActivities from "../pages/StudentsActivities/Recreation/Recreation";
+import RecreationalActivityDetails from "../pages/StudentsActivities/Recreation/RecreationDetails";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -72,6 +74,14 @@ function AppRouterProvider() {
         { path: "/sports-teams", element: <SportsTeamsPage /> },
         { path: "/sports-teams/:id", element: <SportsTeamDetail /> },
         { path: "/cultural-performing-arts", element: <PerformingArtsPage /> },
+        {
+          path: "/recreational-activities",
+          element: <RecreationalActivities />,
+        },
+        {
+          path: "/recreational-activities/:id",
+          element: <RecreationalActivityDetails />,
+        },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users

@@ -442,7 +442,28 @@
       "joinProgram": "په برنامه کې شامل شئ",
       "contactUs": "له موږ سره اړیکه ونیسئ"
     }
-  }
+  },
+  "performingArts.su": "کتل او اوریدل",
+  "recreation.hero.title": "تفریحي فعالیتونه",
+  "recreation.hero.subtitle": "د ټولو عمرونو لپاره په زړه پورې فعالیتونه ومومئ",
+  "recreation.stats.activities": "فعالیتونه",
+  "recreation.stats.categories": "کتګورۍ",
+  "recreation.stats.participants": "ګډونوال",
+  "recreation.stats.instructors": "روزونکي",
+  "recreation.filter.title": "زموږ فعالیتونه وپلټئ",
+  "recreation.filter.allActivities": "ټول فعالیتونه",
+  "recreation.filter.selectCategory": "کتګوري وټاکئ",
+  "recreation.card.learnMore": "نور معلومات",
+  "recreation.noActivities.title": "هیڅ فعالیت ونه موندل شو",
+  "recreation.noActivities.message": "مهرباني وکړئ بله کتګوري وټاکئ",
+  "recreation.details.notFound": "فعالیت ونه موندل شو",
+  "recreation.details.backToActivities": "بېرته فعالیتونو ته",
+  "recreation.details.breadcrumb.home": "کور",
+  "recreation.details.breadcrumb.activities": "تفریحي فعالیتونه",
+  "recreation.details.about": "د دې فعالیت په اړه",
+  "recreation.details.location": "ځای",
+  "recreation.details.category": "کتګوري",
+  "recreation.details.register": "همدا اوس نوم‌لیکنه وکړئ"
 }
 
 

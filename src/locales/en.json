@@ -441,5 +441,30 @@
       "joinProgram": "Join a Program",
       "contactUs": "Contact Us"
     }
-  }
+     
+    
+  },
+  "performingArts.su": "Watch & Listen",
+  
+  "recreation.hero.title": "Recreational Activities",
+  "recreation.hero.subtitle": "Discover exciting activities for all ages",
+  "recreation.stats.activities": "Activities",
+  "recreation.stats.categories": "Categories",
+  "recreation.stats.participants": "Participants",
+  "recreation.stats.instructors": "Instructors",
+  "recreation.filter.title": "Explore Our Activities",
+  "recreation.filter.allActivities": "All Activities",
+  "recreation.filter.selectCategory": "Select Category",
+  "recreation.card.learnMore": "Learn More",
+  "recreation.noActivities.title": "No Activities Found",
+  "recreation.noActivities.message": "Try selecting a different category",
+  "recreation.details.notFound": "Activity Not Found",
+  "recreation.details.backToActivities": "Back to Activities",
+  "recreation.details.breadcrumb.home": "Home",
+  "recreation.details.breadcrumb.activities": "Recreational Activities",
+  "recreation.details.about": "About This Activity",
+  "recreation.details.location": "Location",
+  "recreation.details.category": "Category",
+  "recreation.details.register": "Register Now"
 }
+

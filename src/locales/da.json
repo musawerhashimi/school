@@ -445,6 +445,27 @@
       "joinProgram": "عضویت در برنامه",
       "contactUs": "تماس با ما"
     }
-  }
+  },
+  "performingArts.su": "تماشا و گوش دادن",
+  "recreation.hero.title": "فعالیت‌های تفریحی",
+  "recreation.hero.subtitle": "کشف فعالیت‌های هیجان‌انگیز برای همه سنین",
+  "recreation.stats.activities": "فعالیت‌ها",
+  "recreation.stats.categories": "دسته‌بندی‌ها",
+  "recreation.stats.participants": "اشتراک‌کنندگان",
+  "recreation.stats.instructors": "مربیان",
+  "recreation.filter.title": "کاوش فعالیت‌ها",
+  "recreation.filter.allActivities": "همه فعالیت‌ها",
+  "recreation.filter.selectCategory": "انتخاب دسته‌بندی",
+  "recreation.card.learnMore": "بیشتر بدانید",
+  "recreation.noActivities.title": "هیچ فعالیتی یافت نشد",
+  "recreation.noActivities.message": "لطفاً دسته‌بندی دیگری را انتخاب کنید",
+  "recreation.details.notFound": "فعالیت یافت نشد",
+  "recreation.details.backToActivities": "بازگشت به فعالیت‌ها",
+  "recreation.details.breadcrumb.home": "خانه",
+  "recreation.details.breadcrumb.activities": "فعالیت‌های تفریحی",
+  "recreation.details.about": "درباره این فعالیت",
+  "recreation.details.location": "محل",
+  "recreation.details.category": "دسته‌بندی",
+  "recreation.details.register": "ثبت‌نام اکنون"
 
 }

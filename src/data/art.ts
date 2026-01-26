@@ -16,6 +16,7 @@ export const culturalEventsData: CulturalEvent[] = [
     date: "2026-03-15",
     image:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+    location: "School Auditorium",
   },
   {
     id: "evt-2",
@@ -33,6 +34,7 @@ export const culturalEventsData: CulturalEvent[] = [
 
     image:
       "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&h=600&fit=crop",
+    location: "Music Room",
   },
   {
     id: "evt-3",
@@ -50,6 +52,7 @@ export const culturalEventsData: CulturalEvent[] = [
 
     image:
       "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&h=600&fit=crop",
+    location: "Art Gallery",
   },
   {
     id: "evt-4",
@@ -67,6 +70,7 @@ export const culturalEventsData: CulturalEvent[] = [
 
     image:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
+    location: "لستش غلس",
   },
 ];
 

@@ -4,6 +4,7 @@ export interface CulturalEvent {
   description: { en: string; da: string; pa: string };
   date: string;
   image: string;
+  location: string;
 }
 
 export interface PerformanceHighlight {
