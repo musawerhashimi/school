@@ -1,8 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppLayout from "../components/layout/AppLayout";
 
-import NewsAndEvents from "../pages/Media/NewsAndEvents";
-
 import Testimonials from "../pages/Achievements/Testimonials";
 import Careers from "../pages/Careers/Careers";
 import SecurityPrivacyPage from "../pages/Contact/SecurityAndPrivacy";
@@ -12,7 +10,7 @@ import About from "../pages/About/About";
 import AcademicPrograms from "../pages/Academic/AcademicProgram/AcademicPrograms";
 import AwardsAndAchievements from "../pages/Achievements/AwardsAndAchievements";
 import ContactUs from "../pages/Contact/ContactUs";
-import Gallery from "../pages/Media/Gallery";
+import Gallery from "../pages/Media/Gallery/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
 import TeamProfilePage from "../pages/About/team/TeamProfilePage";
 import TimetableTemplate from "../pages/Academic/AcademicProgram/Timtable";
@@ -28,6 +26,10 @@ import SportsTeamDetail from "../pages/StudentsActivities/SportTeams/SportsTeamD
 import PerformingArtsPage from "../pages/StudentsActivities/Arts/Arts";
 import RecreationalActivities from "../pages/StudentsActivities/Recreation/Recreation";
 import RecreationalActivityDetails from "../pages/StudentsActivities/Recreation/RecreationDetails";
+import { NewsListPage } from "../pages/Media/News/NewsListPage";
+import { NewsDetailPage } from "../pages/Media/News/NewsDetailPage";
+import { EventsListPage } from "../pages/Media/News/EventsListPage";
+import { EventDetailPage } from "../pages/Media/News/EventDetailPage";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -53,7 +55,6 @@ function AppRouterProvider() {
           path: "/class/:id",
           element: <TimetableTemplate />,
         },
-        { path: "/news-and-events", element: <NewsAndEvents /> },
         { path: "/contact", element: <ContactUs /> },
         { path: "/gallery", element: <Gallery /> },
         { path: "/team", element: <TeacherList /> },
@@ -82,6 +83,10 @@ function AppRouterProvider() {
           path: "/recreational-activities/:id",
           element: <RecreationalActivityDetails />,
         },
+        { path: "/news", element: <NewsListPage /> },
+        { path: "/news/:id", element: <NewsDetailPage /> },
+        { path: "/events", element: <EventsListPage /> },
+        { path: "/events/:id", element: <EventDetailPage /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users

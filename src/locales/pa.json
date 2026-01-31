@@ -51,7 +51,7 @@
     
 
   "nav.home": "کور",
-  "nav.newsEvents": "خبرونه او پیښې",
+  "nav.newsEvents": "خبرونه",
   "nav.announcements": "اعلانونه",
   "nav.thankYou": "مننه",
 
@@ -125,7 +125,7 @@
 
   "nav.portalLogin": "پورټل ته ننوتل",
   "nav.toggleTheme": "تیم بدلول",
-
+  "nav.Events":" پیښې",
    
       "language.select": "ژبه",
       "language.english": "انګلیسي",
@@ -463,7 +463,87 @@
   "recreation.details.about": "د دې فعالیت په اړه",
   "recreation.details.location": "ځای",
   "recreation.details.category": "کتګوري",
-  "recreation.details.register": "همدا اوس نوم‌لیکنه وکړئ"
+  "recreation.details.register": "همدا اوس نوم‌لیکنه وکړئ",
+
+  "news": {
+    "title": "تازه خبرونه",
+    "subtitle": "د سلطان زوی لیسې د پېښو څخه خبر اوسئ",
+    "readMore": "نور ولولئ",
+    "readArticle": "بشپړه مقاله ولولئ",
+    "backToNews": "خبرونو ته بیرته",
+    "search": "د خبرونو لټون...",
+    "filterByCategory": "د کټګورۍ له مخې فلټر",
+    "allCategories": "ټولې کټګورۍ",
+    "noResults": "هیڅ خبر و نه موندل شو",
+    "noResultsDesc": "خپل لټون یا فلټر تنظیم کړئ",
+    "featuredNews": "ځانګړي خبرونه",
+    "latestUpdates": "وروستي تازه معلومات",
+    "author": "لیکوال",
+    "publishedOn": "خپور شوی په",
+    "likes": "خوښونه",
+    "comments": "نظرونه",
+    "shareArticle": "مقاله شریکه کړئ",
+    "relatedArticles": "اړوند مقالې",
+    "loadMore": "نورې مقالې بار کړئ"
+  },
+  "events": {
+    "title": "راتلونکې پېښې",
+    "subtitle": "زموږ په راتلونکو فعالیتونو او برنامو کې برخه واخلئ",
+    "viewDetails": "تفصیلات وګورئ",
+    "viewEvent": "د پېښې تفصیلات وګورئ",
+    "backToEvents": "پېښو ته بیرته",
+    "search": "د پېښو لټون...",
+    "filterByCategory": "د کټګورۍ له مخې فلټر",
+    "allCategories": "ټولې کټګورۍ",
+    "noResults": "هیڅ پېښه و نه موندل شوه",
+    "noResultsDesc": "خپل لټون یا فلټر تنظیم کړئ",
+    "featuredEvents": "ځانګړې پېښې",
+    "allEvents": "ټولې پېښې",
+    "upcomingEvents": "راتلونکې پېښې",
+    "pastEvents": "تېرې پېښې",
+    "date": "نېټه",
+    "time": "وخت",
+    "location": "ځای",
+    "organizer": "تنظیم کوونکی",
+    "attendees": "ګډون کوونکي",
+    "maxAttendees": "اعظمي ګډون کوونکي",
+    "rsvpRequired": "نوم لیکنه اړینه ده",
+    "rsvpNotRequired": "ازاد ننوتل",
+    "registerNow": "اوس نوم لیکنه وکړئ",
+    "eventFull": "پېښه ډکه شوه",
+    "spotsLeft": "ځایونه پاتې دي",
+    "eventStatus": {
+      "upcoming": "راتلونکې",
+      "ongoing": "روان",
+      "past": "تېره"
+    },
+    "relatedEvents": "اړوندې پېښې",
+    "loadMore": "نورې پېښې بار کړئ"
+  },
+  "categories": {
+    "academic": "زده کړې",
+    "technology": "ټکنالوژي",
+    "health": "روغتیا",
+    "sports": "ورزش",
+    "culture": "کلتور",
+    "community": "ټولنه"
+  },
+  "Sha": "شریکول",
+  "gallery.title": "انځورتون",
+  "gallery.subtitle": "په سلطان زوی لیسه کې د غوره والي شیبې",
+  "gallery.searchPlaceholder": "د سرلیک، تفصیل، یا ټګونو له مخې لټون وکړئ...",
+  "gallery.noItemsFound": "هیڅ شی ونه موندل شو",
+  "gallery.noItemsMessage": "هڅه وکړئ خپل لټون یا فلټرونه تنظیم کړئ",
+  "gallery.showing": "ښودل",
+  "gallery.of": "د",
+  "gallery.items": "توکي",
+  "gallery.loadMore": "نور بار کړئ",
+  "gallery.photoBy": "انځور د:",
+  "gallery.all": "ټول",
+  "gallery.close": "تړل",
+  "gallery.download": "ډاونلوډ",
+  "gallery.previous": "پخوانی",
+  "gallery.next": "راتلونکی"
 }
 
 

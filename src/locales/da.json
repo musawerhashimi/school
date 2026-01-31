@@ -48,7 +48,7 @@
   "testimonial3Text": "من برنامه‌ها و فعالیت‌های متنوع موجود در اینجا را دوست دارم. هر روز فرصت‌های جدیدی برای یادگیری و رشد در کنار همسالان حمایتگر به همراه دارد.",
 
   "nav.home": "خانه",
-  "nav.newsEvents": "اخبار و رویدادها",
+  "nav.newsEvents": "اخبار",
   "nav.announcements": "اعلانات",
   "nav.thankYou": "تشکر",
 
@@ -114,7 +114,7 @@
   "nav.achievements.studentAchievements": "دستاوردهای دانش‌آموزان",
   "nav.achievements.testimonials": "شهادت‌ها و نظرات",
   "nav.achievements.honorsCertificates": "افتخارات و تالار مشاهیر",
-
+  "nav.Events":"رویدادها",
   "nav.contact": "تماس",
   "nav.contact.us": "تماس با ما",
   "nav.contact.locationMap": "نقشه موقعیت مکتب",
@@ -466,6 +466,90 @@
   "recreation.details.about": "درباره این فعالیت",
   "recreation.details.location": "محل",
   "recreation.details.category": "دسته‌بندی",
-  "recreation.details.register": "ثبت‌نام اکنون"
+  "recreation.details.register": "ثبت‌نام اکنون",
+
+
+  "news": {
+    "title": "اخبار جدید",
+    "subtitle": "از رویدادهای لیسه سلطان زوی مطلع شوید",
+    "readMore": "بیشتر بخوانید",
+    "readArticle": "مقاله کامل را بخوانید",
+    "backToNews": "بازگشت به اخبار",
+    "search": "جستجوی اخبار...",
+    "filterByCategory": "فیلتر بر اساس دسته",
+    "allCategories": "همه دسته‌ها",
+    "noResults": "هیچ خبری یافت نشد",
+    "noResultsDesc": "جستجو یا فیلتر خود را تنظیم کنید",
+    "featuredNews": "اخبار ویژه",
+    "latestUpdates": "آخرین به‌روزرسانی‌ها",
+    "author": "نویسنده",
+    "publishedOn": "منتشر شده در",
+    "likes": "پسندها",
+    "comments": "نظرات",
+    "shareArticle": "اشتراک‌گذاری مقاله",
+    "relatedArticles": "مقالات مرتبط",
+    "loadMore": "بارگذاری مقالات بیشتر"
+  },
+  "events": {
+    "title": "رویدادهای پیش رو",
+    "subtitle": "در فعالیت‌ها و برنامه‌های آینده ما شرکت کنید",
+    "viewDetails": "مشاهده جزئیات",
+    "viewEvent": "مشاهده جزئیات رویداد",
+    "backToEvents": "بازگشت به رویدادها",
+    "search": "جستجوی رویدادها...",
+    "filterByCategory": "فیلتر بر اساس دسته",
+    "allCategories": "همه دسته‌ها",
+    "noResults": "هیچ رویدادی یافت نشد",
+    "noResultsDesc": "جستجو یا فیلتر خود را تنظیم کنید",
+    "featuredEvents": "رویدادهای ویژه",
+    "allEvents": "همه رویدادها",
+    "upcomingEvents": "رویدادهای پیش رو",
+    "pastEvents": "رویدادهای گذشته",
+    "date": "تاریخ",
+    "time": "زمان",
+    "location": "محل",
+    "organizer": "برگزارکننده",
+    "attendees": "شرکت‌کنندگان",
+    "maxAttendees": "حداکثر شرکت‌کنندگان",
+    "rsvpRequired": "ثبت‌نام لازم است",
+    "rsvpNotRequired": "ورود آزاد",
+    "registerNow": "اکنون ثبت‌نام کنید",
+    "eventFull": "رویداد پر شد",
+    "spotsLeft": "جای خالی",
+    "eventStatus": {
+      "upcoming": "پیش رو",
+      "ongoing": "در حال برگزاری",
+      "past": "گذشته"
+    },
+    "relatedEvents": "رویدادهای مرتبط",
+    "loadMore": "بارگذاری رویدادهای بیشتر"
+  },
+  "categories": {
+    "academic": "تحصیلی",
+    "technology": "فناوری",
+    "health": "سلامت",
+    "sports": "ورزش",
+    "culture": "فرهنگ",
+    "community": "اجتماعی"
+  },
+
+  "Sha": "اشتراک‌گذاری:",
+  "gallery.title": "گالری",
+  "gallery.subtitle": "ثبت لحظات برتر در لیسه سلطان زوی",
+  "gallery.searchPlaceholder": "جستجو بر اساس عنوان، توضیحات، یا برچسب‌ها...",
+  "gallery.noItemsFound": "هیچ موردی یافت نشد",
+  "gallery.noItemsMessage": "سعی کنید جستجو یا فیلترهای خود را تنظیم کنید",
+  "gallery.showing": "نمایش",
+  "gallery.of": "از",
+  "gallery.items": "مورد",
+  "gallery.loadMore": "بارگذاری بیشتر",
+  "gallery.photoBy": "عکس توسط:",
+  "gallery.all": "همه",
+  "gallery.close": "بستن",
+  "gallery.download": "دانلود",
+  "gallery.previous": "قبلی",
+  "gallery.next": "بعدی"
+
+  
 
 }

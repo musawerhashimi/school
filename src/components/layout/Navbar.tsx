@@ -102,12 +102,6 @@ function Navbar() {
         },
 
         {
-          name: t("nav.academics.educationalTrips"),
-          key: "nav.academics.educationalTrips",
-          page: "educational-trips",
-          icon: MapPin,
-        },
-        {
           name: t("nav.academics.competitions"),
           key: "nav.academics.competitions",
           page: "competitions-contests",
@@ -140,6 +134,12 @@ function Navbar() {
           page: "recreational-activities",
           icon: Heart,
         },
+        {
+          name: t("nav.academics.educationalTrips"),
+          key: "nav.academics.educationalTrips",
+          page: "educational-trips",
+          icon: MapPin,
+        },
       ],
     },
 
@@ -152,26 +152,19 @@ function Navbar() {
         {
           name: t("nav.newsEvents"),
           key: "nav.newsEvents",
-          page: "news-and-events",
+          page: "/news",
+          icon: Newspaper,
+        },
+        {
+          name: t("nav.Events"),
+          key: "nav.newsEvents",
+          page: "/events",
           icon: Newspaper,
         },
         {
           name: t("nav.media.gallery"),
           key: "nav.media.gallery",
           page: "gallery",
-          icon: Camera,
-        },
-
-        {
-          name: t("nav.media.studentArtwork"),
-          key: "nav.media.studentArtwork",
-          page: "student-artwork",
-          icon: ImageIcon,
-        },
-        {
-          name: t("nav.media.historicalPhotos"),
-          key: "nav.media.historicalPhotos",
-          page: "historical-photos",
           icon: Camera,
         },
       ],
@@ -222,10 +215,10 @@ function Navbar() {
         },
 
         {
-          name: t("nav.careers.alumniRelations"),
-          key: "nav.careers.alumniRelations",
-          page: "alumni-relations",
-          icon: Users,
+          name: t("nav.achievements.testimonials"),
+          key: "nav.achievements.testimonials",
+          page: "testimonials",
+          icon: MessageSquare,
         },
       ],
     },
@@ -253,12 +246,6 @@ function Navbar() {
           key: "nav.achievements.honorsCertificates",
           page: "honors-certificates",
           icon: Award,
-        },
-        {
-          name: t("nav.achievements.testimonials"),
-          key: "nav.achievements.testimonials",
-          page: "testimonials",
-          icon: MessageSquare,
         },
       ],
     },
