@@ -1,4 +1,4 @@
-import type { Event, EventStatus } from "../entities/NewsType";
+import type { EventStatus } from "../entities/NewsType";
 
 /**
  * Format date to readable string
@@ -102,31 +102,11 @@ export const getRelativeTime = (
   }
 };
 
-/**
- * Calculate available spots for event
- */
-export const getAvailableSpots = (event: Event): number => {
-  return Math.max(0, event.maxAttendees - event.attendees);
-};
-
-/**
- * Check if event is full
- */
-export const isEventFull = (event: Event): boolean => {
-  return event.attendees >= event.maxAttendees;
-};
-
-/**
- * Truncate text to specified length
- */
 export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trim() + "...";
 };
 
-/**
- * Generate reading time estimate
- */
 export const getReadingTime = (content: string): number => {
   const wordsPerMinute = 200;
   const wordCount = content.split(/\s+/).length;

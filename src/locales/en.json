@@ -546,6 +546,111 @@
   "gallery.close": "Close",
   "gallery.download": "Download",
   "gallery.previous": "Previous",
-  "gallery.next": "Next"
+  "gallery.next": "Next",
+  "career": {
+    "hero": {
+      "title": "Join Our Team",
+      "subtitle": "Shape the Future of Education at Sultan Zoy High School",
+      "description": "We're always looking for passionate educators and professionals who share our commitment to excellence in education."
+    },
+    "filters": {
+      "searchPlaceholder": "Search positions...",
+      "allDepartments": "All Departments",
+      "allTypes": "All Types",
+      "showing": "Showing",
+      "position": "position",
+      "positions": "positions"
+    },
+    "card": {
+      "positions": "Positions",
+      "onsite": "On-site",
+      "deadline": "Deadline",
+      "posted": "Posted",
+      "viewDetails": "View Details",
+      "applyNow": "Apply Now",
+      "share": "Share",
+      "expired": "Expired",
+      "expiringSoon": "Expiring Soon",
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      }
+    },
+    "noPositions": {
+      "title": "No positions found",
+      "description": "Try adjusting your search filters"
+    },
+    "benefits": {
+      "title": "Why Work With Us?",
+      "growth": {
+        "title": "Professional Growth",
+        "description": "Continuous learning opportunities and career development programs"
+      },
+      "community": {
+        "title": "Supportive Community",
+        "description": "Collaborative environment with passionate educators"
+      },
+      "balance": {
+        "title": "Work-Life Balance",
+        "description": "Flexible schedules and generous time-off policies"
+      }
+    },
+    "detail": {
+      "type": "Type",
+      "location": "Location",
+      "salary": "Salary",
+      "department": "Department",
+      "gender": "Gender",
+      "positions": "Positions",
+      "deadline": "Deadline",
+      "posted": "Posted",
+      "descriptionTitle": "Job Description",
+      "requirementsTitle": "Requirements",
+      "applyButton": "Apply for this Position"
+    },
+    "form": {
+      "title": "Apply for Position",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "John Doe",
+      "email": "Email Address",
+      "emailPlaceholder": "john@example.com",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+1 (555) 000-0000",
+      "experience": "Years of Experience",
+      "selectExperience": "Select experience",
+      "experience01": "0-1 years",
+      "experience25": "2-5 years",
+      "experience610": "6-10 years",
+      "experience10plus": "10+ years",
+      "education": "Highest Education Level",
+      "selectEducation": "Select education",
+      "highSchool": "High School",
+      "bachelors": "Bachelor's Degree",
+      "masters": "Master's Degree",
+      "phd": "Ph.D.",
+      "coverLetter": "Cover Letter",
+      "coverLetterPlaceholder": "Tell us why you're a great fit for this position...",
+      "resume": "Resume/CV",
+      "uploadResume": "Click to upload resume",
+      "resumeFormat": "PDF, DOC, DOCX (Max 5MB)",
+      "cancel": "Cancel",
+      "submit": "Submit Application",
+      "errors": {
+        "fullNameRequired": "Full name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Invalid email format",
+        "phoneRequired": "Phone number is required",
+        "experienceRequired": "Experience is required",
+        "educationRequired": "Education is required",
+        "coverLetterRequired": "Cover letter is required",
+        "resumeRequired": "Resume is required"
+      },
+      "success": {
+        "title": "Application Submitted!",
+        "message": "Thank you for your interest in the",
+        "message2": "position. We'll review your application and get back to you soon."
+      }
+    }
+  }
 }
 

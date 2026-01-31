@@ -548,7 +548,112 @@
   "gallery.close": "بستن",
   "gallery.download": "دانلود",
   "gallery.previous": "قبلی",
-  "gallery.next": "بعدی"
+  "gallery.next": "بعدی",
+   "career": {
+    "hero": {
+      "title": "به تیم ما بپیوندید",
+      "subtitle": "آینده آموزش را در دبیرستان سلطان زوی شکل دهید",
+      "description": "ما همیشه به دنبال معلمان و متخصصان پرشوری هستیم که تعهد ما را به برتری در آموزش به اشتراک بگذارند."
+    },
+    "filters": {
+      "searchPlaceholder": "جستجوی موقعیت‌ها...",
+      "allDepartments": "تمام بخش‌ها",
+      "allTypes": "تمام انواع",
+      "showing": "نمایش",
+      "position": "موقعیت",
+      "positions": "موقعیت‌ها"
+    },
+    "card": {
+      "positions": "موقعیت‌ها",
+      "onsite": "حضوری",
+      "deadline": "مهلت",
+      "posted": "منتشر شده",
+      "viewDetails": "مشاهده جزئیات",
+      "applyNow": "اکنون درخواست دهید",
+      "share": "اشتراک گذاری",
+      "expired": "منقضی شده",
+      "expiringSoon": "به زودی منقضی می‌شود",
+      "gender": {
+        "male": "مرد",
+        "female": "زن"
+      }
+    },
+    "noPositions": {
+      "title": "هیچ موقعیتی یافت نشد",
+      "description": "فیلترهای جستجوی خود را تنظیم کنید"
+    },
+    "benefits": {
+      "title": "چرا با ما کار کنید؟",
+      "growth": {
+        "title": "رشد حرفه‌ای",
+        "description": "فرصت‌های یادگیری مستمر و برنامه‌های توسعه شغلی"
+      },
+      "community": {
+        "title": "جامعه حمایتی",
+        "description": "محیط همکاری با معلمان پرشور"
+      },
+      "balance": {
+        "title": "تعادل کار و زندگی",
+        "description": "برنامه‌های انعطاف‌پذیر و سیاست‌های مرخصی سخاوتمندانه"
+      }
+    },
+    "detail": {
+      "type": "نوع",
+      "location": "مکان",
+      "salary": "حقوق",
+      "department": "بخش",
+      "gender": "جنسیت",
+      "positions": "موقعیت‌ها",
+      "deadline": "مهلت",
+      "posted": "منتشر شده",
+      "descriptionTitle": "شرح شغل",
+      "requirementsTitle": "الزامات",
+      "applyButton": "برای این موقعیت درخواست دهید"
+    },
+    "form": {
+      "title": "درخواست برای موقعیت",
+      "fullName": "نام کامل",
+      "fullNamePlaceholder": "احمد احمدی",
+      "email": "آدرس ایمیل",
+      "emailPlaceholder": "ahmad@example.com",
+      "phone": "شماره تلفن",
+      "phonePlaceholder": "+93 (700) 000-000",
+      "experience": "سال‌های تجربه",
+      "selectExperience": "تجربه را انتخاب کنید",
+      "experience01": "۰-۱ سال",
+      "experience25": "۲-۵ سال",
+      "experience610": "۶-۱۰ سال",
+      "experience10plus": "بیش از ۱۰ سال",
+      "education": "بالاترین سطح تحصیلات",
+      "selectEducation": "تحصیلات را انتخاب کنید",
+      "highSchool": "دبیرستان",
+      "bachelors": "لیسانس",
+      "masters": "کارشناسی ارشد",
+      "phd": "دکترا",
+      "coverLetter": "نامه انگیزه",
+      "coverLetterPlaceholder": "به ما بگویید چرا برای این موقعیت مناسب هستید...",
+      "resume": "رزومه",
+      "uploadResume": "برای بارگذاری رزومه کلیک کنید",
+      "resumeFormat": "PDF، DOC، DOCX (حداکثر ۵ مگابایت)",
+      "cancel": "لغو",
+      "submit": "ارسال درخواست",
+      "errors": {
+        "fullNameRequired": "نام کامل الزامی است",
+        "emailRequired": "ایمیل الزامی است",
+        "emailInvalid": "فرمت ایمیل نامعتبر است",
+        "phoneRequired": "شماره تلفن الزامی است",
+        "experienceRequired": "تجربه الزامی است",
+        "educationRequired": "تحصیلات الزامی است",
+        "coverLetterRequired": "نامه انگیزه الزامی است",
+        "resumeRequired": "رزومه الزامی است"
+      },
+      "success": {
+        "title": "درخواست ارسال شد!",
+        "message": "از علاقه شما به موقعیت",
+        "message2": "متشکریم. ما درخواست شما را بررسی کرده و به زودی با شما تماس خواهیم گرفت."
+      }
+    }
+  }
 
   
 

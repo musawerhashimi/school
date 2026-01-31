@@ -543,7 +543,112 @@
   "gallery.close": "تړل",
   "gallery.download": "ډاونلوډ",
   "gallery.previous": "پخوانی",
-  "gallery.next": "راتلونکی"
+  "gallery.next": "راتلونکی",
+   "career": {
+    "hero": {
+      "title": "زموږ له ټیم سره یوځای شئ",
+      "subtitle": "په سلطان زوی عالي لیسه کې د تعلیم راتلونکی جوړ کړئ",
+      "description": "موږ تل د جذبې لرونکو ښوونکو او مسلکي کسانو په لټه کې یو چې زموږ د تعلیم کې د عالي کیفیت ژمنه شریکوي."
+    },
+    "filters": {
+      "searchPlaceholder": "موقعیتونه ولټوئ...",
+      "allDepartments": "ټولې څانګې",
+      "allTypes": "ټول ډولونه",
+      "showing": "ښودل",
+      "position": "موقعیت",
+      "positions": "موقعیتونه"
+    },
+    "card": {
+      "positions": "موقعیتونه",
+      "onsite": "حاضري",
+      "deadline": "وروستی نیټه",
+      "posted": "خپور شوی",
+      "viewDetails": "تفصیلات وګورئ",
+      "applyNow": "اوس غوښتنه وکړئ",
+      "share": "شریکول",
+      "expired": "ختم شوی",
+      "expiringSoon": "ډیر ژر ختمیږي",
+      "gender": {
+        "male": "نارینه",
+        "female": "ښځینه"
+      }
+    },
+    "noPositions": {
+      "title": "هیڅ موقعیت ونه موندل شو",
+      "description": "خپل لټون فلټرونه تنظیم کړئ"
+    },
+    "benefits": {
+      "title": "ولې زموږ سره کار وکړئ؟",
+      "growth": {
+        "title": "مسلکي وده",
+        "description": "دوامداره زده کړې فرصتونه او د مسلک پراختیا پروګرامونه"
+      },
+      "community": {
+        "title": "ملاتړ کوونکې ټولنه",
+        "description": "د جذبې لرونکو ښوونکو سره همکاري چاپیریال"
+      },
+      "balance": {
+        "title": "د کار او ژوند توازن",
+        "description": "انعطاف منونکي مهالویشونه او سخاوتمنده رخصتي پالیسۍ"
+      }
+    },
+    "detail": {
+      "type": "ډول",
+      "location": "موقعیت",
+      "salary": "معاش",
+      "department": "څانګه",
+      "gender": "جنسیت",
+      "positions": "موقعیتونه",
+      "deadline": "وروستی نیټه",
+      "posted": "خپور شوی",
+      "descriptionTitle": "د دندې تفصیل",
+      "requirementsTitle": "اړتیاوې",
+      "applyButton": "د دې موقعیت لپاره غوښتنه وکړئ"
+    },
+    "form": {
+      "title": "د موقعیت لپاره غوښتنه",
+      "fullName": "بشپړ نوم",
+      "fullNamePlaceholder": "احمد احمدي",
+      "email": "د بریښنالیک پته",
+      "emailPlaceholder": "ahmad@example.com",
+      "phone": "د تلیفون شمیره",
+      "phonePlaceholder": "+93 (700) 000-000",
+      "experience": "د تجربې کلونه",
+      "selectExperience": "تجربه وټاکئ",
+      "experience01": "۰-۱ کلونه",
+      "experience25": "۲-۵ کلونه",
+      "experience610": "۶-۱۰ کلونه",
+      "experience10plus": "له ۱۰ کلونو زیات",
+      "education": "لوړه تعلیمي کچه",
+      "selectEducation": "تعلیم وټاکئ",
+      "highSchool": "لیسه",
+      "bachelors": "لیسانس",
+      "masters": "ماسټري",
+      "phd": "دوکتورا",
+      "coverLetter": "د هڅونې لیک",
+      "coverLetterPlaceholder": "موږ ته ووایاست چې تاسو ولې د دې موقعیت لپاره مناسب یاست...",
+      "resume": "ژوندلیک",
+      "uploadResume": "د ژوندلیک اپلوډ کولو لپاره کلیک وکړئ",
+      "resumeFormat": "PDF، DOC، DOCX (تر ۵ مګابایټ پورې)",
+      "cancel": "لغوه کړئ",
+      "submit": "غوښتنه وسپارئ",
+      "errors": {
+        "fullNameRequired": "بشپړ نوم اړین دی",
+        "emailRequired": "بریښنالیک اړین دی",
+        "emailInvalid": "د بریښنالیک ناسم بڼه",
+        "phoneRequired": "د تلیفون شمیره اړینهده",
+        "experienceRequired": "تجربه اړینهده",
+        "educationRequired": "تعلیم اړین دی",
+        "coverLetterRequired": "د هڅونې لیک اړین دی",
+        "resumeRequired": "ژوندلیک اړین دی"
+      },
+      "success": {
+        "title": "غوښتنه وسپارل شوه!",
+        "message": "د موقعیت کې ستاسو د علاقې څخه مننه",
+        "message2": "موږ ستاسو غوښتنه بیاکتنه کوو او ډیر ژر به تاسو سره اړیکه ونیسو."
+      }
+    }
+  }
 }
 
 
