@@ -1,5 +1,3 @@
-// src/pages/StudentProjects.tsx
-
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -33,7 +31,7 @@ const StudentProjects: React.FC = () => {
     // Category filter
     if (filters.category) {
       filtered = filtered.filter(
-        (project) => project.category === filters.category
+        (project) => project.category === filters.category,
       );
     }
 
@@ -46,7 +44,7 @@ const StudentProjects: React.FC = () => {
     if (filters.year) {
       filtered = filtered.filter(
         (project) =>
-          new Date(project.date).getFullYear() === parseInt(filters.year)
+          new Date(project.date).getFullYear() === parseInt(filters.year),
       );
     }
 
@@ -58,8 +56,8 @@ const StudentProjects: React.FC = () => {
           project.title.toLowerCase().includes(searchLower) ||
           project.description.toLowerCase().includes(searchLower) ||
           project.students.some((student) =>
-            student.name.toLowerCase().includes(searchLower)
-          )
+            student.name.toLowerCase().includes(searchLower),
+          ),
       );
     }
 
@@ -79,7 +77,10 @@ const StudentProjects: React.FC = () => {
         title={t("studentProjects.title")}
         subtitle={t("studentProjects.subtitle")}
         image={"images/project.jpg"}
-        breadcrumb={[]}
+        breadcrumb={[
+          { name: t("nav.home"), path: "/" },
+          { name: t("studentProjects.title"), path: "/student-projects" },
+        ]}
       />
 
       <div className="container mx-auto px-4 py-12">

@@ -269,7 +269,10 @@ const AwardsAndAchievements: React.FC = () => {
         title="Awards & Achievements"
         subtitle="Celebrating excellence and recognizing the outstanding accomplishments of our school and students"
         image="images/bg-5.jpg"
-        breadcrumb={["Home", "Awards & Achievements"]}
+        breadcrumb={[
+          { name: "Home", path: "/" },
+          { name: "Awards & Achievements", path: "" },
+        ]}
       />
 
       {/* Stats Section */}

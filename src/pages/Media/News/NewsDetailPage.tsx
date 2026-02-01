@@ -117,62 +117,67 @@ export const NewsDetailPage: React.FC = () => {
           </div>
 
           {/* Share Buttons */}
-          <div className="flex items-center gap-6 mt-12 pt-8 border-t border-border">
-            <span className="text-text-secondary font-medium">{t("Sha")}</span>
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-4 sm:gap-6 mt-12 pt-6 border-t border-border">
+            <span className="text-text-secondary font-medium sm:mr-2">
+              {t("Sha")}
+            </span>
 
-            {/* Facebook */}
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors duration-300"
-            >
-              <Facebook size={20} />
-              Facebook
-            </a>
+            <div className="flex flex-wrap gap-4">
+              {/* Facebook */}
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-text-secondary hover:text-primary transition-colors duration-300"
+              >
+                <Facebook size={18} />
+                <span className="hidden md:inline">Facebook</span>
+              </a>
 
-            {/* Twitter/X */}
-            <a
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors duration-300"
-            >
-              <Twitter size={20} />X
-            </a>
+              {/* Twitter/X */}
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-text-secondary hover:text-primary transition-colors duration-300"
+              >
+                <Twitter size={18} />
+                <span className="hidden md:inline">X</span>
+              </a>
 
-            {/* WhatsApp */}
-            <a
-              href={`https://wa.me/?text=${encodeURIComponent(window.location.href)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors duration-300"
-            >
-              <MessageCircle size={20} />
-              WhatsApp
-            </a>
+              {/* WhatsApp */}
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-text-secondary hover:text-primary transition-colors duration-300"
+              >
+                <MessageCircle size={18} />
+                <span className="hidden md:inline">WhatsApp</span>
+              </a>
 
-            {/* Telegram */}
-            <a
-              href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors duration-300"
-            >
-              <Send size={20} />
-              Telegram
-            </a>
+              {/* Telegram */}
+              <a
+                href={`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-text-secondary hover:text-primary transition-colors duration-300"
+              >
+                <Send size={18} />
+                <span className="hidden md:inline">Telegram</span>
+              </a>
 
-            {/* Copy Link */}
-            <button
-              onClick={() =>
-                navigator.clipboard.writeText(window.location.href)
-              }
-              className="flex items-center gap-2 text-text-secondary hover:text-primary transition-colors duration-300"
-            >
-              <Link2 size={20} />
-              Copy
-            </button>
+              {/* Copy Link */}
+              <button
+                onClick={() =>
+                  navigator.clipboard.writeText(window.location.href)
+                }
+                className="flex items-center gap-2 text-sm text-text-secondary hover:text-primary transition-colors duration-300"
+              >
+                <Link2 size={18} />
+                <span className="hidden md:inline">Copy</span>
+              </button>
+            </div>
           </div>
         </article>
       </div>

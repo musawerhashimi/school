@@ -58,8 +58,11 @@ const CompetitionsContests: React.FC = () => {
         title={t("competitions.pageTitle")}
         subtitle={t("competitions.pageSubtitle")}
         breadcrumb={[
-          t("competitions.breadcrumb.home"),
-          t("competitions.breadcrumb.competitions"),
+          { name: t("competitions.breadcrumb.home"), path: "/" },
+          {
+            name: t("competitions.pageTitle"),
+            path: "/competitions",
+          },
         ]}
         image={"images/slide3.jpg"}
       />

@@ -7,6 +7,7 @@ import JobDetailModal from "./JobModal";
 import JobCard from "./JobCard";
 import BenefitCard from "./BenefitCard";
 import ApplicationFormModal from "./JobForm";
+import PageHeader from "../../components/layout/PageHeader";
 
 export default function Careers() {
   const { t, i18n } = useTranslation();
@@ -50,22 +51,23 @@ export default function Careers() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary-dark text-white py-20 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              {t("career.hero.title")}
-            </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-6">
-              {t("career.hero.subtitle")}
-            </p>
-            <p className="text-lg text-blue-200 max-w-3xl">
-              {t("career.hero.description")}
-            </p>
-          </div>
-        </div>
-      </div>
 
+      <PageHeader
+        breadcrumb={[
+          {
+            name: t("about.page.breadcrumb.home"),
+            path: "/",
+          },
+
+          {
+            name: t("nav.careers.opportunities"),
+            path: "",
+          },
+        ]}
+        image="images/job.jpeg"
+        subtitle={t("career.hero.subtitle")}
+        title={t("career.hero.title")}
+      />
       {/* Filters Section */}
       <div className="bg-surface border-b border-border  z-10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

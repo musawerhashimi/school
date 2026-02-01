@@ -74,6 +74,7 @@
   "nav.academics.educationalTrips": "تعلیمي سفرونه",
   "nav.academics.competitions": "سیالۍ او مقابلې",
   "nav.academics.internships": "انټرنشپ او کاري تجربه",
+  "nav.academics.internship": "انټرنشپ",
 
   "nav.studentsactivities": "د زده کوونکو فعالیتونه",
   "nav.students.portal": "د زده کوونکو پورټل",
@@ -101,7 +102,7 @@
   "nav.media.studentArtwork": "د زده کوونکو هنري کارونه",
   "nav.media.historicalPhotos": "تاریخي انځورونه",
 
-  "nav.careers": "کاري فرصتونه",
+  "nav.careers": "دندې",
   "nav.careers.opportunities": "کاري فرصتونه",
   "nav.careers.jobListings": "د دندو لیست",
   "nav.careers.application": "آنلاین د دندې غوښتنلیک",
@@ -648,7 +649,55 @@
         "message2": "موږ ستاسو غوښتنه بیاکتنه کوو او ډیر ژر به تاسو سره اړیکه ونیسو."
       }
     }
-  }
+  },
+
+  "internships.pageTitle": "کارموزي او کاري تجربه",
+  "internships.pageSubtitle": "د ریښتیني نړۍ فرصتونه وګورئ ترڅو ارزښتناکه تجربه ترلاسه کړئ او د خپل راتلونکي کیریر لپاره چمتو شئ",
+  "internships.search.placeholder": "کارموزي لټون...",
+  "internships.filter.all": "ټولې کټګورۍ",
+  "internships.filter.label": "د کټګورۍ له مخې فلټر",
+  "internships.view.grid": "د شبکې لید",
+  "internships.view.list": "د لیست لید",
+  "internships.noResults": "هیڅ کارموزي ونه موندل شوه",
+  "internships.noResultsDesc": "د خپل لټون یا فلټر معیارونه تنظیم کړئ",
+  "internships.card.duration": "موده",
+  "internships.card.location": "موقعیت",
+  "internships.card.deadline": "نیټه",
+  "internships.card.viewDetails": "جزئیات وګورئ",
+  "internships.card.applyNow": "اوس غوښتنلیک ورکړئ",
+  "internships.details.title": "د کارموزۍ جزئیات",
+  "internships.details.organization": "سازمان",
+  "internships.details.duration": "موده",
+  "internships.details.location": "موقعیت",
+  "internships.details.startDate": "د پیل نیټه",
+  "internships.details.deadline": "د غوښتنلیک نیټه",
+  "internships.details.description": "توضیحات",
+  "internships.details.requirements": "اړتیاوې",
+  "internships.details.benefits": "ګټې",
+  "internships.details.contact": "د اړیکو معلومات",
+  "internships.details.email": "بریښنالیک",
+  "internships.details.phone": "تلیفون",
+  "internships.details.close": "تړل",
+  "internships.intro.title": "ولې کارموزي مهمه ده",
+  "internships.intro.description": "د کارموزۍ او کاري تجربې برنامې زده کوونکو ته بې سارې فرصتونه چمتو کوي ترڅو د ټولګي پوهه په ریښتینو چاپیریالونو کې وکاروي، مسلکي مهارتونه وده کړي او د کیریر لارې وپلټي. د سلطان زوی لیسه د مخکښو سازمانونو سره همکاري کوي ترڅو په بیلابیلو صنعتونو کې متنوع فرصتونه وړاندې کړي.",
+  "internships.benefits.title": "زموږ د برنامې ګټې",
+  "internships.benefits.realWorld": "د ریښتیني نړۍ تجربه",
+  "internships.benefits.realWorldDesc": "په مسلکي چاپیریالونو کې خپله پوهه وکاروئ",
+  "internships.benefits.networking": "مسلکي شبکه جوړونه",
+  "internships.benefits.networkingDesc": "د صنعت متخصصینو سره اړیکې جوړې کړئ",
+  "internships.benefits.skills": "د مهارت پراختیا",
+  "internships.benefits.skillsDesc": "دواړه تخنیکي او نرم مهارتونه وده کړئ",
+  "internships.benefits.career": "د کیریر سپړنه",
+  "internships.benefits.careerDesc": "خپلې علاقې او د کیریر لاره وپیژنئ",
+  "internships.howToApply.title": "څنګه غوښتنلیک ورکړو",
+  "internships.howToApply.step1": "شته فرصتونه وګورئ",
+  "internships.howToApply.step2": "اړتیاوې او جزئیات وګورئ",
+  "internships.howToApply.step3": "مستقیم د سازمان سره اړیکه ونیسئ",
+  "internships.howToApply.step4": "د خپل غوښتنلیک اسناد وسپارئ",
+  "internships.stats.opportunities": "فعال فرصتونه",
+  "internships.stats.partners": "ملګري سازمانونه",
+  "internships.stats.students": "ځای پر ځای شوي زده کوونکي",
+  "internships.stats.success": "د بریالیتوب کچه"
 }
 
 

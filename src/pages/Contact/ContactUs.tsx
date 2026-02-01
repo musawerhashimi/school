@@ -34,7 +34,7 @@ const contactFormSchema = z.object({
     ["admission", "general", "complaint", "suggestion", "partnership", "other"],
     {
       errorMap: () => ({ message: "Please select a subject" }),
-    }
+    },
   ),
   message: z
     .string()
@@ -229,7 +229,10 @@ const ContactUs: React.FC = () => {
       <PageHeader
         title="Contact Us"
         subtitle="We're here to help and answer any questions you might have"
-        breadcrumb={["Home", "Contact Us"]}
+        breadcrumb={[
+          { name: "Home", path: "/" },
+          { name: "Contact Us", path: "" },
+        ]}
         image="images/bg-3.jpg"
       />
 

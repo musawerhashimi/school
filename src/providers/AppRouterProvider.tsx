@@ -30,6 +30,7 @@ import { NewsListPage } from "../pages/Media/News/NewsListPage";
 import { NewsDetailPage } from "../pages/Media/News/NewsDetailPage";
 import { EventsListPage } from "../pages/Media/News/EventsListPage";
 import { EventDetailPage } from "../pages/Media/News/EventDetailPage";
+import InternshipsPage from "../pages/Careers/Interchip/InternshipsPage";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -87,6 +88,7 @@ function AppRouterProvider() {
         { path: "/news/:id", element: <NewsDetailPage /> },
         { path: "/events", element: <EventsListPage /> },
         { path: "/events/:id", element: <EventDetailPage /> },
+        { path: "/internships", element: <InternshipsPage /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users

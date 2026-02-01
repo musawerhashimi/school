@@ -57,7 +57,10 @@ export default function Gallery() {
         title={t("gallery.title")}
         subtitle={t("gallery.subtitle")}
         image="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920"
-        breadcrumb={["Home", t("gallery.title")]}
+        breadcrumb={[
+          { name: t("nav.home"), path: "/" },
+          { name: t("nav.media.gallery"), path: "" },
+        ]}
       />
 
       {/* Search and Filter Section */}

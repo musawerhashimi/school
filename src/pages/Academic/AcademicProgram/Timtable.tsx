@@ -9,14 +9,15 @@ import type {
   TimetableCell,
 } from "../../../entities/classtimetable";
 import generateSubjectColor from "../../../utils/generateSubjectColor";
+import { useTranslation } from "react-i18next";
 
 function getCell(
   data: ClassTimetable,
   day: Day,
-  period: number
+  period: number,
 ): TimetableCell | undefined {
   return data.timetable.find(
-    (cell) => cell.day === day && cell.period === period
+    (cell) => cell.day === day && cell.period === period,
   );
 }
 
@@ -28,7 +29,7 @@ function getTimetablesByClassId(classId: string): ClassTimetable[] {
 export default function TimetableTemplate() {
   // Get the id from URL parameters
   const { id } = useParams<{ id: string }>();
-
+  const { t } = useTranslation();
   // Get all timetables matching the URL id
   const matchingTimetables = id ? getTimetablesByClassId(id) : classtimetable;
 
@@ -36,14 +37,14 @@ export default function TimetableTemplate() {
   const [activeClass, setActiveClass] = useState<string>(
     matchingTimetables.length > 0
       ? `${matchingTimetables[0].id}${matchingTimetables[0].sub_id}`
-      : `${classtimetable[0].id}${classtimetable[0].sub_id}`
+      : `${classtimetable[0].id}${classtimetable[0].sub_id}`,
   );
 
   // Update activeClass when URL parameter changes
   useEffect(() => {
     if (matchingTimetables.length > 0) {
       setActiveClass(
-        `${matchingTimetables[0].id}${matchingTimetables[0].sub_id}`
+        `${matchingTimetables[0].id}${matchingTimetables[0].sub_id}`,
       );
     }
   }, [id]);
@@ -56,7 +57,11 @@ export default function TimetableTemplate() {
           title="Class Timetables"
           subtitle="View and download weekly schedules for all classes"
           image="/images/timetable.jpg"
-          breadcrumb={["Home", "Academics Programs", "Class Timetables"]}
+          breadcrumb={[
+            { name: t("nav.home"), path: "/" },
+            { name: t("nav.academicPrograms"), path: "/academic-programs" },
+            { name: t("nav.classTimetables"), path: "" },
+          ]}
         />
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
@@ -76,7 +81,11 @@ export default function TimetableTemplate() {
         title="Class Timetables"
         subtitle="View and download weekly schedules for all classes"
         image="/images/timetable.jpg"
-        breadcrumb={["Home", "Academics Programs", "Class Timetables"]}
+        breadcrumb={[
+          { name: t("nav.home"), path: "/" },
+          { name: t("nav.academics.programs"), path: "/academic-programs" },
+          { name: t("nav.academics.schedules"), path: "" },
+        ]}
       />
 
       <style>{`
@@ -235,7 +244,7 @@ export default function TimetableTemplate() {
                               {cell ? (
                                 <div
                                   className={`rounded-lg p-3 border-2 ${generateSubjectColor(
-                                    cell.subject
+                                    cell.subject,
                                   )} transition-all hover:scale-105 hover:shadow-md`}
                                 >
                                   <div className="font-bold text-sm mb-1">

@@ -145,7 +145,10 @@ function Testimonials() {
       <PageHeader
         title="Why Choose Us?"
         subtitle="Stories from our school community"
-        breadcrumb={["Home", "Testimonials"]}
+        breadcrumb={[
+          { name: "Home", path: "/" },
+          { name: "Testimonials", path: "" },
+        ]}
         image="images/bg-5.jpg"
       />
       <section className="py-20 px-4 md:px-8 bg-[var(--color-surface)] transition-colors duration-300">

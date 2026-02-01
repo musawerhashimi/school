@@ -24,6 +24,7 @@ import {
   MapPin,
   MessageSquare,
   Star,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -182,10 +183,10 @@ function Navbar() {
           icon: Briefcase,
         },
         {
-          name: t("nav.academics.internships"),
+          name: t("nav.academics.internship"),
           key: "nav.academics.internships",
-          page: "internships-work-experience",
-          icon: Briefcase,
+          page: "internships",
+          icon: BriefcaseBusiness,
         },
       ],
     },

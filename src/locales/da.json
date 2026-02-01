@@ -71,6 +71,7 @@
   "nav.academics.educationalTrips": "سفرهای آموزشی",
   "nav.academics.competitions": "مسابقات و رقابت‌ها",
   "nav.academics.internships": "کارآموزی و تجربه کاری",
+  "nav.academics.internship": "کارآموزی",
 
   "nav.studentsactivities": "فعالیت‌های دانش‌آموزان",
   "nav.students.portal": "پورتال دانش‌آموزان",
@@ -98,7 +99,7 @@
   "nav.media.studentArtwork": "آثار هنری دانش‌آموزان",
   "nav.media.historicalPhotos": "عکس‌های تاریخی",
 
-  "nav.careers": "فرصت‌های شغلی",
+  "nav.careers": "شغل‌ها",
   "nav.careers.opportunities": "فرصت‌های شغلی",
   "nav.careers.jobListings": "فهرست مشاغل",
   "nav.careers.application": "درخواست آنلاین شغل",
@@ -653,7 +654,56 @@
         "message2": "متشکریم. ما درخواست شما را بررسی کرده و به زودی با شما تماس خواهیم گرفت."
       }
     }
-  }
+  },
+
+
+  "internships.pageTitle": "کارآموزی و تجربه کاری",
+  "internships.pageSubtitle": "فرصت‌های دنیای واقعی را کاوش کنید تا تجربه ارزشمند کسب کرده و برای آینده شغلی خود آماده شوید",
+  "internships.search.placeholder": "جستجوی کارآموزی...",
+  "internships.filter.all": "همه دسته‌ها",
+  "internships.filter.label": "فیلتر بر اساس دسته",
+  "internships.view.grid": "نمای شبکه‌ای",
+  "internships.view.list": "نمای لیستی",
+  "internships.noResults": "هیچ کارآموزی یافت نشد",
+  "internships.noResultsDesc": "معیارهای جستجو یا فیلتر خود را تنظیم کنید",
+  "internships.card.duration": "مدت زمان",
+  "internships.card.location": "موقعیت",
+  "internships.card.deadline": "مهلت",
+  "internships.card.viewDetails": "مشاهده جزئیات",
+  "internships.card.applyNow": "اکنون درخواست دهید",
+  "internships.details.title": "جزئیات کارآموزی",
+  "internships.details.organization": "سازمان",
+  "internships.details.duration": "مدت زمان",
+  "internships.details.location": "موقعیت",
+  "internships.details.startDate": "تاریخ شروع",
+  "internships.details.deadline": "مهلت درخواست",
+  "internships.details.description": "توضیحات",
+  "internships.details.requirements": "الزامات",
+  "internships.details.benefits": "مزایا",
+  "internships.details.contact": "اطلاعات تماس",
+  "internships.details.email": "ایمیل",
+  "internships.details.phone": "تلفن",
+  "internships.details.close": "بستن",
+  "internships.intro.title": "چرا کارآموزی مهم است",
+  "internships.intro.description": "برنامه‌های کارآموزی و تجربه کاری فرصت‌های بی‌نظیری را برای دانش‌آموزان فراهم می‌کنند تا دانش کلاسی خود را در محیط‌های واقعی به کار ببرند، مهارت‌های حرفه‌ای را توسعه دهند و مسیرهای شغلی را کاوش کنند. لیسه سلطان زوی با سازمان‌های پیشرو همکاری می‌کند تا فرصت‌های متنوعی را در صنایع مختلف ارائه دهد.",
+  "internships.benefits.title": "مزایای برنامه ما",
+  "internships.benefits.realWorld": "تجربه دنیای واقعی",
+  "internships.benefits.realWorldDesc": "دانش خود را در محیط‌های حرفه‌ای به کار ببرید",
+  "internships.benefits.networking": "شبکه‌سازی حرفه‌ای",
+  "internships.benefits.networkingDesc": "ارتباطات با متخصصان صنعت ایجاد کنید",
+  "internships.benefits.skills": "توسعه مهارت",
+  "internships.benefits.skillsDesc": "هم مهارت‌های فنی و هم مهارت‌های نرم را توسعه دهید",
+  "internships.benefits.career": "کاوش شغلی",
+  "internships.benefits.careerDesc": "علایق و مسیر شغلی خود را کشف کنید",
+  "internships.howToApply.title": "چگونه درخواست دهیم",
+  "internships.howToApply.step1": "فرصت‌های موجود را مرور کنید",
+  "internships.howToApply.step2": "الزامات و جزئیات را بررسی کنید",
+  "internships.howToApply.step3": "مستقیماً با سازمان تماس بگیرید",
+  "internships.howToApply.step4": "مدارک درخواست خود را ارسال کنید",
+  "internships.stats.opportunities": "فرصت‌های فعال",
+  "internships.stats.partners": "سازمان‌های شریک",
+  "internships.stats.students": "دانش‌آموزان جایگذاری شده",
+  "internships.stats.success": "نرخ موفقیت"
 
   
 

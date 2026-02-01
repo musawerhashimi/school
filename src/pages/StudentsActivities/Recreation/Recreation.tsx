@@ -34,7 +34,14 @@ export default function RecreationalActivities() {
   return (
     <div className="min-h-screen bg-background">
       <PageHeader
-        breadcrumb={[]}
+        breadcrumb={[
+          { name: t("nav.home"), path: "/" },
+
+          {
+            name: t("nav.students.recreational"),
+            path: "",
+          },
+        ]}
         image="images/slide1.jpg"
         subtitle={t("recreation.hero.subtitle")}
         title={t("recreation.hero.title")}

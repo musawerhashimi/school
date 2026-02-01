@@ -7,10 +7,11 @@ import ExamScheduleComponent from "./ExamePart";
 import Programs from "./Programs";
 import Schedules from "./Schedules";
 import Resources from "./Resources";
+import { useTranslation } from "react-i18next";
 
 export default function AcademicPrograms() {
   const [activeTab, setActiveTab] = useState("programs");
-
+  const { t } = useTranslation();
   const tabs = [
     {
       id: "programs",
@@ -62,7 +63,13 @@ export default function AcademicPrograms() {
         title="Academic Programs"
         subtitle="Comprehensive education programs designed to nurture excellence and foster holistic development"
         image="images/slide4.jpg"
-        breadcrumb={["Home", "Academics Programs"]}
+        breadcrumb={[
+          {
+            name: t("about.page.breadcrumb.home"),
+            path: "/",
+          },
+          { name: t("nav.academics.programs"), path: "" },
+        ]}
       />
 
       <div className="relative   px-4 md:mx-6 py-8">

@@ -24,7 +24,10 @@ export default function SportsTeamsPage() {
   return (
     <div className="min-h-screen bg-background">
       <PageHeader
-        breadcrumb={[]}
+        breadcrumb={[
+          { name: t("nav.home"), path: "/" },
+          { name: t("nav.students.sportsTeams"), path: "" },
+        ]}
         title={t("sportsTeams.pageTitle")}
         subtitle={t("sportsTeams.pageDescription")}
         image="images/slide4.jpg"

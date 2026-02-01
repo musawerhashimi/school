@@ -55,7 +55,7 @@ export default function TeacherList() {
       member.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (isTeacher &&
         member.subjects.some((s) =>
-          s.toLowerCase().includes(searchTerm.toLowerCase())
+          s.toLowerCase().includes(searchTerm.toLowerCase()),
         ));
 
     const matchesMainFilter =
@@ -97,9 +97,9 @@ export default function TeacherList() {
         subtitle={t("teacher.page.subtitle")}
         image="images/slide2.jpg"
         breadcrumb={[
-          t("about.page.breadcrumb.home"),
-          t("about.page.breadcrumb.about"),
-          t("about.page.breadcrumb.teacher"),
+          { name: t("about.page.breadcrumb.home"), path: "/" },
+          { name: t("about.page.breadcrumb.about"), path: "/about" },
+          { name: t("about.page.breadcrumb.teacher"), path: "" },
         ]}
       />
       <div className="container mx-auto px-4 py-8">
@@ -186,8 +186,8 @@ export default function TeacherList() {
             {mainFilter === "teachers"
               ? "teachers"
               : mainFilter === "staff"
-              ? "staff members"
-              : "team members"}
+                ? "staff members"
+                : "team members"}
           </p>
         </div>
 

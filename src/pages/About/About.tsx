@@ -31,8 +31,14 @@ export default function About() {
         subtitle={t("about.page.subtitle")}
         image="images/slide1.jpg"
         breadcrumb={[
-          t("about.page.breadcrumb.home"),
-          t("about.page.breadcrumb.about"),
+          {
+            name: t("about.page.breadcrumb.home"),
+            path: "/",
+          },
+          {
+            name: t("about.page.breadcrumb.about"),
+            path: "/about",
+          },
         ]}
       />
       <MissionVisionSection />

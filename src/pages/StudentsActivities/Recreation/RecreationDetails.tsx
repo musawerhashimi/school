@@ -43,9 +43,12 @@ export default function RecreationalActivityDetails() {
     <div className="min-h-screen bg-background">
       <PageHeader
         breadcrumb={[
-          t("recreation.details.breadcrumb.home"),
-          t("recreation.details.breadcrumb.activities"),
-          activity.title[lang],
+          { name: t("recreation.details.breadcrumb.home"), path: "/" },
+          {
+            name: t("recreation.details.breadcrumb.activities"),
+            path: "/recreational-activities",
+          },
+          { name: activity.title[lang], path: "" },
         ]}
         image={activity.image}
         subtitle={category?.name[lang] || ""}
