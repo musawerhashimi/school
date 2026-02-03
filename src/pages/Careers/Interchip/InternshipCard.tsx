@@ -55,7 +55,6 @@ const InternshipCard: React.FC<InternshipCardProps> = ({
         )}
         <div className="absolute top-4 left-4 flex items-center gap-2">
           <span className="bg-primary/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5 shadow-lg">
-            <span>{category?.icon}</span>
             <span>{category?.name[lang]}</span>
           </span>
         </div>

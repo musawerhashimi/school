@@ -211,7 +211,7 @@ function Navbar() {
         {
           name: t("nav.parents"),
           key: "nav.parents",
-          page: "parents",
+          page: "parent-involvement",
           icon: Users,
         },
 

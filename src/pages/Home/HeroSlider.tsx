@@ -42,12 +42,18 @@ export default function HeroSlider({ slides }: { slides: HomeSliderData[] }) {
                   {slide.description}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <button className="px-8 py-3 bg-primary hover:bg-primary-dark text-white rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
-                    {t("explorePrograms")}
-                  </button>
-                  <button className="px-8 py-3 bg-surface hover:bg-card text-text-primary border-2 border-border rounded-lg font-medium transition-all duration-200">
-                    {t("scheduleVisit")}
-                  </button>
+                  <a
+                    href="/academic-programs"
+                    className="px-8 py-4 bg-primary  hover:bg-accent text-white font-semibold rounded-xl border border-secondary transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                  >
+                    {t("acd")}
+                  </a>
+                  <a
+                    href="/about"
+                    className="px-8 py-4 bg-accent hover:bg-surface-hover text-text-primary font-semibold rounded-xl border border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                  >
+                    {t("community.cta.learnMore")}
+                  </a>
                 </div>
               </div>
             </div>

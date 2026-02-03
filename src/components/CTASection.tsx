@@ -13,12 +13,19 @@ function CTASection() {
           {t("cta.description")}
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <button className="px-8 py-4 bg-white text-primary hover:bg-surface rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl">
-            {t("cta.applyNow")}
-          </button>
-          <button className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 rounded-lg font-bold text-lg transition-all duration-200">
-            {t("cta.scheduleTour")}
-          </button>
+          <a
+            href="/contact"
+            className="px-8 py-4 bg-accent hover:bg-primary-dark text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          >
+            {t("involvement.cta.primaryButton")}
+          </a>
+
+          <a
+            href="/academic-programs"
+            className="px-8 py-4 bg-primary  hover:bg-accent text-white font-semibold rounded-xl border border-secondary transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          >
+            {t("acd")}
+          </a>
         </div>
       </div>
     </section>

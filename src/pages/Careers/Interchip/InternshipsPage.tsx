@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import type { Internship } from "../../../entities/intership";
 import { internshipCategories, internshipsData } from "../../../data/intership";
 import PageHeader from "../../../components/layout/PageHeader";
-import StatsSection from "./StatsSection";
 
 import CategoryFilter from "./CategoryFilter";
 import InternshipCard from "./InternshipCard";
@@ -62,9 +61,6 @@ const InternshipsPage: React.FC = () => {
         image="/images/internship.jpeg"
       />
 
-      {/* Stats Section */}
-      <StatsSection />
-
       {/* Introduction Section */}
       <IntroSection />
 
@@ -72,13 +68,13 @@ const InternshipsPage: React.FC = () => {
       <BenefitsSection />
 
       {/* Main Content - Internship Listings */}
-      <section className="py-16 bg-surface">
+      <section className="py-4 bg-surface">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Search and Filter Controls */}
           <div className="mb-12 space-y-6">
             <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
               {/* Search Bar */}
-              <div className="flex-1 max-w-xl">
+              <div className="flex-1 max-w-6xl">
                 <SearchBar
                   value={searchQuery}
                   onChange={setSearchQuery}
@@ -100,9 +96,9 @@ const InternshipsPage: React.FC = () => {
             <p className="text-text-secondary text-sm">
               {filteredInternships.length}{" "}
               {filteredInternships.length === 1
-                ? "opportunity"
-                : "opportunities"}{" "}
-              found
+                ? t("opportunity")
+                : t("opportunities")}{" "}
+              {t("found")}
             </p>
           </div>
 

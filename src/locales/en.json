@@ -84,7 +84,7 @@
   "nav.students.recreational": "Recreational Activities",
   "nav.students.honorsAwards": "Honors & Awards",
 
-  "nav.parents": "Parents",
+  "nav.parents": "Parent Involvement",
   "nav.parents.portal": "Parent Portal",
   "nav.parents.interactions": "Parent-Teacher Interactions",
   "nav.parents.involvement": "Parent Involvement",
@@ -699,6 +699,246 @@
   "internships.stats.opportunities": "Active Opportunities",
   "internships.stats.partners": "Partner Organizations",
   "internships.stats.students": "Students Placed",
-  "internships.stats.success": "Success Rate"
+  "internships.stats.success": "Success Rate",
+  "opportunities": "Opportunities",
+  "opportunitie": "Opportunity",
+   "found":"Found",
+     "community": {
+    "header": {
+      "title": "Community Support",
+      "subtitle": "Building a stronger community through partnerships and collaborative programs"
+    },
+    "mission": {
+      "badge": "Our Mission",
+      "title": "Together We Build a Brighter Future",
+      "description": "At Sultan Zoy High School, we believe education extends beyond classroom walls. Through strategic partnerships with local and international organizations, we create opportunities for our students to thrive, our families to prosper, and our community to grow stronger together."
+    },
+    "stats": {
+      "partners": "Active Partners",
+      "beneficiaries": "Students & Families Served"
+    },
+    "programs": {
+      "title": "Our Support Programs",
+      "subtitle": "Comprehensive initiatives designed to support our students, families, and community"
+    },
+    "partners": {
+      "title": "Our Partner Organizations",
+      "subtitle": "Working together with trusted organizations to deliver exceptional support and services",
+      "collaboration": "Collaboration",
+      "visitWebsite": "Visit Website"
+    },
+    "impact": {
+      "title": "Making Real Impact",
+      "description": "Through our community partnerships and support programs, we've created lasting positive change in the lives of our students and their families. Our collaborative approach ensures that every child has access to the resources and opportunities they need to succeed.",
+      "stat1": "Student Participation",
+      "stat2": "Years of Partnership"
+    },
+    "cta": {
+      "title": "Want to Partner With Us?",
+      "description": "We're always looking for organizations and individuals who share our vision of empowering students through education and community support.",
+      "contactUs": "Contact Us",
+      "learnMore": "Learn More About Us"
+    }
+  },
+   "charity": {
+    "header": {
+      "title": "Charity Events",
+      "subtitle": "Making a difference together through compassion and community action"
+    },
+    "hero": {
+      "badge": "Making Impact",
+      "title": "Giving Back to Our Community",
+      "description": "At Sultan Zoy High School, we believe in the power of giving. Through our charity events, we unite students, parents, and community members to support those in need and create lasting positive change.",
+      "upcomingEvents": "Upcoming Events",
+      "completedEvents": "Completed Events"
+    },
+  
+    "event": {
+      "date": "Publish Date",
+      "purpose": "Purpose",
+      "share":"Share"
+    },
+    "noEvents": {
+      "title": "No Events Found",
+      "description": "There are currently no events in this category. Check back soon for updates!"
+    },
+    "cta": {
+      "title": "Join Us in Making a Difference",
+      "description": "Your participation and support can change lives. Whether you volunteer your time, donate resources, or spread awareness, every contribution matters.",
+      "getInvolved": "Get Involved",
+      "viewPrograms": "View Support Programs"
+    }
+  },
+
+  "involvement": {
+    "hero": {
+      "title": "Parent Involvement",
+      "subtitle": "We believe strong collaboration between parents and school leads to better student success. Together, we create a supportive environment where every child can thrive."
+    },
+    
+    "benefits": {
+      "title": "Why Parent Involvement Matters",
+      "subtitle": "Research shows that active parent participation creates measurable positive impacts on student success and well-being.",
+      "academic": {
+        "title": "Academic Excellence",
+        "desc": "Students with involved parents show significantly improved grades, test scores, and overall academic performance across all subjects."
+      },
+      "behavior": {
+        "title": "Better Behavior",
+        "desc": "Children demonstrate more positive attitudes, improved classroom behavior, and stronger social skills when parents are engaged."
+      },
+      "motivation": {
+        "title": "Higher Motivation",
+        "desc": "Active parent involvement increases student motivation to learn, complete assignments, and pursue educational goals."
+      },
+      "confidence": {
+        "title": "Greater Confidence",
+        "desc": "Students feel more supported and develop higher self-esteem when they see their parents invested in their education."
+      }
+    },
+    "ways": {
+      "title": "How Parents Can Get Involved",
+      "subtitle": "There are many meaningful ways to participate in your child's educational journey. Every contribution makes a difference.",
+      "meetings": {
+        "title": "Attend Meetings",
+        "desc": "Join parent-teacher conferences, school board meetings, and PTA gatherings to stay informed and share your perspective on school matters."
+      },
+      "homeSupport": {
+        "title": "Support Learning at Home",
+        "desc": "Create a positive study environment, help with homework, review assignments, and encourage reading and critical thinking skills."
+      },
+      "stayConnected": {
+        "title": "Stay Connected",
+        "desc": "Maintain regular communication with teachers and administrators through emails, phone calls, and school platforms to monitor progress."
+      },
+      "volunteer": {
+        "title": "Volunteer Your Time",
+        "desc": "Participate in classroom activities, field trips, school events, and special projects to support teachers and enhance learning experiences."
+      },
+      "events": {
+        "title": "Participate in Events",
+        "desc": "Attend school performances, sports events, exhibitions, and cultural celebrations to show support and build community connections."
+      },
+      "community": {
+        "title": "Join Parent Community",
+        "desc": "Connect with other parents through committees, support groups, and online forums to share experiences and strengthen the school community."
+      }
+    },
+    "communication": {
+      "title": "Communication Channels",
+      "subtitle": "We're here to support you. Reach out to us through any of these convenient channels.",
+      "phone": {
+        "label": "Phone",
+        "value": "+93 XXX XXX XXX"
+      },
+      "email": {
+        "label": "Email",
+        "value": "info@school.edu"
+      },
+      "hours": {
+        "label": "Office Hours",
+        "value": "Saturday – Thursday, 8:00 AM – 3:00 PM"
+      },
+      "website": {
+        "label": "Parent Portal",
+        "value": "www.school.edu/parents"
+      }
+    },
+    "guidelines": {
+      "title": "Parent Guidelines & Support",
+      "subtitle": "Follow these best practices to maximize your positive impact on your child's education and development.",
+      "academic": {
+        "title": "Academic Support",
+        "desc": "Establish consistent daily study routines, monitor homework completion, provide necessary learning materials, and celebrate academic achievements to build confidence."
+      },
+      "behavior": {
+        "title": "Behavior & Discipline",
+        "desc": "Reinforce school rules at home, promote respectful behavior towards teachers and peers, address behavioral concerns promptly, and maintain consistent expectations."
+      },
+      "communication": {
+        "title": "Open Communication",
+        "desc": "Share important information about your child's needs, health, or challenges. Respond to teacher communications promptly and attend scheduled meetings."
+      },
+      "attendance": {
+        "title": "Attendance & Punctuality",
+        "desc": "Ensure regular school attendance, minimize absences except for illness, notify school of absences, and emphasize the importance of being on time."
+      }
+    },
+    "events": {
+      "title": "Events & Meetings",
+      "subtitle": "Stay informed about upcoming opportunities to connect with teachers, staff, and other parents in our community.",
+      "meetings": {
+        "title": "Parent-Teacher Meetings",
+        "desc": "Regular conferences to discuss student progress, challenges, and goals."
+      },
+      "workshops": {
+        "title": "Educational Workshops",
+        "desc": "Learn effective strategies to support your child's learning and development."
+      },
+      "celebrations": {
+        "title": "School Celebrations",
+        "desc": "Join us for cultural events, award ceremonies, and milestone celebrations."
+      }
+    },
+    "cta": {
+      "title": "Partner With Us in Your Child's Success",
+      "subtitle": "Get involved today and make a lasting positive difference in your child's education journey. Together, we can achieve great things.",
+      "primaryButton": "Contact Us Today"
+      
+    }
+       
+  },
+   "testimonials": {
+    "header": {
+      "title": "Why Choose Us?",
+      "subtitle": "Stories from our school community"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "testimonials": "Testimonials"
+    },
+    "badge": "Testimonials",
+    "title": "What Our Community Says",
+    "description": "Hear from the parents, students, and alumni who make Sultan Zoy High School a center of excellence and community.",
+    "cta": {
+      "question": "Are you a member of our community?",
+      "button": "Share Your Story"
+    },
+    "modal": {
+      "title": "Share Your Story",
+      "fields": {
+        "name": "Full Name",
+        "role": "Role",
+        "image": "Image URL",
+        "rating": "Rating",
+        "content": "Your Story"
+      },
+      "placeholders": {
+        "name": "Enter your full name",
+        "role": "e.g., Parent, Student, Alumni",
+        "image": "https://example.com/image.jpg",
+        "content": "Share your experience with Sultan Zoy High School..."
+      },
+      "errors": {
+        "nameRequired": "Name is required",
+        "nameMin": "Name must be at least 2 characters",
+        "roleRequired": "Role is required",
+        "imageRequired": "Image URL is required",
+        "imageInvalid": "Please enter a valid URL",
+        "contentRequired": "Story content is required",
+        "contentMin": "Story must be at least 10 characters",
+        "ratingRequired": "Please select a rating"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "submit": "Submit Story",
+        "submitting": "Submitting..."
+      },
+      "successMessage": "Thank you for sharing your story! It will be reviewed and published soon.",
+      "errorMessage": "Sorry, there was an error submitting your story. Please try again."
+    }
+  },
+   "acd":"Our Academic Programs"
+
 }
 

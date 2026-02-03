@@ -11,7 +11,6 @@ export interface MultiLangText {
 export interface InternshipCategory {
   id: string;
   name: MultiLangText;
-  icon: string;
 }
 
 export interface Internship {
@@ -22,8 +21,8 @@ export interface Internship {
   duration: MultiLangText;
   location: MultiLangText;
   description: MultiLangText;
-  requirements: MultiLangText[];
-  benefits: MultiLangText[];
+  requirements: MultiLangText;
+  benefits: MultiLangText;
   contactEmail: string;
   contactPhone: string;
   startDate: string; // ISO date format

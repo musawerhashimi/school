@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppLayout from "../components/layout/AppLayout";
 
-import Testimonials from "../pages/Achievements/Testimonials";
+import Testimonials from "../pages/Community/Testimonials";
 import Careers from "../pages/Careers/Careers";
 import SecurityPrivacyPage from "../pages/Contact/SecurityAndPrivacy";
 import Home from "../pages/Home/Home";
@@ -31,6 +31,9 @@ import { NewsDetailPage } from "../pages/Media/News/NewsDetailPage";
 import { EventsListPage } from "../pages/Media/News/EventsListPage";
 import { EventDetailPage } from "../pages/Media/News/EventDetailPage";
 import InternshipsPage from "../pages/Careers/Interchip/InternshipsPage";
+import CommunitySupport from "../pages/Community/CommunitySupport";
+import CharityEvents from "../pages/Community/Charityevents";
+import ParentInvolvementPage from "../pages/Community/Parents";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -89,6 +92,9 @@ function AppRouterProvider() {
         { path: "/events", element: <EventsListPage /> },
         { path: "/events/:id", element: <EventDetailPage /> },
         { path: "/internships", element: <InternshipsPage /> },
+        { path: "/community-support", element: <CommunitySupport /> },
+        { path: "/charity-events", element: <CharityEvents /> },
+        { path: "/parent-involvement", element: <ParentInvolvementPage /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users
