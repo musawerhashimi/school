@@ -3,7 +3,6 @@ import PageHeader from "../../components/layout/PageHeader";
 import CTASection from "../../components/CTASection";
 import { useEffect, useState } from "react";
 import CircleAnimation from "../../components/animation";
-import AwardsSection from "./AwardsSection";
 import LeadershipSection from "./LeadershipSection";
 import MissionVisionSection from "./MissionVisionSection";
 import SchoolHistorySection from "./SchoolHistorySection";
@@ -44,7 +43,7 @@ export default function About() {
       <MissionVisionSection />
       <SchoolHistorySection />
       <LeadershipSection />
-      <AwardsSection />
+
       <CTASection />
     </>
   );
