@@ -214,6 +214,12 @@ function Navbar() {
           page: "parent-involvement",
           icon: Users,
         },
+        {
+          name: t("nav.careers.alumniRelations"),
+          key: "nav.careers.alumniRelations",
+          page: "alumni-relations",
+          icon: Users,
+        },
 
         {
           name: t("nav.achievements.testimonials"),
@@ -238,14 +244,14 @@ function Navbar() {
         {
           name: t("nav.achievements.studentAchievements"),
           key: "nav.achievements.studentAchievements",
-          page: "awards-and-achievements",
+          page: "student-awards",
           icon: Star,
         },
 
         {
           name: t("nav.achievements.honorsCertificates"),
           key: "nav.achievements.honorsCertificates",
-          page: "honors-certificates",
+          page: "hallof-fame",
           icon: Award,
         },
       ],
@@ -262,12 +268,7 @@ function Navbar() {
           page: "contact",
           icon: Phone,
         },
-        {
-          name: t("nav.contact.locationMap"),
-          key: "nav.contact.locationMap",
-          page: "school-location-map",
-          icon: MapPin,
-        },
+
         {
           name: t("nav.contact.securityPrivacy"),
           key: "nav.contact.securityPrivacy",

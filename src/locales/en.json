@@ -111,7 +111,7 @@
  
 
   "nav.achievements": "Achievements",
-  "nav.achievements.schoolAwards": "School Awards",
+  "nav.achievements.schoolAwards": "School Achievements",
   "nav.achievements.studentAchievements": "Student Achievements",
   "nav.achievements.testimonials": "Testimonials",
   "nav.achievements.honorsCertificates": "Honors & Hall of Fame",
@@ -938,7 +938,282 @@
       "errorMessage": "Sorry, there was an error submitting your story. Please try again."
     }
   },
-   "acd":"Our Academic Programs"
+   "acd":"Our Academic Programs",
+   "alumni": {
+    "pageTitle": "Our Alumni",
+    "pageSubtitle": "Celebrating the achievements of Sultan Zoy High School graduates who are making a difference around the world",
+    "introTitle": "Success Stories from Around the World",
+    "introDescription": "Our alumni have gone on to become leaders, innovators, and change-makers in their fields. From medicine to technology, from advocacy to entrepreneurship, they continue to embody the values and excellence instilled at Sultan Zoy High School.",
+    "searchPlaceholder": "Search by name or achievements...",
+    "filterAllYears": "All Graduation Years",
+    "graduationYear": "Class of",
+    "showingResults": "Showing {{count}} alumni",
+    "noResults": "No Alumni Found",
+    "noResultsDescription": "Try adjusting your search or filter criteria",
+    "ctaTitle": "Are You an Alumnus?",
+    "ctaDescription": "Stay connected with your alma mater and inspire the next generation of students",
+    "ctaButton": "Get in Touch"
+  },
+  "common": {
+    "home": "Home"
+  },
+  "email":"Email Address",
+  "KeyAchievements":"Key Achievements",
+
+
+    "schoolAwards": {
+    "pageTitle": "School Awards & Achievements",
+    "pageSubtitle": "Celebrating our institution's excellence and recognizing outstanding accomplishments",
+    "breadcrumb": {
+      "home": "Home",
+      "current": "School Awards"
+    },
+    "badge": "Excellence in Education",
+    "mainTitle": "Our Journey of Success",
+    "mainDescription": "Sultan Zoy High School takes pride in the achievements of our institution. Each award represents dedication, hard work, and the pursuit of excellence.",
+    "filterByCategory": "Filter by Category",
+    "allCategories": "All Categories",
+    "showing": "Showing",
+    "achievement": "achievement",
+    "achievements": "achievements",
+    "noAchievements": "No achievements found",
+    "tryAdjusting": "Try adjusting your filters to see more results.",
+    "cta": {
+      "title": "Be Part of Our Success Story",
+      "description": "Join Sultan Zoy High School and unlock your potential. Together, we can achieve greatness.",
+      "button": "Apply for Admission"
+    }
+  },
+  "studentAwards": {
+    "pageTitle": "Student Awards & Achievements",
+    "pageSubtitle": "Celebrating the outstanding accomplishments and talents of our exceptional students",
+    "breadcrumb": {
+      "home": "Home",
+      "current": "Student Awards"
+    },
+    "badge": "Student Excellence",
+    "mainTitle": "Celebrating Student Success",
+    "mainDescription": "Our students are the pride of Sultan Zoy High School. Each achievement showcases their dedication, talent, and commitment to excellence.",
+    "filterByCategory": "Filter by Category",
+    "allCategories": "All Categories",
+    "showing": "Showing",
+    "achievement": "achievement",
+    "achievements": "achievements",
+    "noAchievements": "No achievements found",
+    "tryAdjusting": "Try adjusting your filters to see more results.",
+    "cta": {
+      "title": "Be Part of Our Success Story",
+      "description": "Join Sultan Zoy High School and unlock your potential. Together, we can achieve greatness.",
+      "button": "Apply for Admission"
+    }
+  },
+  
+
+  "stats": {
+    "sectionLabel": "Awards and Achievements Statistics",
+    "totalAwards": "Total Awards",
+    "nationalRecognitions": "National Recognitions",
+    "internationalAwards": "International Awards",
+    "studentAchievers": "Student Achievers"
+  
+},
+
+  "hallOfFame": {
+    "pageTitle": "Hall of Fame",
+    "pageSubtitle": "Honoring Excellence and Achievement",
+    "description": "Celebrating the outstanding achievements of our distinguished students and dedicated teachers who have made exceptional contributions to Sultan Zoy High School and beyond. Their dedication, innovation, and excellence continue to inspire our entire community.",
+    "searchLabel": "Search by Name",
+    "searchPlaceholder": "Enter name...",
+    "filterByYear": "Filter by Year",
+    "allYears": "All Years",
+    "showingResults": "Showing {{count}} of {{total}} honorees",
+    "noResults": "No Results Found",
+    "noResultsDesc": "Try adjusting your search or filter criteria",
+    "type": {
+      "student": "Student",
+      "teacher": "Teacher"
+    }
+    
+  },
+
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We're here to help and answer any questions you might have. We look forward to hearing from you!",
+    "info": {
+      "address": {
+        "title": "Visit Us",
+        "line1": "Karte-4, District 3",
+        "line2": "Kabul, Afghanistan"
+      },
+      "phone": {
+        "title": "Call Us",
+        "main": "Main: +93 (0) 700 123 456",
+        "fax": "Fax: +93 (0) 700 123 460"
+      },
+      "email": {
+        "title": "Email Us",
+        "info": "info@sultanzoy.edu",
+        "support": "support@sultanzoy.edu"
+      }
+    },
+    "hours": {
+      "title": "Office Hours",
+      "schoolDays": "School Days (Saturday - Wednesday)",
+      "classes": "Classes: 8:00 AM - 3:00 PM",
+      "office": "Office: 8:00 AM - 4:00 PM",
+      "weekends": "Weekends (Thursday - Friday)",
+      "closed": "Closed",
+      "emergency": "Emergency contact available via email"
+    },
+    "school": {
+      "title": "Find Our School",
+      "description": "Located in the heart of Kabul, our campus is easily accessible and features modern educational facilities.",
+      "fullAddress": "Complete Address",
+      "addressLine1": "Sultan Zoy High School",
+      "addressLine2": "Karte-4, District 3",
+      "addressLine3": "Kabul, Afghanistan",
+      "directions": {
+        "title": "How to Get Here",
+        "step1": "From Kabul city center, head towards District 3",
+        "step2": "Look for the Karte-4 neighborhood landmarks",
+        "step3": "Our school building is marked with clear signage"
+      },
+      "landmarks": {
+        "title": "Nearby Landmarks",
+        "description": "Near the main district market and community center. The school is well-known in the area, and locals can provide directions."
+      },
+      "mapTitle": "Sultan Zoy High School Location Map"
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "subtitle": "Fill out the form below and we'll get back to you as soon as possible",
+      "successMessage": "Your message has been sent successfully! We'll get back to you soon.",
+      "errorMessage": "Failed to send message. Please try again later.",
+      "submitting": "Sending...",
+      "submit": "Send Message",
+       "validation": {
+        "name": {
+          "min": "Name must be at least 2 characters",
+          "max": "Name is too long"
+        },
+        "email": {
+          "invalid": "Please enter a valid email address"
+        },
+        "phone": {
+          "min": "Please enter a valid phone number"
+        },
+        "message": {
+          "min": "Message must be at least 10 characters",
+          "max": "Message is too long"
+        }
+      },
+      "fields": {
+        "name": {
+          "label": "Full Name",
+          "placeholder": "John Doe"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "john@example.com"
+        },
+        "phone": {
+          "label": "Phone Number (Optional)",
+          "placeholder": "+93 700 123 456"
+        },
+        "message": {
+          "label": "Your Message",
+          "placeholder": "Tell us how we can help you..."
+        }
+      }
+    }
+  },
+
+
+
+   "security": {
+    "hero": {
+      "title": "Security & Privacy Policy",
+      "subtitle": "Your trust is our foundation. Learn how Sultan Zoy High School protects your data and ensures privacy for all members of our community.",
+      "lastUpdated": "Last Updated: December 20, 2025"
+    },
+    "commitment": {
+      "title": "Our Commitment to You",
+      "p1": "At Sultan Zoy High School, we understand that protecting the privacy and security of our students, parents, and staff is paramount. This policy outlines our commitment to safeguarding your personal information and maintaining transparency about our data practices.",
+      "p2": "We comply with all applicable data protection laws and regulations, including GDPR, COPPA, and FERPA, and we continuously update our practices to meet the highest standards of data protection."
+    },
+    "featuresSection": {
+      "title": "How We Protect Your Data",
+      "subtitle": "We employ multiple layers of security to ensure your information remains safe and confidential."
+    },
+    "features": {
+      "encryption": {
+        "title": "End-to-End Encryption",
+        "description": "All data transmitted between your device and our servers is protected with industry-standard SSL/TLS encryption."
+      },
+      "storage": {
+        "title": "Secure Data Storage",
+        "description": "Student and staff data is stored in secure, encrypted databases with regular backups and disaster recovery protocols."
+      },
+      "access": {
+        "title": "Access Control",
+        "description": "Role-based access ensures that users only see information relevant to their role (student, parent, teacher, admin)."
+      },
+      "privacy": {
+        "title": "Privacy Protection",
+        "description": "We comply with international data protection regulations including GDPR and ensure student privacy is maintained."
+      },
+      "audit": {
+        "title": "Regular Audits",
+        "description": "Our systems undergo regular security audits and penetration testing to identify and fix vulnerabilities."
+      },
+      "monitoring": {
+        "title": "24/7 Monitoring",
+        "description": "Continuous monitoring of our systems ensures rapid detection and response to any security incidents."
+      }
+    },
+    "notice": {
+      "title": "Important Notice",
+      "description": "This privacy policy applies to the Sultan Zoy High School website and related digital platforms. By using our services, you acknowledge that you have read and understood this policy. If you do not agree with our practices, please do not use our services. For students under 13, parental consent is required for platform usage."
+    }
+  },
+
+
+
+
+  "feedback": {
+    "title": "We Value Your Feedback",
+    "subtitle": "Help us improve by sharing your experience with us.",
+    "success": "Thank you! Your feedback has been submitted successfully.",
+    "error": "Something went wrong. Please try again.",
+    "submitting": "Submitting...",
+    "submit": "Send Feedback",
+    "validation": {
+      "name": "Name must be at least 2 characters.",
+      "email": "Please enter a valid email address.",
+      "rating": "Please select a rating.",
+      "message": "Message must be at least 10 characters."
+    },
+    "fields": {
+      "name": {
+        "label": "Full Name",
+        "placeholder": "Enter your name"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "Enter your email"
+      },
+      "rating": {
+        "label": "Overall Rating",
+        "placeholder": "Select a rating"
+      },
+      "message": {
+        "label": "Your Feedback",
+        "placeholder": "Write your feedback here..."
+      }
+    }
+  }
+
+  
 
 }
 

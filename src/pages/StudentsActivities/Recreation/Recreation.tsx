@@ -42,7 +42,7 @@ export default function RecreationalActivities() {
             path: "",
           },
         ]}
-        image="images/slide1.jpg"
+        image="images/recrish.jpeg"
         subtitle={t("recreation.hero.subtitle")}
         title={t("recreation.hero.title")}
       />

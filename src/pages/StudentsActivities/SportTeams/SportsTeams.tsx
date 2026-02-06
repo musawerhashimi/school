@@ -30,7 +30,7 @@ export default function SportsTeamsPage() {
         ]}
         title={t("sportsTeams.pageTitle")}
         subtitle={t("sportsTeams.pageDescription")}
-        image="images/slide4.jpg"
+        image="images/sport.jpeg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

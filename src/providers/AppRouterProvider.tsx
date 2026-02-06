@@ -8,7 +8,6 @@ import Home from "../pages/Home/Home";
 import NotFoundPage from "../pages/PageNotFounded";
 import About from "../pages/About/About";
 import AcademicPrograms from "../pages/Academic/AcademicProgram/AcademicPrograms";
-import AwardsAndAchievements from "../pages/Achievements/AwardsAndAchievements";
 import ContactUs from "../pages/Contact/ContactUs";
 import Gallery from "../pages/Media/Gallery/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
@@ -34,6 +33,11 @@ import InternshipsPage from "../pages/Careers/Interchip/InternshipsPage";
 import CommunitySupport from "../pages/Community/CommunitySupport";
 import CharityEvents from "../pages/Community/Charityevents";
 import ParentInvolvementPage from "../pages/Community/Parents";
+import AlumniPage from "../pages/Community/AluminiPage";
+import SchoolAwards from "../pages/Achievements/Schoolawards";
+import StudentAwards from "../pages/Achievements/Studentawards";
+import HallOfFame from "../pages/Achievements/HallOfFame";
+import FeedbackForm from "../pages/Contact/FeedbackForm";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -63,10 +67,7 @@ function AppRouterProvider() {
         { path: "/gallery", element: <Gallery /> },
         { path: "/team", element: <TeacherList /> },
         { path: "/team/:id", element: <TeamProfilePage /> },
-        {
-          path: "/awards-and-achievements",
-          element: <AwardsAndAchievements />,
-        },
+
         { path: "/testimonials", element: <Testimonials /> },
         { path: "/careers", element: <Careers /> },
         { path: "/security-privacy-page", element: <SecurityPrivacyPage /> },
@@ -95,6 +96,11 @@ function AppRouterProvider() {
         { path: "/community-support", element: <CommunitySupport /> },
         { path: "/charity-events", element: <CharityEvents /> },
         { path: "/parent-involvement", element: <ParentInvolvementPage /> },
+        { path: "/alumni-relations", element: <AlumniPage /> },
+        { path: "/school-awards", element: <SchoolAwards /> },
+        { path: "/student-awards", element: <StudentAwards /> },
+        { path: "/hallof-fame", element: <HallOfFame /> },
+        { path: "/feedback-form", element: <FeedbackForm /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users

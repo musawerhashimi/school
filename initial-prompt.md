@@ -535,12 +535,12 @@ Recommended Sections for the School Website (Sultan Zoy High School)
 
 37. Alumni Relations
 
+- list of limit alumni student for showing with small info about him
 - Profiles and updates of alumni and graduates.
-- Organizing alumni meetings and events.
 
 right now i have completed the Home, About, Academic Programs, News And Events, Contact Us, Gallery, teacher profile, Awards and achievements and testimonials pages and have these plus other components.
 Navbar, Footer, CTASection, PageHeader and others which can be imported from components/ or components/layout/
 
-now i want you to make the Parent Involvement section good.
+now i want you to make the Hall of Fame section good.
 
 if you have any question or do not understand any part, tell me, if no then go.

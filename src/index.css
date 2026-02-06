@@ -158,13 +158,17 @@ body {
   background: var(--color-text-secondary);
 }
 
+
+
+
+
 .scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+  display: none;  /* Safari and Chrome */
 }
 
 /* ===============================

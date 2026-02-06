@@ -64,7 +64,7 @@ const CompetitionsContests: React.FC = () => {
             path: "/competitions",
           },
         ]}
-        image={"images/slide3.jpg"}
+        image={"images/commp.jpeg"}
       />
 
       {/* Main Content */}
