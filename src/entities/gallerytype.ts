@@ -14,7 +14,6 @@ export interface GalleryItem {
   category: number;
   date: string;
   photographer?: string;
-  featured?: boolean;
 }
 
 export interface GalleryCategory {

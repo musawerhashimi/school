@@ -1,5 +1,3 @@
-// src/types/sportsTeams.types.ts
-
 export interface SportCategory {
   id: string;
   name: {

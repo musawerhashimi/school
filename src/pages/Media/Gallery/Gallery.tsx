@@ -149,7 +149,6 @@ export default function Gallery() {
                 <GalleryCard
                   key={item.id}
                   item={item}
-                  featured={item.featured && selectedCategory === "all"}
                   onClick={() => setSelectedItem(item)}
                   index={index}
                   currentLang={currentLang}

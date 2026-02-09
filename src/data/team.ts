@@ -1,0 +1,302 @@
+import type { Department, TeamMember } from "../entities/Teams";
+
+export const departments: Department[] = [
+  {
+    id: 1,
+    name: { en: "Computer Science", da: "علوم کامپیوتر", pa: "کمپیوټر ساینس" },
+  },
+  { id: 2, name: { en: "Mathematics", da: "ریاضیات", pa: "ریاضیات" } },
+  { id: 3, name: { en: "Physics", da: "فیزیک", pa: "فزیک" } },
+];
+
+export const teamMembers: TeamMember[] = [
+  {
+    id: 1,
+    name: "Alice Johnson",
+    role: { en: "Senior Lecturer", da: "استاد ارشد", pa: "سینئر ښوونکی" },
+    image: "httpa://randomuser.me/api/portraits/women/1.jpg",
+    department_id: 1,
+    email: "alice.johnson@example.com",
+    experience: {
+      en: "10 years in software engineering",
+      da: "۱۰ سال تجربه در مهندسی نرم‌افزار",
+      pa: "۱۰ کاله تجربه په سافټویر انجینري کې",
+    },
+    phone: "+1234567890",
+    joinedDate: "2015-08-01",
+    bio: {
+      en: "Passionate about teaching AI and web development.",
+      da: "علاقمند به تدریس هوش مصنوعی و توسعه وب.",
+      pa: "په AI او ویب پرمختګ کې علاقه مند دی.",
+    },
+    education: [
+      {
+        en: "MSc in Computer Science",
+        da: "کارشناسی ارشد علوم کامپیوتر",
+        pa: "ماسټر په کمپیوټر ساینس کې",
+      },
+    ],
+    type: "teacher",
+    subjects: ["Artificial Intelligence", "Web Development"],
+  },
+  {
+    id: 2,
+    name: "Bob Smith",
+    role: { en: "Lecturer", da: "استاد", pa: "ښوونکی" },
+    image: "httpa://randomuser.me/api/portraits/men/2.jpg",
+    department_id: 2,
+    email: "bob.smith@example.com",
+    experience: {
+      en: "5 years in applied mathematics",
+      da: "۵ سال تجربه در ریاضیات کاربردی",
+      pa: "۵ کاله تجربه په تطبیقي ریاضیات کې",
+    },
+    phone: "+1234567891",
+    joinedDate: "2018-02-15",
+    bio: {
+      en: "Specializes in probability and statistics.",
+      da: "تخصص در احتمال و آمار.",
+      pa: "په احتمال او احصایې کې تخصص لري.",
+    },
+    education: [
+      {
+        en: "PhD in Mathematics",
+        da: "دکترا در ریاضیات",
+        pa: "پی‌اچ‌دی په ریاضیاتو کې",
+      },
+    ],
+    type: "teacher",
+    subjects: ["Probability", "Statistics"],
+  },
+  {
+    id: 3,
+    name: "Carol White",
+    role: {
+      en: "Assistant Professor",
+      da: "استاد مساعد",
+      pa: "مساعد پروفیسور",
+    },
+    image: "httpa://randomuser.me/api/portraits/women/3.jpg",
+    department_id: 3,
+    email: "carol.white@example.com",
+    experience: {
+      en: "7 years in experimental physics",
+      da: "۷ سال تجربه در فیزیک تجربی",
+      pa: "۷ کاله تجربه په تجربوي فزیک کې",
+    },
+    phone: "+1234567892",
+    joinedDate: "2017-09-01",
+    bio: {
+      en: "Focus on quantum mechanics and optics.",
+      da: "تمرکز بر مکانیک کوانتومی و اپتیک.",
+      pa: "تمرکز په کوانتم میخانیک او اپټیکس کې دی.",
+    },
+    education: [
+      { en: "PhD in Physics", da: "دکترا در فیزیک", pa: "پی‌اچ‌دی په فزیک کې" },
+    ],
+    type: "teacher",
+    subjects: ["Quantum Mechanics", "Optics"],
+  },
+  {
+    id: 4,
+    name: "David Brown",
+    role: { en: "Senior Lecturer", da: "استاد ارشد", pa: "سینئر ښوونکی" },
+    image: "httpa://randomuser.me/api/portraits/men/4.jpg",
+    department_id: 1,
+    email: "david.brown@example.com",
+    experience: {
+      en: "12 years in software architecture",
+      da: "۱۲ سال تجربه در معماری نرم‌افزار",
+      pa: "۱۲ کاله تجربه په سافټویر ارکیټیکچر کې",
+    },
+    phone: "+1234567893",
+    joinedDate: "2012-03-20",
+    bio: {
+      en: "Loves teaching scalable systems and cloud computing.",
+      da: "عاشق تدریس سیستم‌های مقیاس‌پذیر و محاسبات ابری.",
+      pa: "په مقیاس وړ سیستمونو او کلاوډ کمپیوټینګ کې مینه لري.",
+    },
+    education: [
+      {
+        en: "MSc in Software Engineering",
+        da: "کارشناسی ارشد مهندسی نرم‌افزار",
+        pa: "ماسټر په سافټویر انجینري کې",
+      },
+    ],
+    type: "teacher",
+    subjects: ["Cloud Computing", "Software Architecture"],
+  },
+  {
+    id: 5,
+    name: "Eve Davis",
+    role: { en: "Lecturer", da: "استاد", pa: "ښوونکی" },
+    image: "httpa://randomuser.me/api/portraits/women/5.jpg",
+    department_id: 2,
+    email: "eve.davis@example.com",
+    experience: {
+      en: "4 years in applied mathematics",
+      da: "۴ سال تجربه در ریاضیات کاربردی",
+      pa: "۴ کاله تجربه په تطبیقي ریاضیات کې",
+    },
+    phone: "+1234567894",
+    joinedDate: "2019-06-10",
+    bio: {
+      en: "Enjoys teaching calculus and linear algebra.",
+      da: "از تدریس حساب دیفرانسیل و جبر خطی لذت می‌برد.",
+      pa: "په کلسولس او لینیر الجبرا کې خوښي لري.",
+    },
+    education: [
+      {
+        en: "MSc in Mathematics",
+        da: "کارشناسی ارشد ریاضیات",
+        pa: "ماسټر په ریاضیاتو کې",
+      },
+    ],
+    type: "teacher",
+    subjects: ["Calculus", "Linear Algebra"],
+  },
+  {
+    id: 6,
+    name: "Frank Green",
+    role: { en: "Accountant", da: "حسابدار", pa: "محاسب" },
+    image: "httpa://randomuser.me/api/portraits/men/6.jpg",
+    department_id: 1,
+    email: "frank.green@example.com",
+    experience: {
+      en: "6 years in finance",
+      da: "۶ سال تجربه در امور مالی",
+      pa: "۶ کاله تجربه په مالي چارو کې",
+    },
+    phone: "+1234567895",
+    joinedDate: "2016-11-01",
+    bio: {
+      en: "Handles all financial operations for the department.",
+      da: "تمام عملیات مالی بخش را مدیریت می‌کند.",
+      pa: "ټولې مالي چارې د څانګې لپاره اداره کوي.",
+    },
+    education: [
+      {
+        en: "BSc in Accounting",
+        da: "لیسانس حسابداری",
+        pa: "لیسانس په محاسبه کې",
+      },
+    ],
+    type: "staff",
+  },
+  {
+    id: 7,
+    name: "Grace Lee",
+    role: {
+      en: "Lab Technician",
+      da: "تکنسین آزمایشگاه",
+      pa: "لابراتوار تخنیکر",
+    },
+    image: "httpa://randomuser.me/api/portraits/women/7.jpg",
+    department_id: 3,
+    email: "grace.lee@example.com",
+    experience: {
+      en: "8 years in physics labs",
+      da: "۸ سال تجربه در آزمایشگاه فیزیک",
+      pa: "۸ کاله تجربه په فزیک لابراتوارونو کې",
+    },
+    phone: "+1234567896",
+    joinedDate: "2014-05-12",
+    bio: {
+      en: "Supports all experiments and maintains lab equipment.",
+      da: "از تمام آزمایش‌ها پشتیبانی می‌کند و تجهیزات آزمایشگاه را نگهداری می‌کند.",
+      pa: "ټولې تجربې ملاتړ کوي او د لابراتوار تجهیزات ساتي.",
+    },
+    education: [
+      { en: "BSc in Physics", da: "لیسانس فیزیک", pa: "لیسانس په فزیک کې" },
+    ],
+    type: "staff",
+  },
+  {
+    id: 8,
+    name: "Henry Adams",
+    role: { en: "Administrative Officer", da: "مسئول اداری", pa: "اداري افسر" },
+    image: "httpa://randomuser.me/api/portraits/men/8.jpg",
+    department_id: 2,
+    email: "henry.adams@example.com",
+    experience: {
+      en: "10 years in administration",
+      da: "۱۰ سال تجربه در امور اداری",
+      pa: "۱۰ کاله تجربه په ادارې چارو کې",
+    },
+    phone: "+1234567897",
+    joinedDate: "2010-01-05",
+    bio: {
+      en: "Manages departmental schedules and operations.",
+      da: "برنامه‌ها و عملیات بخش را مدیریت می‌کند.",
+      pa: "د څانګې مهال ویش او عملیات اداره کوي.",
+    },
+    education: [
+      {
+        en: "BBA in Management",
+        da: "لیسانس مدیریت",
+        pa: "لیسانس په مدیریت کې",
+      },
+    ],
+    type: "staff",
+  },
+  {
+    id: 9,
+    name: "Isabel Martinez",
+    role: {
+      en: "Library Assistant",
+      da: "دستیار کتابخانه",
+      pa: "د کتابتون معاون",
+    },
+    image: "httpa://randomuser.me/api/portraits/women/9.jpg",
+    department_id: 1,
+    email: "isabel.martinez@example.com",
+    experience: {
+      en: "3 years in library management",
+      da: "۳ سال تجربه در مدیریت کتابخانه",
+      pa: "۳ کاله تجربه په کتابتون مدیریت کې",
+    },
+    phone: "+1234567898",
+    joinedDate: "2020-09-01",
+    bio: {
+      en: "Assists students with resources and research.",
+      da: "به دانشجویان در استفاده از منابع و پژوهش کمک می‌کند.",
+      pa: "د زده کونکو سره د سرچینو او څیړنې په برخه کې مرسته کوي.",
+    },
+    education: [
+      {
+        en: "BSc in Library Science",
+        da: "لیسانس علوم کتابداری",
+        pa: "لیسانس په کتابتون ساینس کې",
+      },
+    ],
+    type: "staff",
+  },
+  {
+    id: 10,
+    name: "Jack Wilson",
+    role: { en: "Receptionist", da: "مسئول پذیرش", pa: "ریسپشنست" },
+    image: "httpa://randomuser.me/api/portraits/men/10.jpg",
+    department_id: 3,
+    email: "jack.wilson@example.com",
+    experience: {
+      en: "2 years in front desk operations",
+      da: "۲ سال تجربه در امور پذیرش",
+      pa: "۲ کاله تجربه په مخکینۍ ډیسک کې",
+    },
+    phone: "+1234567899",
+    joinedDate: "2021-03-10",
+    bio: {
+      en: "Welcomes visitors and handles inquiries.",
+      da: "از بازدیدکنندگان استقبال می‌کند و سوالات را پاسخ می‌دهد.",
+      pa: "مېلمنو ته ښه راغلاست وايي او پوښتنې حلوي.",
+    },
+    education: [
+      {
+        en: "Diploma in Office Management",
+        da: "دیپلم مدیریت اداری",
+        pa: "ډیپلوم په دفتر مدیریت کې",
+      },
+    ],
+    type: "staff",
+  },
+];

@@ -1,10 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { leadershipData } from "../../data/aboutPageData";
 import { Link } from "react-router-dom";
+import { teamMembers } from "../../data/team";
 
 export default function LeadershipSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language as "en" | "da" | "pa";
+
+  // Get only the last 6 members
+  const displayedMembers = teamMembers.slice(-6);
 
   return (
     <section className="py-10 bg-background">
@@ -18,9 +22,9 @@ export default function LeadershipSection() {
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {leadershipData.map((leader, index) => (
+          {displayedMembers.map((leader) => (
             <div
-              key={index}
+              key={leader.id}
               className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group"
             >
               <div className="relative h-64 overflow-hidden">
@@ -35,9 +39,11 @@ export default function LeadershipSection() {
                 <h3 className="text-xl font-bold text-text-primary mb-1">
                   {leader.name}
                 </h3>
-                <p className="text-primary font-semibold mb-3">{leader.role}</p>
+                <p className="text-primary font-semibold mb-3">
+                  {leader.role[currentLang]}
+                </p>
                 <p className="text-text-secondary text-sm leading-relaxed">
-                  {leader.bio}
+                  {leader.bio[currentLang]}
                 </p>
               </div>
             </div>

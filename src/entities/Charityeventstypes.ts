@@ -9,8 +9,6 @@ export interface MultiLangText {
 export interface CharityEvent {
   name: MultiLangText;
   date: string; // ISO format: YYYY-MM-DD
-  time: string; // Format: HH:MM AM/PM
-  location: MultiLangText;
   description: MultiLangText;
   purpose: MultiLangText;
   image: string;

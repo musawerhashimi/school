@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AppLayout from "../components/layout/AppLayout";
 
 import Testimonials from "../pages/Community/Testimonials";
 import Careers from "../pages/Careers/Careers";
@@ -38,6 +37,7 @@ import SchoolAwards from "../pages/Achievements/Schoolawards";
 import StudentAwards from "../pages/Achievements/Studentawards";
 import HallOfFame from "../pages/Achievements/HallOfFame";
 import FeedbackForm from "../pages/Contact/FeedbackForm";
+import AppLayout from "../components/layout/AppLayout";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([

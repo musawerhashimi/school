@@ -1,17 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { mockTeachers, mockStaff } from "../../../data/teachersdata";
+
 import TeamProfile from "./TeamProfile";
+import { teamMembers } from "../../../data/team";
+import { useTranslation } from "react-i18next";
 
 export default function TeamProfilePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
-  const member = [...mockTeachers, ...mockStaff].find((m) => m.id === id);
+  const { t } = useTranslation();
+  const member = [...teamMembers].find((m) => m.id === Number(id));
 
   if (!member) {
     return (
       <div className="min-h-screen flex items-center justify-center text-xl">
-        Member not found
+        {t("Member not found")}
       </div>
     );
   }

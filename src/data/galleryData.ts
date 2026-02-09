@@ -79,7 +79,6 @@ export const mockGalleryItems: GalleryItem[] = [
     category: 1,
     date: "2024-11-15",
     photographer: "John Doe",
-    featured: true,
   },
   {
     id: "2",
@@ -99,7 +98,6 @@ export const mockGalleryItems: GalleryItem[] = [
       "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400",
     category: 2,
     date: "2024-10-20",
-    featured: true,
   },
   {
     id: "3",
@@ -157,7 +155,6 @@ export const mockGalleryItems: GalleryItem[] = [
       "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400",
     category: 5,
     date: "2024-06-15",
-    featured: true,
   },
   {
     id: "6",

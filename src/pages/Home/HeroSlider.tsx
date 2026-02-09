@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import type { HomeSliderData } from "../../hooks/useHome";
+import { slides } from "../../data/home";
 
-export default function HeroSlider({ slides }: { slides: HomeSliderData[] }) {
-  const { t } = useTranslation();
+export default function HeroSlider() {
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language as "en" | "da" | "pa";
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -26,20 +27,20 @@ export default function HeroSlider({ slides }: { slides: HomeSliderData[] }) {
 
           <img
             src={slide.image}
-            alt={slide.title}
+            alt={slide.title[currentLang]}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 z-20 flex items-center">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
               <div className="max-w-2xl">
                 <h1 className="text-5xl md:text-7xl font-bold text-text-primary mb-4 animate-fade-in">
-                  {slide.title}
+                  {slide.title[currentLang]}
                 </h1>
                 <p className="text-2xl md:text-3xl text-accent font-semibold mb-4">
-                  {slide.subtitle}
+                  {slide.subtitle[currentLang]}
                 </p>
                 <p className="text-lg md:text-xl text-text-secondary mb-8">
-                  {slide.description}
+                  {slide.description[currentLang]}
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <a

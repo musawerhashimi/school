@@ -7,52 +7,66 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import TeamCardSkeleton from "./CardSkiltone";
-import { mockStaff, mockTeachers } from "../../../data/teachersdata";
+import { departments, teamMembers } from "../../../data/team";
+
 import TeamCard from "./TeacherCard";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "../../../components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
 
 export default function TeacherList() {
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language as "en" | "da" | "pa";
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isFilteringLoading, setIsFilteringLoading] = useState(false);
 
-  const allMembers = [...mockTeachers, ...mockStaff];
   type MainFilter = "all" | "teachers" | "staff";
-  type SubCategory = "all" | string;
+  type SubCategory = "all" | number;
 
   const [mainFilter, setMainFilter] = useState<MainFilter>("all");
   const [subCategory, setSubCategory] = useState<SubCategory>("all");
 
-  // Teacher departments
-  const teacherDepartments = [
-    "All",
-    ...Array.from(new Set(mockTeachers.map((t) => t.department))),
-  ];
+  // Get unique department IDs for teachers
+  const teacherDepartmentIds = Array.from(
+    new Set(
+      teamMembers
+        .filter((m) => m.type === "teacher")
+        .map((m) => m.department_id),
+    ),
+  );
 
-  // Staff departments
-  const staffDepartments = [
-    "All",
-    ...Array.from(new Set(mockStaff.map((s) => s.department))),
-  ];
+  // Get unique department IDs for staff
+  const staffDepartmentIds = Array.from(
+    new Set(
+      teamMembers.filter((m) => m.type === "staff").map((m) => m.department_id),
+    ),
+  );
 
   // Get current subcategories based on main filter
   const getSubCategories = () => {
-    if (mainFilter === "teachers") return teacherDepartments;
-    if (mainFilter === "staff") return staffDepartments;
-    return ["All"];
+    if (mainFilter === "teachers") return teacherDepartmentIds;
+    if (mainFilter === "staff") return staffDepartmentIds;
+    return [];
+  };
+
+  // Get department name by ID
+  const getDepartmentName = (deptId: number) => {
+    const dept = departments.find((d) => d.id === deptId);
+    return dept ? dept.name[currentLang] : `Department ${deptId}`;
   };
 
   // Filter members
-  const filteredMembers = allMembers.filter((member) => {
-    // Check if member has subjects (teachers) or not (staff)
+  const filteredMembers = teamMembers.filter((member) => {
     const isTeacher = member.type === "teacher";
 
     const matchesSearch =
       member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      member.role[currentLang]
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (isTeacher &&
         member.subjects.some((s) =>
           s.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -64,18 +78,18 @@ export default function TeacherList() {
       (mainFilter === "staff" && member.type === "staff");
 
     const matchesSubCategory =
-      subCategory === "all" ||
-      subCategory === "All" ||
-      member.department === subCategory;
+      subCategory === "all" || member.department_id === subCategory;
 
     return matchesSearch && matchesMainFilter && matchesSubCategory;
   });
+
   const navigate = useNavigate();
+
   // Initial load
   useEffect(() => {
     setTimeout(() => setIsLoading(false), 1500);
   }, []);
-  const { t } = useTranslation();
+
   const handleFilterChange = (filter: MainFilter) => {
     setIsFilteringLoading(true);
     setMainFilter(filter);
@@ -98,11 +112,10 @@ export default function TeacherList() {
         image="images/slide2.jpg"
         breadcrumb={[
           { name: t("about.page.breadcrumb.home"), path: "/" },
-          { name: t("about.page.breadcrumb.about"), path: "/about" },
           { name: t("about.page.breadcrumb.teacher"), path: "" },
         ]}
       />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Advanced Filters */}
         <div className="mb-8 space-y-6">
           {/* Search */}
@@ -128,7 +141,7 @@ export default function TeacherList() {
               }`}
             >
               <Users className="w-5 h-5" />
-              All Members
+              {t("All Members")}
             </button>
             <button
               onClick={() => handleFilterChange("teachers")}
@@ -139,7 +152,7 @@ export default function TeacherList() {
               }`}
             >
               <GraduationCap className="w-5 h-5" />
-              Teachers
+              {t("Teachers")}
             </button>
             <button
               onClick={() => handleFilterChange("staff")}
@@ -150,23 +163,27 @@ export default function TeacherList() {
               }`}
             >
               <Briefcase className="w-5 h-5" />
-              Staff
+              {t("Staff")}
             </button>
             {/* Subcategory Dropdown */}
-            {mainFilter !== "all" && (
+            {mainFilter !== "all" && getSubCategories().length > 0 && (
               <div className="relative">
                 <select
                   value={subCategory}
-                  onChange={(e) => handleSubCategoryChange(e.target.value)}
+                  onChange={(e) =>
+                    handleSubCategoryChange(
+                      e.target.value === "all" ? "all" : Number(e.target.value),
+                    )
+                  }
                   className="w-full md:w-64 pl-4 pr-10 py-3.5 bg-card border-2 border-border rounded-xl text-text-primary font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all appearance-none cursor-pointer"
                 >
-                  {getSubCategories().map((cat) => (
-                    <option key={cat} value={cat === "All" ? "all" : cat}>
-                      {cat === "All"
-                        ? `All ${
-                            mainFilter === "teachers" ? "Teachers" : "Stuff"
-                          }`
-                        : cat}
+                  <option value="all">
+                    {t("All")}{" "}
+                    {mainFilter === "teachers" ? t("Teachers") : t("Staff")}
+                  </option>
+                  {getSubCategories().map((deptId) => (
+                    <option key={deptId} value={deptId}>
+                      {getDepartmentName(deptId)}
                     </option>
                   ))}
                 </select>
@@ -179,15 +196,15 @@ export default function TeacherList() {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-text-secondary text-lg">
-            Showing{" "}
+            {t("Showing")}{" "}
             <span className="font-bold text-primary text-xl">
               {filteredMembers.length}
             </span>{" "}
             {mainFilter === "teachers"
-              ? "teachers"
+              ? t("Teachers")
               : mainFilter === "staff"
-                ? "staff members"
-                : "team members"}
+                ? t("Staff")
+                : t("Team Members")}
           </p>
         </div>
 
@@ -214,10 +231,10 @@ export default function TeacherList() {
               <Search className="w-10 h-10 text-text-secondary" />
             </div>
             <h3 className="text-xl font-semibold text-text-primary mb-2">
-              No members found
+              {t("No members found")}
             </h3>
             <p className="text-text-secondary">
-              Try adjusting your search or filters
+              {t("Try adjusting your search or filters")}
             </p>
           </div>
         )}

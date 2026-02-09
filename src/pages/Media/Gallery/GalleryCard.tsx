@@ -12,7 +12,6 @@ interface GalleryCardProps {
 
 export default function GalleryCard({
   item,
-  featured,
   onClick,
   index,
   currentLang,
@@ -25,9 +24,7 @@ export default function GalleryCard({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-xl bg-card shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer ${
-        featured ? "sm:col-span-2 sm:row-span-2" : ""
-      }`}
+      className={`group relative overflow-hidden rounded-xl bg-card shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer`}
       onClick={onClick}
       style={{
         animationDelay: `${index * 50}ms`,

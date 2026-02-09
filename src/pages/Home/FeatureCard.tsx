@@ -1,14 +1,15 @@
 import type { IconType } from "react-icons";
+interface FutureCardInter {
+  icon: IconType;
+  title: string;
+  description: string;
+}
 
 export default function FeatureCard({
   icon: Icon,
   title,
   description,
-}: {
-  icon: IconType;
-  title: string;
-  description: string;
-}) {
+}: FutureCardInter) {
   return (
     <div className="bg-card border border-border rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
       <div className="w-14 h-14 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">

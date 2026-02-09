@@ -8,12 +8,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د ژمي د تودوخې کمپاین",
     },
     date: "2026-03-15",
-    time: "10:00 AM - 2:00 PM",
-    location: {
-      en: "School Main Auditorium, Kabul",
-      da: "تالار اصلی مکتب، کابل",
-      pa: "د ښوونځي اصلي تالار، کابل",
-    },
+
     description: {
       en: "Join us for our annual winter clothing drive to help students and families in need. We'll be collecting warm clothes, blankets, and winter essentials to distribute to underprivileged families in our community.",
       da: "به ما در کمپاین سالانه جمع‌آوری لباس‌های زمستانی بپیوندید تا به دانش‌آموزان و خانواده‌های نیازمند کمک کنیم. ما لباس‌های گرم، پتو و مایحتاج زمستانی را جمع‌آوری کرده و به خانواده‌های کم‌درآمد جامعه توزیع می‌کنیم.",
@@ -34,12 +29,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د ټولو لپاره د زده کړې د مالي مرستو راټولول",
     },
     date: "2026-04-20",
-    time: "3:00 PM - 6:00 PM",
-    location: {
-      en: "Sultan Zoy High School Campus",
-      da: "محوطه لیسه سلطان زوی",
-      pa: "د سلطان زوی لیسې کمپس",
-    },
+
     description: {
       en: "A special fundraising event to support our scholarship program for talented students from low-income families. All proceeds will go directly towards tuition fees, books, and educational materials.",
       da: "رویداد ویژه جمع‌آوری کمک‌های مالی برای حمایت از برنامه بورسیه ما برای دانش‌آموزان با استعداد از خانواده‌های کم‌درآمد. تمام درآمد مستقیماً به شهریه، کتاب‌ها و مواد آموزشی اختصاص می‌یابد.",
@@ -60,12 +50,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د ټولنې روغتیایي میله",
     },
     date: "2026-05-10",
-    time: "9:00 AM - 4:00 PM",
-    location: {
-      en: "School Sports Ground",
-      da: "میدان ورزشی مکتب",
-      pa: "د ښوونځي سپورت میدان",
-    },
+
     description: {
       en: "Free health screenings, vaccinations, and medical consultations for students and their families. Partnering with local hospitals and health organizations to provide comprehensive healthcare services.",
       da: "معاینات صحی رایگان، واکسیناسیون و مشاوره‌های طبی برای دانش‌آموزان و خانواده‌هایشان. همکاری با بیمارستان‌ها و سازمان‌های صحی محلی برای ارائه خدمات جامع صحی.",
@@ -86,12 +71,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د رمضان د خواړو ویش",
     },
     date: "2026-02-25",
-    time: "4:00 PM - 7:00 PM",
-    location: {
-      en: "School Community Center",
-      da: "مرکز اجتماعی مکتب",
-      pa: "د ښوونځي ټولنیز مرکز",
-    },
+
     description: {
       en: "Annual Ramadan charity event distributing food packages to families in need. Each package contains essential food items for iftar and suhoor throughout the holy month.",
       da: "رویداد سالانه خیریه ماه رمضان که بسته‌های غذایی را به خانواده‌های نیازمند توزیع می‌کند. هر بسته حاوی اقلام غذایی ضروری برای افطار و سحری در طول ماه مبارک است.",
@@ -112,12 +92,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د ښوونځي اړتیاوو کمپاین",
     },
     date: "2025-12-15",
-    time: "8:00 AM - 12:00 PM",
-    location: {
-      en: "School Library",
-      da: "کتابخانه مکتب",
-      pa: "د ښوونځي کتابتون",
-    },
+
     description: {
       en: "Collecting and distributing school supplies including notebooks, pens, backpacks, and other essential materials to students from economically disadvantaged backgrounds.",
       da: "جمع‌آوری و توزیع لوازم مدرسه شامل دفترها، قلم‌ها، کیف‌های مدرسه و سایر مواد ضروری به دانش‌آموزان از خانواده‌های محروم اقتصادی.",
@@ -138,12 +113,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د پاکو اوبو نوښت پیل",
     },
     date: "2025-11-08",
-    time: "10:00 AM - 1:00 PM",
-    location: {
-      en: "School Main Hall",
-      da: "تالار اصلی مکتب",
-      pa: "د ښوونځي اصلي تالار",
-    },
+
     description: {
       en: "Launching a community initiative to provide clean drinking water to rural schools and villages. This event marks the beginning of our water purification and distribution program.",
       da: "راه‌اندازی ابتکار اجتماعی برای تأمین آب آشامیدنی پاک به مکاتب و روستاهای دورافتاده. این رویداد آغاز برنامه تصفیه و توزیع آب ما است.",
@@ -164,12 +134,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د ځوانانو د مشرتابه غونډې خیرات",
     },
     date: "2025-10-22",
-    time: "2:00 PM - 6:00 PM",
-    location: {
-      en: "School Conference Room",
-      da: "اتاق کنفرانس مکتب",
-      pa: "د ښوونځي کنفرانس خونه",
-    },
+
     description: {
       en: "A charity event combined with leadership training for underprivileged youth. Proceeds support leadership development programs and mentorship initiatives for disadvantaged students.",
       da: "رویداد خیریه همراه با آموزش رهبری برای جوانان محروم. درآمد از برنامه‌های توسعه رهبری و ابتکارات مربیگری برای دانش‌آموزان محروم حمایت می‌کند.",
@@ -190,12 +155,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د یتیمانو د ملاتړ پروګرام جشن",
     },
     date: "2025-09-18",
-    time: "5:00 PM - 9:00 PM",
-    location: {
-      en: "Kabul Grand Hotel",
-      da: "هتل بزرگ کابل",
-      pa: "د کابل لوی هوټل",
-    },
+
     description: {
       en: "An elegant fundraising gala to support orphaned and vulnerable children in our community. The event features dinner, cultural performances, and fundraising activities to support our orphan care programs.",
       da: "یک جشن شیک جمع‌آوری کمک‌های مالی برای حمایت از کودکان یتیم و آسیب‌پذیر در جامعه ما. رویداد شامل شام، اجراهای فرهنگی و فعالیت‌های جمع‌آوری کمک مالی برای حمایت از برنامه‌های مراقبت از یتیمان است.",
@@ -216,12 +176,7 @@ export const charityEvents: CharityEvent[] = [
       pa: "د چاپیریال پاکولو کمپاین",
     },
     date: "2025-08-30",
-    time: "7:00 AM - 11:00 AM",
-    location: {
-      en: "Kabul River Banks and Parks",
-      da: "کناره رودخانه و پارک‌های کابل",
-      pa: "د کابل د سیند څنډې او پارکونه",
-    },
+
     description: {
       en: "Join our students and community volunteers in a massive environmental cleanup campaign. We'll be cleaning parks, riverbanks, and public spaces while raising awareness about environmental conservation.",
       da: "به دانش‌آموزان و داوطلبان اجتماعی ما در کمپاین گسترده پاکسازی محیط زیست بپیوندید. ما پارک‌ها، کناره رودخانه‌ها و فضاهای عمومی را پاک کرده و آگاهی درباره حفاظت محیط زیست را افزایش می‌دهیم.",

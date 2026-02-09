@@ -1,5 +1,7 @@
 import { GraduationCap, Briefcase } from "lucide-react";
-import type { TeamMember } from "../../../entities/teachers";
+import type { TeamMember } from "../../../entities/Teams";
+import { useTranslation } from "react-i18next";
+import { departments } from "../../../data/team";
 
 type TeamCardProps = {
   member: TeamMember;
@@ -8,8 +10,14 @@ type TeamCardProps = {
 
 // Team Card Component
 export default function TeamCard({ member, onClick }: TeamCardProps) {
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language as "en" | "da" | "pa";
   const isTeacher = member.type === "teacher";
-
+  // Get department name by ID
+  const getDepartmentName = (deptId: number) => {
+    const dept = departments.find((d) => d.id === deptId);
+    return dept ? dept.name[currentLang] : `Department ${deptId}`;
+  };
   return (
     <div
       onClick={onClick}
@@ -24,7 +32,7 @@ export default function TeamCard({ member, onClick }: TeamCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         <div className="absolute bottom-4 left-4 right-4">
           <h3 className="text-white font-bold text-xl mb-1">{member.name}</h3>
-          <p className="text-white/90 text-sm">{member.role}</p>
+          <p className="text-white/90 text-sm">{member.role[currentLang]}</p>
         </div>
         <div className="absolute top-4 right-4">
           <span
@@ -44,7 +52,9 @@ export default function TeamCard({ member, onClick }: TeamCardProps) {
           ) : (
             <Briefcase className="w-4 h-4" />
           )}
-          <span className="text-sm font-medium">{member.department}</span>
+          <span className="text-sm  font-medium">
+            {getDepartmentName(member.department_id)}
+          </span>
         </div>
 
         {isTeacher && member.subjects && (
@@ -70,12 +80,12 @@ export default function TeamCard({ member, onClick }: TeamCardProps) {
             <span className="truncate">{member.email}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span>{member.experience} experience</span>
+            <span>{member.experience[currentLang]}</span>
           </div>
         </div>
 
         <button className="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-colors">
-          View Profile
+          {t("View Profile")}
         </button>
       </div>
     </div>
