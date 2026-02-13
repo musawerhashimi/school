@@ -1210,6 +1210,214 @@
         "placeholder": "Write your feedback here..."
       }
     }
+  },
+
+  "academic": {
+    "header": {
+      "title": "Academic Programs",
+      "subtitle": "Comprehensive education programs designed to nurture excellence and foster holistic development"
+    },
+    "tabs": {
+      "programs": "Programs",
+      "schedules": "Class Schedules",
+      "exams": "Exam Timetable",
+      "resources": "Resources"
+    },
+    "programs": {
+      "section": {
+        "title": "Programs Offered",
+        "subtitle": "Explore our diverse range of academic programs."
+      },
+      "searchPlaceholder": "Search programs, subjects, or keywords...",
+      "noResults": "No programs found matching your search."
+    },
+     "detail": {
+      "back": "Back to Programs",
+      "featured": "Featured Program",
+      "gradeLevels": "Grade Levels",
+      "duration": "Duration",
+      "students": "Students",
+      "teachers": "Teachers",
+      "coreSubjects": "Core Subjects",
+      "highlights": "Program Highlights"
+    },
+     "schedules": {
+      "title": "Class Schedules",
+      "subtitle": "Regular class timings for all grade levels",
+      "class": "Class",
+      "schoolHours": "School Hours",
+      "totalPeriods": "Total Periods",
+      "periods": "Periods",
+      "numberOfClass": "Number of Class",
+      "viewDetail": "View Detailed Schedule"
+    },
+     "timetable": {
+      "title": "Class Timetables",
+      "subtitle": "View and download weekly schedules for all classes",
+      "class": "Class",
+      "classNotFound": "Class Not Found",
+      "noTimetableFor": "No timetables found for class",
+      "weeklySchedule": "Weekly Schedule",
+      "periodsDaily": "Periods Daily",
+      "downloadPdf": "Download PDF",
+      "generating": "Generating...",
+      "time": "Time",
+      "period": "Period",
+      "noClass": "No class",
+      "generatedOn": "Generated on",
+      "weeklyTimetable": "Weekly Timetable"
+    },
+     "exams": {
+      "title": "Examination Schedule",
+      "subtitle": "Important dates for all examinations in the academic year 2024-25",
+      "download": "Download Timetable",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "duration": "Duration",
+      "description": "Exam Description",
+      "guidelinesTitle": "Exam Guidelines",
+      "guideline1": "Students must arrive 15 minutes before the exam start time",
+      "guideline2": "Bring valid student ID card and admit card to the examination hall",
+      "guideline3": "Electronic devices are strictly prohibited in the exam hall",
+      "guideline4": "Results will be published within 2 weeks after exam completion"
+    },
+      "resources": {
+      "title": "Educational Resources",
+      "subtitle": "Download curriculum guides, syllabi, and important documents",
+      "download": "Download PDF",
+      "needMoreInfo": "Need More Information?",
+      "contactDescription": "Can't find what you're looking for? Our academic coordinators are here to help you with any questions about our programs, curriculum, or admissions.",
+      "contactOffice": "Contact Academic Office",
+      "requestBrochure": "Request Brochure"
+    },
+    "programCard": {
+      "grades": "Grades",
+      "students": "Students",
+      "teachers": "Teachers",
+      "explore_program": "Explore Program",
+      "view_details": "View Details"
+    }
+  },
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your account settings and preferences",
+    "personalInfo": "Personal Information",
+    "personalInfoSubtitle": "Update your personal details",
+    "security": "Security",
+    "securitySubtitle": "Update your password to keep your account secure",
+    "preferences": "Preferences",
+    "preferencesSubtitle": "Customize your experience",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "email": "Email",
+    "emailReadonly": "Contact admin to change email",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+93 70 000 0000",
+    "username": "Username",
+    "usernameReadonly": "Username cannot be changed",
+    "role": "Role",
+    "roleReadonly": "Contact admin to change role",
+    "updated": "Profile updated successfully",
+    "changePhoto": "Change Photo",
+    "deletePhoto": "Delete Photo",
+    "photoUploaded": "Photo uploaded successfully",
+    "photoDeleted": "Photo deleted successfully",
+    "invalidFileType": "Please select an image file",
+    "fileTooLarge": "File size must be less than 5MB",
+    "currentPasswordPlaceholder": "Enter current password",
+    "newPasswordPlaceholder": "Enter new password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "passwordHint": "Min 8 chars, include uppercase, lowercase, and number",
+    "preferencesUpdated": "Preferences updated successfully",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
   }
 
   

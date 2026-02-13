@@ -1,5 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { misRoutes } from "@mis/routes";
+import { AuthGuard } from "@/mis/providers";
+import {
+  LoginPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  VerifyEmailPage,
+} from "@/mis/modules/auth";
+
+
 import Testimonials from "../pages/Community/Testimonials";
 import Careers from "../pages/Careers/Careers";
 import SecurityPrivacyPage from "../pages/Contact/SecurityAndPrivacy";
@@ -104,6 +114,33 @@ function AppRouterProvider() {
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users
+    
+    
+    
+    // MIS Auth Routes (Public)
+    {
+      path: "/mis/auth/login",
+      element: <LoginPage />,
+    },
+    {
+      path: "/mis/auth/forgot-password",
+      element: <ForgotPasswordPage />,
+    },
+    {
+      path: "/mis/auth/reset-password",
+      element: <ResetPasswordPage />,
+    },
+    {
+      path: "/mis/auth/verify-email/:token",
+      element: <VerifyEmailPage />,
+    },
+    // Protected MIS Routes (Management Information System)
+    {
+      path: "/mis",
+      element: <AuthGuard>{misRoutes.element}</AuthGuard>,
+      children: misRoutes.children,
+    },
+    
   ]);
 
   return (

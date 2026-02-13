@@ -1,5 +1,5 @@
 {
-   "compilerOptions": {
+  "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -22,7 +22,36 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@mis/*": ["src/mis/*"],
+      "@mis-components/*": ["src/mis/components/*"],
+      "@auth/*": ["src/mis/modules/auth/*"],
+      "@students/*": ["src/mis/modules/students/*"],
+      "@academic/*": ["src/mis/modules/academic/*"],
+      "@staff/*": ["src/mis/modules/staff/*"],
+      "@teachers/*": ["src/mis/modules/teachers/*"],
+      "@attendance/*": ["src/mis/modules/attendance/*"],
+      "@grades/*": ["src/mis/modules/grades/*"],
+      "@classes/*": ["src/mis/modules/classes/*"],
+      "@parents/*": ["src/mis/modules/parents/*"],
+      "@fees/*": ["src/mis/modules/fees/*"],
+      "@library/*": ["src/mis/modules/library/*"],
+      "@mis-reports/*": ["src/mis/modules/reports/*"],
+      "@mis-settings/*": ["src/mis/modules/settings/*"],
+      "@mis-dashboard/*": ["src/mis/modules/dashboard/*"],
+      "@mis-services/*": ["src/mis/services/*"],
+      "@mis-hooks/*": ["src/mis/hooks/*"],
+      "@mis-entities/*": ["src/mis/entities/*"],
+      "@mis-data/*": ["src/mis/data/*"],
+      "@mis-lib/*": ["src/mis/lib/*"],
+      "@mis-providers/*": ["src/mis/providers/*"],
+      "@mis-stores/*": ["src/mis/stores/*"]
+    }
   },
-  "include": ["src", "vite-env.d.ts"]
+  "include": ["src"]
 }

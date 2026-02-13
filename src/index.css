@@ -117,6 +117,120 @@
   --color-danger: #F87171;
 }
 
+
+/* ===============================
+   THEME — MIS LIGHT MODE (Professional Blue/Indigo)
+   Overrides CMS colors when inside [data-section="mis"]
+================================ */
+
+[data-section="mis"] {
+  /* Brand - Override CMS colors */
+  --color-primary: #4F46E5;
+  --color-primary-dark: #3730A3;
+  --color-secondary: #06B6D4;
+  --color-accent: #F59E0B;
+
+  /* Layout */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-card: #FFFFFF;
+
+  /* Text */
+  --color-text-primary: #1E293B;
+  --color-text-secondary: #64748B;
+
+  /* Borders */
+  --color-border: #E2E8F0;
+
+  /* Muted / disabled */
+  --color-muted: #94A3B8;
+
+  /* Hover / active surfaces */
+  --color-surface-hover: #F1F5F9;
+
+  /* Focus / ring */
+  --color-focus: #4F46E5;
+
+  /* Status */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+
+  /* Soft status backgrounds */
+  --color-info-soft: #DBEAFE;
+  --color-success-soft: #D1FAE5;
+  --color-warning-soft: #FEF3C7;
+  --color-error-soft: #FEE2E2;
+
+  /* Destructive actions */
+  --color-danger: #EF4444;
+
+  /* MIS-specific sidebar colors */
+  --color-sidebar: #1E1B4B;
+  --color-sidebar-hover: #312E81;
+  --color-sidebar-text: #E0E7FF;
+  --color-sidebar-active: #4F46E5;
+}
+
+/* ===============================
+   THEME — MIS DARK MODE
+   When both [data-section="mis"] AND dark mode
+================================ */
+
+[data-section="mis"][data-theme="dark"],
+[data-theme="dark"] [data-section="mis"] {
+  /* Brand */
+  --color-primary: #818CF8;
+  --color-primary-dark: #6366F1;
+  --color-secondary: #22D3EE;
+  --color-accent: #FBBF24;
+
+  /* Layout */
+  --color-background: #0F172A;
+  --color-surface: #1E293B;
+  --color-card: #1E293B;
+
+  /* Text */
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+
+  /* Borders */
+  --color-border: #334155;
+
+  /* Muted / disabled */
+  --color-muted: #64748B;
+
+  /* Hover / active surfaces */
+  --color-surface-hover: #334155;
+
+  /* Focus / ring */
+  --color-focus: #818CF8;
+
+  /* Status */
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-error: #F87171;
+  --color-info: #60A5FA;
+
+  /* Soft status backgrounds */
+  --color-info-soft: #1E3A8A;
+  --color-success-soft: #064E3B;
+  --color-warning-soft: #78350F;
+  --color-error-soft: #7F1D1D;
+
+  /* Destructive actions */
+  --color-danger: #F87171;
+
+  /* MIS-specific sidebar colors */
+  --color-sidebar: #020617;
+  --color-sidebar-hover: #1E293B;
+  --color-sidebar-text: #CBD5E1;
+  --color-sidebar-active: #818CF8;
+}
+
+
+
 /* ===============================
    BASE STYLES
 ================================ */

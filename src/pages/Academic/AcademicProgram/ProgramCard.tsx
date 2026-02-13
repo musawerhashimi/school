@@ -9,6 +9,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import type { Program } from "../../../entities/program";
+import { useTranslation } from "react-i18next";
 
 export default function ProgramCard({
   program,
@@ -17,6 +18,7 @@ export default function ProgramCard({
   program: Program;
   onClick: () => void;
 }) {
+  const { t } = useTranslation();
   return (
     <div
       onClick={onClick}
@@ -122,7 +124,7 @@ export default function ProgramCard({
             <div className="relative z-10 flex flex-col items-center">
               <GraduationCap className="w-5 h-5 mb-1.5 text-primary transition-transform duration-300 group-hover/stat:scale-110" />
               <span className="text-xs font-bold uppercase tracking-wider opacity-60 mb-1">
-                Grades
+                {t("academic.programCard.grades")}
               </span>
               <span className="font-black text-base text-foreground">
                 {program.grades}
@@ -135,7 +137,7 @@ export default function ProgramCard({
             <div className="relative z-10 flex flex-col items-center">
               <Users className="w-5 h-5 mb-1.5 text-secondary transition-transform duration-300 group-hover/stat:scale-110" />
               <span className="text-xs font-bold uppercase tracking-wider opacity-60 mb-1">
-                Students
+                {t("academic.programCard.students")}
               </span>
               <span className="font-black text-base text-foreground">
                 {program.students}
@@ -148,7 +150,7 @@ export default function ProgramCard({
             <div className="relative z-10 flex flex-col items-center">
               <Award className="w-5 h-5 mb-1.5 text-accent transition-transform duration-300 group-hover/stat:scale-110" />
               <span className="text-xs font-bold uppercase tracking-wider opacity-60 mb-1">
-                Teachers
+                {t("academic.programCard.teachers")}
               </span>
               <span className="font-black text-base text-foreground">
                 {program.teachers}
@@ -160,10 +162,12 @@ export default function ProgramCard({
         {/* Enhanced CTA Button */}
         <div className="mt-6 pt-4 border-t-2 border-border flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-wider opacity-60">
-            Explore Program
+            {t("academic.programCard.explore_program")}
           </span>
           <button className="relative text-sm font-black flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground transition-all duration-300 group-hover:gap-3 overflow-hidden hover:shadow-lg">
-            <span className="relative z-10">View Details</span>
+            <span className="relative z-10">
+              {t("academic.programCard.view_details")}
+            </span>
             <ChevronRight className="w-4 h-4 relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
           </button>

@@ -1,0 +1,712 @@
+import { useState, useRef } from "react";
+import { Button, Card, CardContent, CardHeader, Modal } from "@/mis/components/ui";
+import { Badge, Spinner } from "@mis-components/ui";
+import {
+  CheckCircle2,
+  ClipboardList,
+  Clock,
+  FileText,
+  TrendingUp,
+  AlertCircle,
+  Upload,
+  X,
+  Send,
+  Paperclip,
+  Calendar,
+  BookOpen,
+  ArrowLeft,
+  Edit3,
+  Download,
+} from "lucide-react";
+import {
+  useStudentAssignments,
+  useStudentAssignmentStats,
+  useSubmitAssignment,
+} from "@/mis/modules/assignment/hooks/useAssignments";
+import { SUBMISSION_STATUS } from "@/mis/modules/assignment/constants";
+import type { StudentApiResponse } from "../../types";
+import type { StudentAssignment } from "@/mis/modules/assignment/types";
+import { format, isPast } from "date-fns";
+
+interface AssignmentTabProps {
+  student: StudentApiResponse;
+}
+
+type ViewMode = "list" | "detail";
+
+function AssignmentTab({ student }: AssignmentTabProps) {
+  // State
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [selectedAssignment, setSelectedAssignment] = useState<StudentAssignment | null>(null);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [submitContent, setSubmitContent] = useState("");
+  const [submitFile, setSubmitFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Fetch data
+  const { data: assignments, isLoading: isLoadingAssignments } =
+    useStudentAssignments(student.id);
+  const { data: stats, isLoading: isLoadingStats } = useStudentAssignmentStats(
+    student.id
+  );
+  const submitAssignment = useSubmitAssignment();
+
+  const isLoading = isLoadingAssignments || isLoadingStats;
+
+  // Calculate stats
+  const totalAssignments = stats?.total_assignments || assignments?.length || 0;
+  const gradedCount =
+    stats?.graded_count ||
+    assignments?.filter((a) => a.submission_status === "graded").length ||
+    0;
+  const pendingCount =
+    stats?.pending_count ||
+    assignments?.filter(
+      (a) => a.submission_status === "pending" || a.submission_status === "submitted"
+    ).length ||
+    0;
+  const averageScore =
+    stats?.average_percentage ||
+    (assignments?.filter((a) => a.percentage !== null).length
+      ? assignments
+          .filter((a) => a.percentage !== null)
+          .reduce((sum, a) => sum + (a.percentage || 0), 0) /
+        assignments.filter((a) => a.percentage !== null).length
+      : 0);
+
+  // Handle view assignment detail
+  const handleViewDetail = (assignment: StudentAssignment) => {
+    setSelectedAssignment(assignment);
+    setViewMode("detail");
+  };
+
+  // Handle back to list
+  const handleBackToList = () => {
+    setViewMode("list");
+    setSelectedAssignment(null);
+  };
+
+  // Handle open submit modal
+  const handleOpenSubmit = (assignment: StudentAssignment) => {
+    setSelectedAssignment(assignment);
+    setSubmitContent("");
+    setSubmitFile(null);
+    setShowSubmitModal(true);
+  };
+
+  // Handle file selection
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        alert("File size must be less than 10MB");
+        return;
+      }
+      setSubmitFile(file);
+    }
+  };
+
+  // Handle submit
+  const handleSubmit = async () => {
+    if (!selectedAssignment) return;
+    if (!submitContent.trim() && !submitFile) {
+      alert("Please provide content or attach a file");
+      return;
+    }
+
+    try {
+      await submitAssignment.mutateAsync({
+        studentId: student.id,
+        assignmentId: selectedAssignment.id,
+        content: submitContent.trim() || undefined,
+        attachment: submitFile || undefined,
+      });
+      setShowSubmitModal(false);
+      setSubmitContent("");
+      setSubmitFile(null);
+    } catch {
+      // Error handled by mutation
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Spinner size="lg" label="Loading assignments..." />
+      </div>
+    );
+  }
+
+  // Detail View
+  if (viewMode === "detail" && selectedAssignment) {
+    const dueDate = new Date(selectedAssignment.due_date);
+    const isOverdue = isPast(dueDate);
+    const canSubmit =
+      (selectedAssignment.submission_status === "pending" ||
+       selectedAssignment.submission_status === "returned") &&
+      selectedAssignment.status === "published";
+    const canEdit = canSubmit && !isOverdue;
+
+    return (
+      <div className="space-y-6">
+        {/* Back Button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          leftIcon={<ArrowLeft className="h-4 w-4" />}
+          onClick={handleBackToList}
+        >
+          Back to Assignments
+        </Button>
+
+        {/* Assignment Header */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <h2 className="text-xl font-bold text-text-primary">
+                    {selectedAssignment.title}
+                  </h2>
+                  <Badge variant={SUBMISSION_STATUS[selectedAssignment.submission_status].variant}>
+                    {selectedAssignment.submission_status_display}
+                  </Badge>
+                  {isOverdue && selectedAssignment.submission_status === "pending" && (
+                    <Badge variant="error">
+                      <AlertCircle className="h-3 w-3 mr-1" />
+                      Overdue
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-text-secondary">
+                  {selectedAssignment.assignment_type_display} • {selectedAssignment.subject_name}
+                </p>
+              </div>
+              {canSubmit && (
+                <Button
+                  variant="primary"
+                  leftIcon={<Send className="h-4 w-4" />}
+                  onClick={() => handleOpenSubmit(selectedAssignment)}
+                >
+                  {selectedAssignment.submission_status === "returned" ? "Resubmit" : "Submit Assignment"}
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Assignment Details */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Assignment Info */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Description */}
+            <Card>
+              <CardHeader title="Assignment Details" />
+              <CardContent className="p-6 space-y-4">
+                {selectedAssignment.description ? (
+                  <div>
+                    <h4 className="text-sm font-medium text-text-secondary mb-2">Description</h4>
+                    <div className="p-4 bg-bg-secondary rounded-lg">
+                      <p className="text-text-primary whitespace-pre-wrap">
+                        {selectedAssignment.description}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-text-secondary italic">No description provided</p>
+                )}
+
+                {/* Dates */}
+                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-info/10 rounded-lg">
+                      <Calendar className="h-5 w-5 text-info" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-text-secondary">Assigned Date</p>
+                      <p className="font-medium text-text-primary">
+                        {format(new Date(selectedAssignment.assigned_date), "MMMM d, yyyy")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg ${isOverdue ? "bg-error/10" : "bg-warning/10"}`}>
+                      <Clock className={`h-5 w-5 ${isOverdue ? "text-error" : "text-warning"}`} />
+                    </div>
+                    <div>
+                      <p className="text-xs text-text-secondary">Due Date</p>
+                      <p className={`font-medium ${isOverdue ? "text-error" : "text-text-primary"}`}>
+                        {format(dueDate, "MMMM d, yyyy")}
+                        {!isOverdue && selectedAssignment.days_until_due > 0 && (
+                          <span className="text-text-secondary text-sm ml-1">
+                            ({selectedAssignment.days_until_due} days left)
+                          </span>
+                        )}
+                        {isOverdue && (
+                          <span className="text-error text-sm ml-1">(Overdue)</span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Student Submission */}
+            <Card>
+              <CardHeader
+                title="Your Submission"
+                action={
+                  canEdit && selectedAssignment.submission_status !== "pending" && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      leftIcon={<Edit3 className="h-4 w-4" />}
+                      onClick={() => handleOpenSubmit(selectedAssignment)}
+                    >
+                      Edit Submission
+                    </Button>
+                  )
+                }
+              />
+              <CardContent className="p-6">
+                {selectedAssignment.submission_status === "pending" ? (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-warning/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Clock className="h-8 w-8 text-warning" />
+                    </div>
+                    <h4 className="text-lg font-medium text-text-primary mb-2">
+                      Not Submitted Yet
+                    </h4>
+                    <p className="text-text-secondary mb-4">
+                      {isOverdue
+                        ? "This assignment is overdue. Late submissions may have penalties."
+                        : `You have ${selectedAssignment.days_until_due} days to submit this assignment.`
+                      }
+                    </p>
+                    {canSubmit && (
+                      <Button
+                        variant="primary"
+                        leftIcon={<Send className="h-4 w-4" />}
+                        onClick={() => handleOpenSubmit(selectedAssignment)}
+                      >
+                        Submit Now
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {/* Submission Status */}
+                    <div className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-success" />
+                        <span className="font-medium text-text-primary">
+                          Submitted on {selectedAssignment.submitted_at
+                            ? format(new Date(selectedAssignment.submitted_at), "MMM d, yyyy 'at' h:mm a")
+                            : "Unknown"
+                          }
+                        </span>
+                      </div>
+                      {selectedAssignment.submission_status === "late" && (
+                        <Badge variant="error">Late Submission</Badge>
+                      )}
+                    </div>
+
+                    {/* Submission Content - This would need to be fetched from a separate endpoint */}
+                    {/* For now we show placeholder based on submission status */}
+                    <div className="p-4 border border-border rounded-lg">
+                      <h5 className="text-sm font-medium text-text-secondary mb-2">Submitted Content</h5>
+                      <p className="text-text-primary">
+                        {/* Content would be shown here if available */}
+                        Your submission has been received and is awaiting grading.
+                      </p>
+                    </div>
+
+                    {/* Returned for Revision */}
+                    {selectedAssignment.submission_status === "returned" && (
+                      <div className="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <AlertCircle className="h-5 w-5 text-orange-600" />
+                          <h5 className="font-medium text-orange-700 dark:text-orange-400">Returned for Revision</h5>
+                        </div>
+                        {selectedAssignment.feedback && (
+                          <p className="text-orange-600 dark:text-orange-300">
+                            <strong>Teacher's Feedback:</strong> {selectedAssignment.feedback}
+                          </p>
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          leftIcon={<Edit3 className="h-4 w-4" />}
+                          onClick={() => handleOpenSubmit(selectedAssignment)}
+                          className="mt-3"
+                        >
+                          Revise and Resubmit
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column - Grading Info */}
+          <div className="space-y-6">
+            {/* Grading Criteria */}
+            <Card>
+              <CardHeader title="Grading Info" />
+              <CardContent className="p-6 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-text-secondary">Max Score</span>
+                  <span className="font-semibold text-text-primary">{selectedAssignment.max_score} pts</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-text-secondary">Pass Percentage</span>
+                  <span className="font-semibold text-text-primary">{selectedAssignment.pass_percentage}%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-text-secondary">Pass Score</span>
+                  <span className="font-semibold text-text-primary">
+                    {Math.ceil(selectedAssignment.max_score * selectedAssignment.pass_percentage / 100)} pts
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Score (if graded) */}
+            {selectedAssignment.submission_status === "graded" && selectedAssignment.score !== null && (
+              <Card>
+                <CardHeader title="Your Grade" />
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <div className="text-4xl font-bold text-success mb-1">
+                      {selectedAssignment.score}/{selectedAssignment.max_score}
+                    </div>
+                    <div className="text-lg text-text-secondary mb-2">
+                      {selectedAssignment.percentage?.toFixed(1)}%
+                    </div>
+                    <Badge
+                      variant={selectedAssignment.percentage && selectedAssignment.percentage >= selectedAssignment.pass_percentage ? "success" : "error"}
+                      className="text-lg px-4 py-1"
+                    >
+                      {selectedAssignment.grade_letter}
+                    </Badge>
+                  </div>
+                  {selectedAssignment.feedback && (
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <h5 className="text-sm font-medium text-text-secondary mb-2">Teacher's Feedback</h5>
+                      <p className="text-text-primary">{selectedAssignment.feedback}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Awaiting Grading */}
+            {selectedAssignment.submission_status === "submitted" && (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-info/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Clock className="h-6 w-6 text-info" />
+                    </div>
+                    <h4 className="font-medium text-text-primary mb-1">Awaiting Grading</h4>
+                    <p className="text-sm text-text-secondary">
+                      Your submission is being reviewed by your teacher.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // List View
+  return (
+    <div className="space-y-6">
+      {/* Assignment Statistics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-primary/10 p-2">
+                <ClipboardList className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="text-sm text-text-secondary">Total</p>
+                <p className="text-2xl font-bold text-text-primary">{totalAssignments}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-success/10 p-2">
+                <CheckCircle2 className="h-6 w-6 text-success" />
+              </div>
+              <div>
+                <p className="text-sm text-text-secondary">Graded</p>
+                <p className="text-2xl font-bold text-success">{gradedCount}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-warning/10 p-2">
+                <Clock className="h-6 w-6 text-warning" />
+              </div>
+              <div>
+                <p className="text-sm text-text-secondary">Pending</p>
+                <p className="text-2xl font-bold text-warning">{pendingCount}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="rounded-lg bg-info/10 p-2">
+                <TrendingUp className="h-6 w-6 text-info" />
+              </div>
+              <div>
+                <p className="text-sm text-text-secondary">Avg Score</p>
+                <p className="text-2xl font-bold text-info">{averageScore.toFixed(0)}%</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Assignments List */}
+      <Card>
+        <CardHeader title="All Assignments" />
+        <CardContent className="p-6">
+          {assignments && assignments.length > 0 ? (
+            <div className="space-y-4">
+              {assignments.map((assignment) => {
+                const dueDate = new Date(assignment.due_date);
+                const isOverdue = isPast(dueDate) && assignment.submission_status === "pending";
+                const statusConfig = SUBMISSION_STATUS[assignment.submission_status];
+                const canSubmit = assignment.submission_status === "pending" ||
+                                  assignment.submission_status === "returned";
+
+                return (
+                  <div
+                    key={assignment.id}
+                    className="border border-border rounded-lg p-4 hover:bg-bg-secondary transition-colors cursor-pointer"
+                    onClick={() => handleViewDetail(assignment)}
+                  >
+                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2 flex-wrap">
+                          <h4 className="font-semibold text-text-primary">
+                            {assignment.title}
+                          </h4>
+                          <Badge variant={statusConfig.variant}>
+                            {assignment.submission_status === "graded" && (
+                              <CheckCircle2 className="h-3 w-3 mr-1" />
+                            )}
+                            {(assignment.submission_status === "pending" ||
+                              assignment.submission_status === "submitted") && (
+                              <Clock className="h-3 w-3 mr-1" />
+                            )}
+                            {assignment.submission_status_display}
+                          </Badge>
+                          {isOverdue && (
+                            <Badge variant="error">
+                              <AlertCircle className="h-3 w-3 mr-1" />
+                              Overdue
+                            </Badge>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <p className="text-text-secondary">Subject</p>
+                            <p className="font-medium text-text-primary">{assignment.subject_name}</p>
+                          </div>
+                          <div>
+                            <p className="text-text-secondary">Type</p>
+                            <p className="font-medium text-text-primary">{assignment.assignment_type_display}</p>
+                          </div>
+                          <div>
+                            <p className="text-text-secondary">Due Date</p>
+                            <p className={`font-medium ${isOverdue ? "text-red-600" : "text-text-primary"}`}>
+                              {format(dueDate, "MMM d, yyyy")}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-text-secondary">Score</p>
+                            <p className="font-medium text-text-primary">
+                              {assignment.submission_status === "graded" && assignment.score !== null
+                                ? `${assignment.score}/${assignment.max_score}`
+                                : "-"
+                              }
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                        {canSubmit && (
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            leftIcon={<Send className="h-4 w-4" />}
+                            onClick={() => handleOpenSubmit(assignment)}
+                          >
+                            Submit
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ClipboardList className="h-8 w-8 text-gray-400" />
+              </div>
+              <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                No Assignments Yet
+              </h4>
+              <p className="text-gray-500">
+                This student doesn't have any assignments.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Submit Assignment Modal */}
+      <Modal
+        isOpen={showSubmitModal}
+        onClose={() => {
+          setShowSubmitModal(false);
+          setSubmitContent("");
+          setSubmitFile(null);
+        }}
+        title="Submit Assignment"
+        size="lg"
+        footer={
+          <>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setShowSubmitModal(false);
+                setSubmitContent("");
+                setSubmitFile(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="primary"
+              leftIcon={<Send className="h-4 w-4" />}
+              onClick={handleSubmit}
+              loading={submitAssignment.isPending}
+              disabled={!submitContent.trim() && !submitFile}
+            >
+              Submit Assignment
+            </Button>
+          </>
+        }
+      >
+        {selectedAssignment && (
+          <div className="space-y-4">
+            {/* Assignment Info */}
+            <div className="p-3 bg-bg-secondary rounded-lg">
+              <h4 className="font-medium text-text-primary">{selectedAssignment.title}</h4>
+              <p className="text-sm text-text-secondary mt-1">
+                Due: {format(new Date(selectedAssignment.due_date), "MMM d, yyyy")}
+              </p>
+            </div>
+
+            {/* Text Content */}
+            <div>
+              <label className="block text-sm font-medium text-text-primary mb-2">
+                Your Response
+              </label>
+              <textarea
+                value={submitContent}
+                onChange={(e) => setSubmitContent(e.target.value)}
+                placeholder="Type your answer or response here..."
+                className="w-full h-32 px-3 py-2 border border-border rounded-lg bg-bg-primary text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              />
+            </div>
+
+            {/* File Upload */}
+            <div>
+              <label className="block text-sm font-medium text-text-primary mb-2">
+                Attachment (optional)
+              </label>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                className="hidden"
+                accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+              />
+              {submitFile ? (
+                <div className="flex items-center justify-between p-3 border border-border rounded-lg bg-bg-secondary">
+                  <div className="flex items-center gap-2">
+                    <Paperclip className="h-4 w-4 text-text-secondary" />
+                    <span className="text-sm text-text-primary truncate max-w-[200px]">
+                      {submitFile.name}
+                    </span>
+                    <span className="text-xs text-text-secondary">
+                      ({(submitFile.size / 1024).toFixed(1)} KB)
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setSubmitFile(null)}
+                    className="text-red-500 hover:text-red-600"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full p-4 border-2 border-dashed border-border rounded-lg hover:border-primary transition-colors flex flex-col items-center gap-2"
+                >
+                  <Upload className="h-6 w-6 text-text-secondary" />
+                  <span className="text-sm text-text-secondary">
+                    Click to upload a file
+                  </span>
+                  <span className="text-xs text-text-secondary">
+                    PDF, DOC, DOCX, TXT, JPG, PNG (max 10MB)
+                  </span>
+                </button>
+              )}
+            </div>
+
+            {/* Late Submission Warning */}
+            {selectedAssignment && isPast(new Date(selectedAssignment.due_date)) && (
+              <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4" />
+                  This assignment is overdue. Your submission will be marked as late.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
+    </div>
+  );
+}
+
+export default AssignmentTab;

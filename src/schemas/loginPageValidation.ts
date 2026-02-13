@@ -1,5 +1,6 @@
 import z from "zod";
 
+// Login Schema
 export const loginSchema = z.object({
   username: z
     .string()
@@ -11,5 +12,23 @@ export const loginSchema = z.object({
     .max(100, { message: "Password must be at most 100 characters" }),
 });
 
-// Infer the type from the schema
+// Change Password Schema
+export const changePasswordSchema = z
+  .object({
+    old_password: z.string().min(1, { message: "Current password is required" }),
+    new_password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+      .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+      .regex(/[0-9]/, { message: "Password must contain at least one number" }),
+    confirm_password: z.string().min(1, { message: "Please confirm your password" }),
+  })
+  .refine((data) => data.new_password === data.confirm_password, {
+    message: "Passwords don't match",
+    path: ["confirm_password"],
+  });
+
+// Infer types from schemas
 export type LoginFormInputs = z.infer<typeof loginSchema>;
+export type ChangePasswordFormInputs = z.infer<typeof changePasswordSchema>;

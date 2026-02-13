@@ -2,6 +2,7 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import AppRouterProvider from "./providers/AppRouterProvider";
 import { QueryProvider } from "./providers/QueryProvider";
 import { ToastProvider } from "./providers/ToastProvider";
+import ErrorBoundary from "./providers/ErrorBoundary";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { directionMap, type SupportedLang } from "./utils/directions";
@@ -17,11 +18,13 @@ function App() {
     document.documentElement.lang = lang;
   }, [i18n.language]);
   return (
-    <QueryProvider>
-      <AppRouterProvider />
-      <ToastProvider />
-      <ConfirmDialog />
-    </QueryProvider>
+    <ErrorBoundary>
+      <QueryProvider>
+        <AppRouterProvider />
+        <ToastProvider />
+        <ConfirmDialog />
+      </QueryProvider>
+    </ErrorBoundary>
   );
 }
 

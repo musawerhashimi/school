@@ -29,7 +29,7 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../hooks/useTheme";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -478,9 +478,12 @@ function Navbar() {
                 {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
               </button>
 
-              <button className="px-2 text-nowrap py-2.5 bg-[#0B7A4B] dark:bg-[#66BB4A] text-white dark:text-gray-900 text-sm font-semibold rounded-lg hover:bg-[#095d39] dark:hover:bg-[#5aa93f] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+              <Link
+                to="/mis"
+                className="px-2 text-nowrap py-2.5 bg-[#0B7A4B] dark:bg-[#66BB4A] text-white dark:text-gray-900 text-sm font-semibold rounded-lg hover:bg-[#095d39] dark:hover:bg-[#5aa93f] transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
                 {t("nav.portalLogin")}
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Actions */}

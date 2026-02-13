@@ -12,25 +12,26 @@ import { useTranslation } from "react-i18next";
 export default function AcademicPrograms() {
   const [activeTab, setActiveTab] = useState("programs");
   const { t } = useTranslation();
+
   const tabs = [
     {
       id: "programs",
-      label: "Programs",
+      label: t("academic.tabs.programs"),
       icon: <BookOpen className="w-5 h-5" />,
     },
     {
       id: "schedules",
-      label: "Class Schedules",
+      label: t("academic.tabs.schedules"),
       icon: <Calendar className="w-5 h-5" />,
     },
     {
       id: "exams",
-      label: "Exam Timetable",
+      label: t("academic.tabs.exams"),
       icon: <Clock className="w-5 h-5" />,
     },
     {
       id: "resources",
-      label: "Resources",
+      label: t("academic.tabs.resources"),
       icon: <Download className="w-5 h-5" />,
     },
   ];
@@ -60,8 +61,8 @@ export default function AcademicPrograms() {
       </div>
 
       <PageHeader
-        title="Academic Programs"
-        subtitle="Comprehensive education programs designed to nurture excellence and foster holistic development"
+        title={t("academic.header.title")}
+        subtitle={t("academic.header.subtitle")}
         image="images/slide4.jpg"
         breadcrumb={[
           {
