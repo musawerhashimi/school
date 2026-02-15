@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-function Loader() {
+export function Loader() {
   const { t } = useTranslation();
   return (
     <div role="status" className="flex justify-center items-center mt-3">
