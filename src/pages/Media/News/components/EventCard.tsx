@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   getEventStatus,
   getDaysUntilEvent,
-  formatDate,
   formatTime,
 } from "../../../../utils/newsUtils";
 import type { NewsCategory, Event } from "../../../../entities/NewsType";
@@ -119,8 +118,8 @@ export const EventCard: React.FC<EventCardProps> = ({
                 />
               </svg>
               <span>
-                {formatDate(event.date, lang)} • {formatTime(event.start_time)}{" "}
-                - {formatTime(event.end_time)}
+                {event.date} • {formatTime(event.start_time)} -{" "}
+                {formatTime(event.end_time)}
               </span>
             </div>
 

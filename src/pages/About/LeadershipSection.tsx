@@ -1,14 +1,20 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { teamMembers } from "../../data/team";
+import { useAbout } from "./Api/useAbout";
+import { Loader } from "../../components/Loader";
 
 export default function LeadershipSection() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language as "en" | "da" | "pa";
+  const { team, isLoading } = useAbout();
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   // Get only the last 6 members
-  const displayedMembers = teamMembers.slice(-6);
+  const displayedMembers = team?.members.slice(-6) || [];
 
   return (
     <section className="py-10 bg-background">
@@ -29,7 +35,7 @@ export default function LeadershipSection() {
             >
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={leader.image}
+                  src={leader.image || "/images/user.jpeg"}
                   alt={leader.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
@@ -42,8 +48,9 @@ export default function LeadershipSection() {
                 <p className="text-primary font-semibold mb-3">
                   {leader.role[currentLang]}
                 </p>
+                {/* Note: Bio is only available in team member details endpoint */}
                 <p className="text-text-secondary text-sm leading-relaxed">
-                  {leader.bio[currentLang]}
+                  {t("about.leadership.noBio")}
                 </p>
               </div>
             </div>

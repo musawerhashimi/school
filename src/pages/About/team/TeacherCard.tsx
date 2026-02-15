@@ -1,15 +1,15 @@
 import { GraduationCap, Briefcase } from "lucide-react";
-import type { TeamMember } from "../../../entities/Teams";
+import type { TeamMember, Department } from "../../../entities/Teams";
 import { useTranslation } from "react-i18next";
-import { departments } from "../../../data/team";
+import { Link } from "react-router-dom";
 
 type TeamCardProps = {
   member: TeamMember;
-  onClick?: () => void;
+  departments: Department[];
 };
 
 // Team Card Component
-export default function TeamCard({ member, onClick }: TeamCardProps) {
+export default function TeamCard({ member, departments }: TeamCardProps) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language as "en" | "da" | "pa";
   const isTeacher = member.type === "teacher";
@@ -18,11 +18,17 @@ export default function TeamCard({ member, onClick }: TeamCardProps) {
     const dept = departments.find((d) => d.id === deptId);
     return dept ? dept.name[currentLang] : `Department ${deptId}`;
   };
+
+  // Safely get multi-language text
+  const getMultiLangText = (text: any): string => {
+    if (!text || typeof text !== "object") {
+      return "";
+    }
+    return text[currentLang] || text.en || "";
+  };
+
   return (
-    <div
-      onClick={onClick}
-      className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
-    >
+    <div className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group">
       <div className="relative h-64 overflow-hidden bg-surface">
         <img
           src={member.image}
@@ -32,7 +38,9 @@ export default function TeamCard({ member, onClick }: TeamCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         <div className="absolute bottom-4 left-4 right-4">
           <h3 className="text-white font-bold text-xl mb-1">{member.name}</h3>
-          <p className="text-white/90 text-sm">{member.role[currentLang]}</p>
+          <p className="text-white/90 text-sm">
+            {getMultiLangText(member.role)}
+          </p>
         </div>
         <div className="absolute top-4 right-4">
           <span
@@ -80,13 +88,16 @@ export default function TeamCard({ member, onClick }: TeamCardProps) {
             <span className="truncate">{member.email}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span>{member.experience[currentLang]}</span>
+            <span>{getMultiLangText(member.experience)}</span>
           </div>
         </div>
 
-        <button className="w-full bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+        <Link
+          to={`/team/${member.id}`}
+          className="w-full bg-primary text-white py-3 px-5 rounded-lg font-medium hover:bg-primary/90 transition-colors"
+        >
           {t("View Profile")}
-        </button>
+        </Link>
       </div>
     </div>
   );

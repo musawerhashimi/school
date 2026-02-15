@@ -5,7 +5,6 @@ import { events, newsCategories } from "../../../data/news";
 import {
   getEventStatus,
   getDaysUntilEvent,
-  formatDate,
   formatTime,
 } from "../../../utils/newsUtils";
 import { Facebook, Link2, MessageCircle, Send, Twitter } from "lucide-react";
@@ -138,7 +137,7 @@ export const EventDetailPage: React.FC = () => {
                         {t("events.date")}
                       </p>
                       <p className="font-bold text-text-primary">
-                        {formatDate(event.date, lang)}
+                        {event.date}
                       </p>
                       <p className="text-sm text-text-secondary mt-1">
                         {formatTime(event.start_time)} -{" "}

@@ -9,7 +9,6 @@ import {
   VerifyEmailPage,
 } from "@/mis/modules/auth";
 
-
 import Testimonials from "../pages/Community/Testimonials";
 import Careers from "../pages/Careers/Careers";
 import SecurityPrivacyPage from "../pages/Contact/SecurityAndPrivacy";
@@ -20,7 +19,6 @@ import AcademicPrograms from "../pages/Academic/AcademicProgram/AcademicPrograms
 import ContactUs from "../pages/Contact/ContactUs";
 import Gallery from "../pages/Media/Gallery/Gallery";
 import TeacherList from "../pages/About/team/TeacherList";
-import TeamProfilePage from "../pages/About/team/TeamProfilePage";
 import TimetableTemplate from "../pages/Academic/AcademicProgram/Timtable";
 import ProgramDetails from "../pages/Academic/AcademicProgram/ProgramDetails";
 import StudentProjects from "../pages/Academic/StudentProject/StudentProject";
@@ -48,6 +46,7 @@ import StudentAwards from "../pages/Achievements/Studentawards";
 import HallOfFame from "../pages/Achievements/HallOfFame";
 import FeedbackForm from "../pages/Contact/FeedbackForm";
 import AppLayout from "../components/layout/AppLayout";
+import TeamProfile from "@/pages/About/team/TeamProfile";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -76,7 +75,7 @@ function AppRouterProvider() {
         { path: "/contact", element: <ContactUs /> },
         { path: "/gallery", element: <Gallery /> },
         { path: "/team", element: <TeacherList /> },
-        { path: "/team/:id", element: <TeamProfilePage /> },
+        { path: "/team/:id", element: <TeamProfile /> },
 
         { path: "/testimonials", element: <Testimonials /> },
         { path: "/careers", element: <Careers /> },
@@ -114,9 +113,7 @@ function AppRouterProvider() {
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users
-    
-    
-    
+
     // MIS Auth Routes (Public)
     {
       path: "/mis/auth/login",
@@ -140,7 +137,6 @@ function AppRouterProvider() {
       element: <AuthGuard>{misRoutes.element}</AuthGuard>,
       children: misRoutes.children,
     },
-    
   ]);
 
   return (

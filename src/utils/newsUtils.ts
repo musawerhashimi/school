@@ -1,29 +1,6 @@
 import type { EventStatus } from "../entities/NewsType";
 
 /**
- * Format date to readable string
- */
-export const formatDate = (
-  dateString: string,
-  locale: string = "en",
-): string => {
-  const date = new Date(dateString);
-
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-
-  if (locale === "da" || locale === "pa") {
-    // For RTL languages, you might want custom formatting
-    return date.toLocaleDateString("fa-AF", options);
-  }
-
-  return date.toLocaleDateString("en-US", options);
-};
-
-/**
  * Format time to readable string
  */
 export const formatTime = (timeString: string): string => {
@@ -105,10 +82,4 @@ export const getRelativeTime = (
 export const truncateText = (text: string, maxLength: number): string => {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trim() + "...";
-};
-
-export const getReadingTime = (content: string): number => {
-  const wordsPerMinute = 200;
-  const wordCount = content.split(/\s+/).length;
-  return Math.ceil(wordCount / wordsPerMinute);
 };

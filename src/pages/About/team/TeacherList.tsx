@@ -5,21 +5,19 @@ import {
   Briefcase,
   ChevronDown,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TeamCardSkeleton from "./CardSkiltone";
-import { departments, teamMembers } from "../../../data/team";
+import { useAbout } from "../Api/useAbout";
 
 import TeamCard from "./TeacherCard";
-import { useNavigate } from "react-router-dom";
 import PageHeader from "../../../components/layout/PageHeader";
 import { useTranslation } from "react-i18next";
 
 export default function TeacherList() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language as "en" | "da" | "pa";
-
+  const { team, isLoading } = useAbout();
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const [isFilteringLoading, setIsFilteringLoading] = useState(false);
 
   type MainFilter = "all" | "teachers" | "staff";
@@ -27,6 +25,9 @@ export default function TeacherList() {
 
   const [mainFilter, setMainFilter] = useState<MainFilter>("all");
   const [subCategory, setSubCategory] = useState<SubCategory>("all");
+
+  const departments = team?.departments || [];
+  const teamMembers = team?.members || [];
 
   // Get unique department IDs for teachers
   const teacherDepartmentIds = Array.from(
@@ -59,18 +60,9 @@ export default function TeacherList() {
 
   // Filter members
   const filteredMembers = teamMembers.filter((member) => {
-    const isTeacher = member.type === "teacher";
-
     const matchesSearch =
       member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      member.role[currentLang]
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase()) ||
-      member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (isTeacher &&
-        member.subjects.some((s) =>
-          s.toLowerCase().includes(searchTerm.toLowerCase()),
-        ));
+      member.role[currentLang].toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesMainFilter =
       mainFilter === "all" ||
@@ -82,13 +74,6 @@ export default function TeacherList() {
 
     return matchesSearch && matchesMainFilter && matchesSubCategory;
   });
-
-  const navigate = useNavigate();
-
-  // Initial load
-  useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1500);
-  }, []);
 
   const handleFilterChange = (filter: MainFilter) => {
     setIsFilteringLoading(true);
@@ -123,7 +108,7 @@ export default function TeacherList() {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
             <input
               type="text"
-              placeholder="Search by name, role, or subject..."
+              placeholder={t("team.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3.5 bg-card border-2 border-border rounded-xl text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
@@ -221,7 +206,7 @@ export default function TeacherList() {
               <TeamCard
                 key={member.id}
                 member={member}
-                onClick={() => navigate(`/team/${member.id}`)}
+                departments={departments}
               />
             ))}
           </div>

@@ -2,7 +2,6 @@ import React from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { articles, newsCategories } from "../../../data/news";
-import { formatDate } from "../../../utils/newsUtils";
 import { Facebook, Twitter, MessageCircle, Send, Link2 } from "lucide-react";
 
 export const NewsDetailPage: React.FC = () => {
@@ -98,7 +97,7 @@ export const NewsDetailPage: React.FC = () => {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>{formatDate(article.date, lang)}</span>
+              <span>{article.date}</span>
             </div>
           </div>
 
