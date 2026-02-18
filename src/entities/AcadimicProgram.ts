@@ -1,14 +1,18 @@
 // types.ts
+export interface MultiLangText {
+  en: string;
+  da: string;
+  pa: string;
+}
 export interface AcademicProgram {
   id: number;
-  title: string;
+  title: MultiLangText;
   image: string;
-  description: string;
-  subjects: string[];
+  description: MultiLangText;
+  subjects: MultiLangText[];
   grades: string;
   duration: string;
   students: number;
   teachers: number;
-  highlights: string[];
+  highlights: MultiLangText[];
 }
-export type AcademicPrograms = AcademicProgram[];

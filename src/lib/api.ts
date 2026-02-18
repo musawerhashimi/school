@@ -49,7 +49,7 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 let isRefreshing = false;
@@ -91,14 +91,13 @@ apiClient.interceptors.response.use(
         const { data } = await axios.post(
           "http://localhost:8000/api/accounts/token/refresh/",
           {},
-          { withCredentials: true }
+          { withCredentials: true },
         );
 
         // Refresh successful
         setAccessToken(data.access);
-        apiClient.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${data.access}`;
+        apiClient.defaults.headers.common["Authorization"] =
+          `Bearer ${data.access}`;
 
         processQueue(null);
         return apiClient(originalRequest);
@@ -117,7 +116,7 @@ apiClient.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // API functions

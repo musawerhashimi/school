@@ -1,3 +1,4 @@
+import type { AcademicProgram } from "@/entities/AcadimicProgram";
 import {
   Award,
   ChevronRight,
@@ -8,22 +9,15 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import type { Program } from "../../../entities/program";
-import { useTranslation } from "react-i18next";
 
-export default function ProgramCard({
-  program,
-  onClick,
-}: {
-  program: Program;
-  onClick: () => void;
-}) {
-  const { t } = useTranslation();
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+
+export default function ProgramCard({ program }: { program: AcademicProgram }) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
   return (
-    <div
-      onClick={onClick}
-      className="group relative rounded-3xl p-6 bg-card shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden flex flex-col h-full border border-border/20"
-    >
+    <div className="group relative rounded-3xl p-6 bg-card shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden flex flex-col h-full border border-border/20">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 blur-3xl" />
 
@@ -55,7 +49,6 @@ export default function ProgramCard({
             <div className="w-full sm:w-40 sm:h-40 h-52 rounded-2xl overflow-hidden shadow-xl ring-2 ring-primary/20 group-hover:ring-4 group-hover:ring-primary/40 transition-all duration-500">
               <img
                 src={program.image}
-                alt={program.title}
                 className="w-full h-full object-cover transform group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/50 opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
@@ -80,7 +73,7 @@ export default function ProgramCard({
           <div className="flex-1 flex flex-col">
             <div className="flex items-start justify-between gap-3 mb-3">
               <h3 className="text-2xl font-black text-foreground leading-tight transition-all duration-300 group-hover:translate-x-1">
-                {program.title}
+                {program.title[lang]}
               </h3>
               <span className="hidden sm:flex items-center text-xs font-bold px-3 py-1.5 rounded-full border-2 border-primary text-primary bg-primary/10 backdrop-blur-sm whitespace-nowrap transform group-hover:scale-105 transition-transform duration-300">
                 <Clock className="w-3.5 h-3.5 mr-1.5" />
@@ -89,7 +82,7 @@ export default function ProgramCard({
             </div>
 
             <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-4 flex-grow transition-colors duration-300">
-              {program.description}
+              {program.description[lang]}
             </p>
 
             {/* Enhanced Subject Pills */}
@@ -99,7 +92,7 @@ export default function ProgramCard({
                   key={index}
                   className="px-3 py-1.5 text-xs font-semibold rounded-full border-2 border-border bg-secondary/10 text-foreground transition-all duration-300 hover:scale-105 hover:border-secondary hover:bg-secondary/20 transform"
                 >
-                  {subject}
+                  {subject[lang]}
                 </span>
               ))}
               {program.subjects.length > 3 && (
@@ -157,6 +150,7 @@ export default function ProgramCard({
               </span>
             </div>
           </div>
+          <Link className="bg-red-500" to={""} />
         </div>
 
         {/* Enhanced CTA Button */}

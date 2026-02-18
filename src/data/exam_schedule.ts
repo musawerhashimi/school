@@ -1,37 +1,61 @@
-import type { ExamSchedule } from "../entities/ExamSchedule";
+import type { Exam } from "@/entities/ExamSchedule";
 
 // Usage example:
-export const examSchedule: ExamSchedule = [
+export const examSchedule: Exam[] = [
   {
-    exam_title: "First Term Exam",
+    exam_title: {
+      en: "Term 1 Exam",
+      da: "امتحان ترم 1",
+      pa: "ټرم 1 ازموینه",
+    },
     start_date: "November 15, 2024",
     end_date: "November 25, 2024",
-    duration: "10 Days",
-    exam_description:
-      "Comprehensive assessment covering all subjects from the first term curriculum. This exam evaluates students' understanding of core concepts taught during September to November.",
+    exam_description: {
+      en: "The first term examination covering all subjects taught in the first term. This exam assesses students' understanding and retention of the material covered in the initial months of the academic year.",
+      da: " اولین امتحان ترم که تمام موضوعات تدریس شده در ترم اول را پوشش می‌دهد. این امتحان دانش و حفظ مطالب پوشش داده شده در ماه‌های اولیه سال تحصیلی را ارزیابی می‌کند.",
+      pa: " لومړی ټرم ازموینه چې ټول مضامین پوښي چې په لومړي ټرم کې تدریس شوي. دا ازموینه د زده کونکو پوهه او د تعلیمي کال په لومړیو میاشتو کې پوښل شوي موادو ساتلو ارزونه کوي.",
+    },
   },
   {
-    exam_title: "Mid-Year Exam",
-    start_date: "February 10, 2025",
-    end_date: "February 20, 2025",
-    duration: "10 Days",
-    exam_description:
-      "Mid-year evaluation testing knowledge acquired in the first half of the academic year. Includes both theoretical and analytical questions across all subjects.",
+    exam_title: {
+      en: "Term 1 Exam",
+      da: "امتحان ترم 1",
+      pa: "ټرم 1 ازموینه",
+    },
+    start_date: "November 15, 2024",
+    end_date: "November 25, 2024",
+    exam_description: {
+      en: "The first term examination covering all subjects taught in the first term. This exam assesses students' understanding and retention of the material covered in the initial months of the academic year.",
+      da: " اولین امتحان ترم که تمام موضوعات تدریس شده در ترم اول را پوشش می‌دهد. این امتحان دانش و حفظ مطالب پوشش داده شده در ماه‌های اولیه سال تحصیلی را ارزیابی می‌کند.",
+      pa: " لومړی ټرم ازموینه چې ټول مضامین پوښي چې په لومړي ټرم کې تدریس شوي. دا ازموینه د زده کونکو پوهه او د تعلیمي کال په لومړیو میاشتو کې پوښل شوي موادو ساتلو ارزونه کوي.",
+    },
   },
   {
-    exam_title: "Final Exam",
-    start_date: "June 5, 2025",
-    end_date: "June 20, 2025",
-    duration: "15 Days",
-    exam_description:
-      "Comprehensive final examination covering the entire academic year syllabus. This is the most important exam determining annual performance and grade promotion.",
+    exam_title: {
+      en: "Term 1 Exam",
+      da: "امتحان ترم 1",
+      pa: "ټرم 1 ازموینه",
+    },
+    start_date: "November 15, 2024",
+    end_date: "November 25, 2024",
+    exam_description: {
+      en: "The first term examination covering all subjects taught in the first term. This exam assesses students' understanding and retention of the material covered in the initial months of the academic year.",
+      da: " اولین امتحان ترم که تمام موضوعات تدریس شده در ترم اول را پوشش می‌دهد. این امتحان دانش و حفظ مطالب پوشش داده شده در ماه‌های اولیه سال تحصیلی را ارزیابی می‌کند.",
+      pa: " لومړی ټرم ازموینه چې ټول مضامین پوښي چې په لومړي ټرم کې تدریس شوي. دا ازموینه د زده کونکو پوهه او د تعلیمي کال په لومړیو میاشتو کې پوښل شوي موادو ساتلو ارزونه کوي.",
+    },
   },
   {
-    exam_title: "Practical Exams",
-    start_date: "May 25, 2025",
-    end_date: "May 30, 2025",
-    duration: "5 Days",
-    exam_description:
-      "Hands-on practical assessments for Science and Arts subjects. Students will demonstrate their practical skills and laboratory techniques learned throughout the year.",
+    exam_title: {
+      en: "Term 1 Exam",
+      da: "امتحان ترم 1",
+      pa: "ټرم 1 ازموینه",
+    },
+    start_date: "November 15, 2024",
+    end_date: "November 25, 2024",
+    exam_description: {
+      en: "The first term examination covering all subjects taught in the first term. This exam assesses students' understanding and retention of the material covered in the initial months of the academic year.",
+      da: " اولین امتحان ترم که تمام موضوعات تدریس شده در ترم اول را پوشش می‌دهد. این امتحان دانش و حفظ مطالب پوشش داده شده در ماه‌های اولیه سال تحصیلی را ارزیابی می‌کند.",
+      pa: " لومړی ټرم ازموینه چې ټول مضامین پوښي چې په لومړي ټرم کې تدریس شوي. دا ازموینه د زده کونکو پوهه او د تعلیمي کال په لومړیو میاشتو کې پوښل شوي موادو ساتلو ارزونه کوي.",
+    },
   },
 ];

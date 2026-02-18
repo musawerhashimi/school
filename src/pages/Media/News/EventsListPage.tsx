@@ -1,10 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { events, newsCategories } from "../../../data/news";
+
 import { getEventStatus } from "../../../utils/newsUtils";
 import { CategoryFilter } from "./components/CategoryFilter";
 import { EventCard } from "./components/EventCard";
 import { SearchBar } from "./components/SearchBar";
+import { useNewsCategories, useNewsEvents } from "./Api/useNews";
 
 type EventFilterType = "all" | "upcoming" | "past";
 
@@ -15,6 +16,13 @@ export const EventsListPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [eventFilter, setEventFilter] = useState<EventFilterType>("upcoming");
+
+  // Fetch data from API
+  const { data: eventsData } = useNewsEvents();
+  const { data: newsCategoriesData } = useNewsCategories();
+
+  const events = eventsData?.results || [];
+  const newsCategories = newsCategoriesData?.results || [];
 
   // Filter and search logic
   const filteredEvents = useMemo(() => {
@@ -50,7 +58,8 @@ export const EventsListPage: React.FC = () => {
       filtered = filtered.filter(
         (event) =>
           event.title[lang].toLowerCase().includes(query) ||
-          event.description[lang].toLowerCase().includes(query) ||
+          (event.description &&
+            event.description[lang].toLowerCase().includes(query)) ||
           event.location.toLowerCase().includes(query) ||
           event.organizer.toLowerCase().includes(query),
       );

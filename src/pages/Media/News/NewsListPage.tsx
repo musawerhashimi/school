@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { articles, newsCategories } from "../../../data/news";
+import { useNewsArticles, useNewsCategories } from "./Api/useNews";
 import { CategoryFilter } from "./components/CategoryFilter";
 import { NewsCard } from "./components/NewsCard";
 import { SearchBar } from "./components/SearchBar";
@@ -11,6 +11,13 @@ export const NewsListPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+
+  // Fetch data from API
+  const { data: articlesData } = useNewsArticles();
+  const { data: newsCategoriesData } = useNewsCategories();
+
+  const articles = articlesData?.results || [];
+  const newsCategories = newsCategoriesData?.results || [];
 
   // Filter and search logic
   const filteredArticles = useMemo(() => {
@@ -30,7 +37,8 @@ export const NewsListPage: React.FC = () => {
         (article) =>
           article.title[lang].toLowerCase().includes(query) ||
           article.excerpt[lang].toLowerCase().includes(query) ||
-          article.content[lang].toLowerCase().includes(query),
+          (article.content &&
+            article.content[lang].toLowerCase().includes(query)),
       );
     }
 

@@ -1,11 +1,12 @@
-import { Download, FileText, Clock, ChevronRight } from "lucide-react";
+import { Download, FileText, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import SectionHeading from "./SectionHeading";
-import { syllabusDownloads } from "../../../data/acadimicdata";
+import { resouces } from "../../../data/acadimicdata";
 import { Link } from "react-router-dom";
 
 export default function Resources() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
 
   return (
     <div>
@@ -15,7 +16,7 @@ export default function Resources() {
       />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {syllabusDownloads.map((resource, index: number) => (
+        {resouces.map((resource, index: number) => (
           <div
             key={index}
             className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group relative"
@@ -30,18 +31,13 @@ export default function Resources() {
 
                 <div className="flex-1">
                   <h3 className="font-bold text-lg text-text-primary mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                    {resource.title}
+                    {resource.title[lang]}
                   </h3>
-
-                  <div className="flex items-center gap-2 text-sm text-text-secondary">
-                    <Clock className="w-4 h-4" />
-                    <span>{resource.size}</span>
-                  </div>
                 </div>
               </div>
 
               <p className="text-sm text-text-secondary leading-relaxed mb-6 line-clamp-3">
-                {resource.description}
+                {resource.description[lang]}
               </p>
 
               <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4" />

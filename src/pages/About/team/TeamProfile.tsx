@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import ProfileSkeleton from "./Skilton";
 import { Link, useParams } from "react-router-dom";
 import { useAbout, useTeamMember } from "../Api/useAbout";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 export default function TeamProfile() {
   const { id } = useParams<{ id: string }>();
@@ -219,7 +220,7 @@ export default function TeamProfile() {
               {t("Member Since")}
             </h3>
             <p className="text-lg font-medium text-text-secondary">
-              {teamMember.joined_date}
+              {formatLocalDateTime(teamMember.joined_date)}
             </p>
           </div>
         </div>

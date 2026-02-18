@@ -1,20 +1,28 @@
-export type ClassSchedule = {
+export interface MultiLangText {
+  en: string;
+  da: string;
+  pa: string;
+}
+export interface Teacher {
+  id: number;
+  name: MultiLangText;
+}
+export interface Subject {
+  id: number;
+  name: MultiLangText;
+}
+
+export interface ClassSchedule {
   class: number;
   time: string;
   periods: number;
-  number_of_class: number | string; // Can be a number or time string
-};
+  number_of_class: number;
+}
 
-// Type definition for the class schedules array
-export type ClassSchedules = ClassSchedule[];
-
-export type Day =
-  | "Saturday"
-  | "Sunday"
-  | "Monday"
-  | "Tuesday"
-  | "Wednesday"
-  | "Thursday";
+export interface Day {
+  id: number;
+  name: MultiLangText;
+}
 
 export interface Period {
   id: number;
@@ -25,14 +33,15 @@ export interface Period {
 export interface TimetableCell {
   day: Day;
   period: number;
-  subject: string;
-  teacher: string;
+  subject: Subject;
+  teacher: Teacher;
+  location: string;
 }
 
 export interface ClassTimetable {
-  id: number;
+  class_id: number;
   sub_id: string;
   periods: Period[];
-  subjects: Record<string, string>; // e.g., { "math": "ریاضی", "english": "انگلیسی" }
+  subjects: Subject[];
   timetable: TimetableCell[];
 }

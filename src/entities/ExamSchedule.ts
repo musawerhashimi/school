@@ -1,18 +1,18 @@
-export type Exam = {
-  exam_title: string;
+export interface MultiLangText {
+  en: string;
+  da: string;
+  pa: string;
+}
+
+export interface Exam {
+  exam_title: MultiLangText;
   start_date: string;
   end_date: string;
-  duration: string;
-  exam_description: string;
-};
+  exam_description: MultiLangText;
+}
 
-// Type definition for the exam schedule array
-export type ExamSchedule = Exam[];
-
-export type SyllabusDownload = {
-  title: string;
-  description: string;
-  size: string;
-};
-
-export type SyllabusDownloads = SyllabusDownload[];
+export interface Resourceies {
+  title: MultiLangText;
+  description: MultiLangText;
+  file: string;
+}

@@ -1,143 +1,179 @@
-import type { AcademicPrograms } from "../entities/AcadimicProgram";
-import type { ClassSchedules } from "../entities/classtimetable";
-import type { SyllabusDownloads } from "../entities/ExamSchedule";
+import type { AcademicProgram } from "@/entities/AcadimicProgram";
+import type { Resourceies } from "../entities/ExamSchedule";
 
-export const academicPrograms: AcademicPrograms = [
+export const academicPrograms: AcademicProgram[] = [
   {
     id: 1,
-    title: "Science & Technology",
-    image: "/images/slide2.jpg",
-    description:
-      "Comprehensive science education covering Physics, Chemistry, Biology, and Computer Science with hands-on laboratory experience.",
-    subjects: ["Physics", "Chemistry", "Biology", "Computer Science"],
-    grades: "9-12",
-    duration: "4 Years",
-    students: 245,
-    teachers: 8,
+    title: {
+      en: "Computer Science Program",
+      da: "برنامه علوم کمپیوتر",
+      pa: "د کمپیوټر ساينس پروګرام",
+    },
+    image: "/images/programs/computer-science.jpg",
+    description: {
+      en: "A comprehensive program focused on programming, software development, and modern technologies.",
+      da: "یک برنامه جامع متمرکز بر برنامه‌نویسی، توسعه نرم‌افزار و تکنالوژی‌های مدرن.",
+      pa: "يو بشپړ پروګرام چې په پروګرامنګ، سافټویر جوړولو او عصري ټکنالوژیو تمرکز لري.",
+    },
+    subjects: [
+      {
+        en: "Programming Fundamentals",
+        da: "مبانی برنامه‌نویسی",
+        pa: "د پروګرامنګ اساسات",
+      },
+      {
+        en: "Database Systems",
+        da: "سیستم‌های دیتابیس",
+        pa: "د ډیټابیس سیسټمونه",
+      },
+      {
+        en: "Web Development",
+        da: "توسعه وب",
+        pa: "وېب پراختیا",
+      },
+    ],
+    grades: "10 - 12",
+    duration: "3 Years",
+    students: 180,
+    teachers: 12,
     highlights: [
-      "State-of-the-art science laboratories",
-      "Annual science fair participation",
-      "STEM competitions and robotics club",
-      "Partnership with local universities",
+      {
+        en: "Modern Computer Labs",
+        da: "لابراتوارهای مدرن کمپیوتر",
+        pa: "عصري کمپیوټر لابراتوارونه",
+      },
+      {
+        en: "Project-Based Learning",
+        da: "یادگیری مبتنی بر پروژه",
+        pa: "د پروژې پر بنسټ زده کړه",
+      },
+      {
+        en: "Industry-Oriented Curriculum",
+        da: "نصاب مطابق بازار کار",
+        pa: "د بازار مطابق نصاب",
+      },
     ],
   },
+
   {
     id: 2,
-    title: "Mathematics & Logic",
-    image: "/images/slide2.jpg",
-    description:
-      "Advanced mathematics curriculum from algebra to calculus, fostering analytical thinking and problem-solving skills.",
-    subjects: ["Algebra", "Geometry", "Trigonometry", "Calculus", "Statistics"],
-    grades: "9-12",
-    duration: "4 Years",
-    students: 280,
-    teachers: 6,
+    title: {
+      en: "Science Program",
+      da: "برنامه علوم طبیعی",
+      pa: "د طبيعي علومو پروګرام",
+    },
+    image: "/images/programs/science.jpg",
+    description: {
+      en: "Designed for students interested in physics, chemistry, and biology with strong laboratory practice.",
+      da: "طراحی شده برای شاگردانی که علاقه‌مند به فیزیک، کیمیا و بیولوژی با تمرینات لابراتواری هستند.",
+      pa: "د هغو زده کوونکو لپاره چې په فزیک، کیمیا او بیولوژي کې علاقه لري او عملي لابراتوارونه لري.",
+    },
+    subjects: [
+      {
+        en: "Physics",
+        da: "فیزیک",
+        pa: "فزیک",
+      },
+      {
+        en: "Chemistry",
+        da: "کیمیا",
+        pa: "کیمیا",
+      },
+      {
+        en: "Biology",
+        da: "بیولوژی",
+        pa: "بیولوژي",
+      },
+    ],
+    grades: "7 - 12",
+    duration: "6 Years",
+    students: 240,
+    teachers: 18,
     highlights: [
-      "Math olympiad preparation",
-      "Problem-solving workshops",
-      "Interactive learning tools",
-      "Peer tutoring programs",
+      {
+        en: "Advanced Science Labs",
+        da: "لابراتوارهای پیشرفته علوم",
+        pa: "پرمختللي ساينسي لابراتوارونه",
+      },
+      {
+        en: "Research Projects",
+        da: "پروژه‌های تحقیقاتی",
+        pa: "تحقیقي پروژې",
+      },
+      {
+        en: "Experienced Faculty",
+        da: "استادان با تجربه",
+        pa: "تجربه لرونکي استادان",
+      },
     ],
   },
+
   {
     id: 3,
-    title: "Languages & Literature",
-    image: "/images/slide1.jpg",
-    description:
-      "Multi-language education including English, Arabic, and Pashto with focus on literature, writing, and communication skills.",
-    subjects: ["English", "Arabic", "Pashto", "Literature", "Creative Writing"],
-    grades: "9-12",
-    duration: "4 Years",
-    students: 310,
-    teachers: 10,
-    highlights: [
-      "Bilingual education programs",
-      "Writing competitions",
-      "Book club and reading circles",
-      "Public speaking training",
+    title: {
+      en: "Business & Economics Program",
+      da: "برنامه تجارت و اقتصاد",
+      pa: "د سوداګرۍ او اقتصاد پروګرام",
+    },
+    image: "/images/programs/business.jpg",
+    description: {
+      en: "Prepares students for careers in business management, accounting, and entrepreneurship.",
+      da: "شاگردان را برای حرفه در مدیریت تجارت، حسابداری و کارآفرینی آماده می‌سازد.",
+      pa: "زده کوونکي د سوداګرۍ مدیریت، حسابدارۍ او متشبثتوب لپاره چمتو کوي.",
+    },
+    subjects: [
+      {
+        en: "Accounting",
+        da: "حسابداری",
+        pa: "حسابداري",
+      },
+      {
+        en: "Economics",
+        da: "اقتصاد",
+        pa: "اقتصاد",
+      },
+      {
+        en: "Business Management",
+        da: "مدیریت تجارت",
+        pa: "د سوداګرۍ مدیریت",
+      },
     ],
-  },
-  {
-    id: 5,
-    title: "Languages",
-    image: "/images/slide1.jpg",
-    description:
-      "Multi-language education including English, Arabic, and Pashto with focus on literature, writing, and communication skills.",
-    subjects: ["English", "Arabic", "Pashto", "Literature", "Creative Writing"],
-    grades: "9-12",
-    duration: "4 Years",
-    students: 310,
+    grades: "10 - 12",
+    duration: "3 Years",
+    students: 150,
     teachers: 10,
     highlights: [
-      "Bilingual education programs",
-      "Writing competitions",
-      "Book club and reading circles",
-      "Public speaking training",
+      {
+        en: "Entrepreneurship Training",
+        da: "آموزش کارآفرینی",
+        pa: "د متشبثتوب روزنه",
+      },
+      {
+        en: "Practical Accounting Workshops",
+        da: "کارگاه‌های عملی حسابداری",
+        pa: "عملي حسابدارۍ ورکشاپونه",
+      },
+      {
+        en: "Business Simulation Activities",
+        da: "فعالیت‌های شبیه‌سازی تجارت",
+        pa: "د سوداګرۍ عملي تمرینونه",
+      },
     ],
   },
 ];
 
-export const classSchedules: ClassSchedules = [
+export const resouces: Resourceies[] = [
   {
-    class: 9,
-    time: "08:00 AM - 02:00 PM",
-    periods: 6,
-    number_of_class: 5,
-  },
-  {
-    class: 10,
-    time: "08:00 AM - 02:00 PM",
-    periods: 6,
-    number_of_class: 5,
-  },
-  {
-    class: 11,
-    time: "08:00 AM - 02:30 PM",
-    periods: 8,
-    number_of_class: "11:30 AM",
-  },
-  {
-    class: 12,
-    time: "08:00 AM - 02:30 PM",
-    periods: 8,
-    number_of_class: "11:30 AM",
-  },
-];
-export const syllabusDownloads: SyllabusDownloads = [
-  {
-    title: "Grade 9 Syllabus 2024-25",
-    description:
-      "Comprehensive curriculum guide covering all core subjects for freshman year including Mathematics, Science, English, and Social Studies.",
-    size: "2.4 MB",
-  },
-  {
-    title: "Grade 10 Syllabus 2024-25",
-    description:
-      "Detailed syllabus for sophomore year with enhanced focus on analytical thinking and subject specialization preparation.",
-    size: "2.6 MB",
-  },
-  {
-    title: "Grade 11 Syllabus 2024-25",
-    description:
-      "Junior year academic framework with stream-specific subjects and college preparation modules.",
-    size: "2.8 MB",
-  },
-  {
-    title: "Grade 12 Syllabus 2024-25",
-    description:
-      "Senior year curriculum designed for board exam excellence and higher education readiness.",
-    size: "3.1 MB",
-  },
-  {
-    title: "Science Program Guide",
-    description:
-      "In-depth guide to our Science stream covering Physics, Chemistry, Biology, and Mathematics with lab requirements.",
-    size: "1.8 MB",
-  },
-  {
-    title: "Arts Program Guide",
-    description:
-      "Complete overview of Humanities stream including History, Political Science, Economics, and elective options.",
-    size: "1.5 MB",
+    title: {
+      en: "Grade 9 Syllabus 2024-25",
+      da: "نصاب کلاس 9 سال 2024-25",
+      pa: "د 9 ټولګي نصاب 2024-25",
+    },
+    description: {
+      en: "Comprehensive curriculum guide covering all core subjects for freshman year including Mathematics, Science, English, and Social Studies.",
+      da: "راهنمای جامع نصاب پوشش داده شده تمام موضوعات اصلی برای سال اول دانشجویی شامل ریاضی، علوم، انگلیسی و مطالعات اجتماعی.",
+      pa: "د ټولو اصلي مضامین لپاره چمتو شوی نصاب چې د لومړي کال زده کوونکي لپاره شامل د ریاضي، علوم، انګلیسي او اجتماعي مطالعات دي.",
+    },
+    file: "/syllabus/grade-9-syllabus-2024-25.pdf",
   },
 ];

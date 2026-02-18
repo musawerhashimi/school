@@ -1,8 +1,8 @@
 import { BookOpen, Calendar, Clock, ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { classSchedules } from "../../../data/acadimicdata";
 import SectionHeading from "./SectionHeading";
 import { useTranslation } from "react-i18next";
+import { classSchedules } from "@/data/classtimetable";
 
 export default function Schedules() {
   const { t } = useTranslation();

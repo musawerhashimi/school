@@ -31,7 +31,7 @@
 //   );
 // }
 
-import type { Tab } from "../../entities/program";
+import type { Tab } from "../../entities/Tab";
 
 export default function TabNavigation({
   tabs,

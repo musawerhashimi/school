@@ -1,32 +1,26 @@
 import { Search } from "lucide-react";
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Add this import
 import { academicPrograms } from "../../../data/acadimicdata";
-import type { Program } from "../../../entities/program";
 import SectionHeading from "./SectionHeading";
 import { useTranslation } from "react-i18next";
 import ProgramCard from "./ProgramCard";
 
 export default function Programs() {
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate(); // Add this
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
 
   const filteredPrograms = academicPrograms.filter(
     (program) =>
-      program.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      program.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      program.title[lang].toLowerCase().includes(searchQuery.toLowerCase()) ||
+      program.description[lang]
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
       program.subjects.some((subject) =>
-        subject.toLowerCase().includes(searchQuery.toLowerCase()),
+        subject[lang].toLowerCase().includes(searchQuery.toLowerCase()),
       ),
   );
-
-  const handleProgramClick = (program: Program) => {
-    navigate("/academic-programs/program-details", {
-      state: { program },
-    });
-  };
 
   return (
     <>
@@ -49,11 +43,7 @@ export default function Programs() {
       </div>
       <div className="grid md:grid-cols-1 gap-8">
         {filteredPrograms.map((program) => (
-          <ProgramCard
-            key={program.id}
-            program={program}
-            onClick={() => handleProgramClick(program)}
-          />
+          <ProgramCard key={program.id} program={program} />
         ))}
       </div>
       {filteredPrograms.length === 0 && (

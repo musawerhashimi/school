@@ -65,7 +65,7 @@ function AppRouterProvider() {
         { path: "/about", element: <About /> },
         { path: "/academic-programs", element: <AcademicPrograms /> },
         {
-          path: "/academic-programs/program-details",
+          path: "/academic-programs/program-details/:id",
           element: <ProgramDetails />,
         },
         {

@@ -99,7 +99,7 @@ export const EventCard: React.FC<EventCardProps> = ({
 
           {/* Description */}
           <p className="text-text-secondary mb-4 line-clamp-2">
-            {event.description[lang]}
+            {event.description?.[lang]}
           </p>
 
           {/* Event Details */}

@@ -9,10 +9,12 @@ import {
 import { examSchedule } from "../../../data/exam_schedule";
 import SectionHeading from "./SectionHeading";
 import { useTranslation } from "react-i18next";
+import { formatDateDuration } from "@/utils/dateUtils";
 
 export default function ExamScheduleComponent() {
   const [activeTab] = useState("exams");
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
 
   return (
     <div>
@@ -34,7 +36,7 @@ export default function ExamScheduleComponent() {
                   <div className="flex items-start justify-between flex-wrap gap-4">
                     <div className="flex-1">
                       <h3 className="text-3xl font-bold text-white mb-2">
-                        {exam.exam_title}
+                        {exam.exam_title[lang]}
                       </h3>
                     </div>
 
@@ -88,7 +90,7 @@ export default function ExamScheduleComponent() {
                           {t("academic.exams.duration")}
                         </p>
                         <p className="text-text-primary font-bold">
-                          {exam.duration}
+                          {formatDateDuration(exam.start_date, exam.end_date)}
                         </p>
                       </div>
                     </div>
@@ -101,7 +103,7 @@ export default function ExamScheduleComponent() {
                       {t("academic.exams.description")}
                     </h4>
                     <p className="text-text-secondary leading-relaxed">
-                      {exam.exam_description}
+                      {exam.exam_description[lang]}
                     </p>
                   </div>
                 </div>
