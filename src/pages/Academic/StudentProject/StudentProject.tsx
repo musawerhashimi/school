@@ -7,21 +7,24 @@ import RecentProjects from "./FeaturedProjects";
 import ProjectCard from "./ProjectCard";
 import ProjectFilters from "./ProjectFilters";
 import type { ProjectFilters as IProjectFilters } from "../../../entities/StudentProject";
+
 const StudentProjects: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
 
   const [filters, setFilters] = useState<IProjectFilters>({
     category: "",
-    grade: "",
-    year: "",
     search: "",
-    sortBy: "newest",
   });
 
   // Get 4 most recent projects
   const recentProjects = useMemo(() => {
     return [...studentProjects]
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.completion_date).getTime() -
+          new Date(a.completion_date).getTime(),
+      )
       .slice(0, 4);
   }, []);
 
@@ -31,20 +34,7 @@ const StudentProjects: React.FC = () => {
     // Category filter
     if (filters.category) {
       filtered = filtered.filter(
-        (project) => project.category === filters.category,
-      );
-    }
-
-    // Grade filter
-    if (filters.grade) {
-      filtered = filtered.filter((project) => project.grade === filters.grade);
-    }
-
-    // Year filter (extract from date)
-    if (filters.year) {
-      filtered = filtered.filter(
-        (project) =>
-          new Date(project.date).getFullYear() === parseInt(filters.year),
+        (project) => project.category_id === parseInt(filters.category),
       );
     }
 
@@ -53,20 +43,12 @@ const StudentProjects: React.FC = () => {
       const searchLower = filters.search.toLowerCase();
       filtered = filtered.filter(
         (project) =>
-          project.title.toLowerCase().includes(searchLower) ||
-          project.description.toLowerCase().includes(searchLower) ||
+          project.title[lang].toLowerCase().includes(searchLower) ||
           project.students.some((student) =>
             student.name.toLowerCase().includes(searchLower),
           ),
       );
     }
-
-    // Sort
-    filtered.sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return filters.sortBy === "newest" ? dateB - dateA : dateA - dateB;
-    });
 
     return filtered;
   }, [filters]);
@@ -79,7 +61,7 @@ const StudentProjects: React.FC = () => {
         image={"images/project.jpg"}
         breadcrumb={[
           { name: t("nav.home"), path: "/" },
-          { name: t("studentProjects.title"), path: "/student-projects" },
+          { name: t("studentProjects.title"), path: "" },
         ]}
       />
 

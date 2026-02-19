@@ -3,15 +3,17 @@ import { Search, X, ChevronDown } from "lucide-react";
 import { TRIP_CATEGORIES, trips } from "../../../data/educationtrip";
 import { useTranslation } from "react-i18next";
 import TripCard from "./TripCard";
+import { getStatus } from "@/utils/stutusFunction";
 
 export default function EducationalTrips() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-  // Get category by ID
+
   const getCategoryById = (categoryId: number) => {
     return TRIP_CATEGORIES.find((cat) => cat.id === categoryId);
   };
@@ -27,16 +29,20 @@ export default function EducationalTrips() {
     return matchesSearch && matchesCategory;
   });
 
+  // ✅ Dynamic status filtering
   const upcomingTrips = filteredTrips.filter(
-    (trip) => trip.status === "upcoming" || trip.status === "ongoing",
+    (trip) => getStatus(trip.date) === "upcoming",
   );
-  const pastTrips = filteredTrips.filter((trip) => trip.status === "completed");
+
+  const pastTrips = filteredTrips.filter(
+    (trip) => getStatus(trip.date) === "completed",
+  );
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-gradient-to-bl from-surface to-info-soft  ">
-        <div className="max-w-7xl mx-auto px-6 py-16 ">
+      <div className="bg-gradient-to-bl from-surface to-info-soft">
+        <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="text-center mt-8">
             <h1 className="text-5xl font-light text-text-primary mb-4">
               {t("educationalTrips.title")}
@@ -47,12 +53,13 @@ export default function EducationalTrips() {
           </div>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto px-6 ">
-        {/* Filters Section */}
-        <div className="bg-background  z-10 ">
+
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Filters */}
+        <div className="bg-background z-10">
           <div className="max-w-7xl mx-auto px-6 py-6">
             <div className="flex flex-wrap items-center gap-4 justify-center">
-              {/* Search Bar */}
+              {/* Search */}
               <div className="relative flex-1 max-w-xl">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-primary w-5 h-5" />
                 <input
@@ -65,14 +72,14 @@ export default function EducationalTrips() {
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-text-primary hover:text-text-secondary"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-text-primary"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 )}
               </div>
 
-              {/* All trip Button */}
+              {/* All Trips */}
               <button
                 onClick={() => {
                   setSelectedFilter("all");
@@ -100,7 +107,7 @@ export default function EducationalTrips() {
                   }`}
                 >
                   {selectedCategory !== null
-                    ? getCategoryById(selectedCategory)?.name
+                    ? getCategoryById(selectedCategory)?.name[lang]
                     : t("library.action.byCategory")}
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${
@@ -121,7 +128,9 @@ export default function EducationalTrips() {
                     >
                       {t("library.action.allCategories")}
                     </button>
+
                     <div className="border-t border-border my-1" />
+
                     {TRIP_CATEGORIES.map((category) => (
                       <button
                         key={category.id}
@@ -130,9 +139,9 @@ export default function EducationalTrips() {
                           setSelectedFilter("all");
                           setIsCategoryDropdownOpen(false);
                         }}
-                        className="w-full px-4 py-2.5 text-left hover:bg-surface-hover flex items-center gap-2"
+                        className="w-full px-4 py-2.5 text-left hover:bg-surface-hover"
                       >
-                        <span className="font-medium">{category.name}</span>
+                        {category.name[lang]}
                       </button>
                     ))}
                   </div>
@@ -142,33 +151,27 @@ export default function EducationalTrips() {
           </div>
         </div>
 
-        {/* Upcoming Trips */}
+        {/* Upcoming */}
         {upcomingTrips.length > 0 && (
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
-              <div className="w-2 h-8 bg-primary rounded-full" />
+            <h2 className="text-3xl font-bold text-text-primary mb-8">
               {t("educationalTrips.upcoming")}
             </h2>
-            <div className="space-y-0">
-              {upcomingTrips.map((trip) => (
-                <TripCard key={trip.id} trip={trip} />
-              ))}
-            </div>
+            {upcomingTrips.map((trip) => (
+              <TripCard key={trip.id} trip={trip} />
+            ))}
           </div>
         )}
 
-        {/* Past Trips */}
+        {/* Past */}
         {pastTrips.length > 0 && (
           <div>
-            <h2 className="text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
-              <div className="w-2 h-8 bg-muted rounded-full" />
+            <h2 className="text-3xl font-bold text-text-primary mb-8">
               {t("educationalTrips.past")}
             </h2>
-            <div className="space-y-0 opacity-75">
-              {pastTrips.map((trip) => (
-                <TripCard key={trip.id} trip={trip} />
-              ))}
-            </div>
+            {pastTrips.map((trip) => (
+              <TripCard key={trip.id} trip={trip} />
+            ))}
           </div>
         )}
       </div>

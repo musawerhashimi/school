@@ -2,10 +2,10 @@ import type { Trip, TripCategory } from "../entities/EducationalTrips";
 import type {} from "../pages/Academic/EducatinalTrip/EducationalTrip";
 
 export const TRIP_CATEGORIES: TripCategory[] = [
-  { id: 1, name: "cultural" },
-  { id: 2, name: "scientific" },
-  { id: 3, name: "historical" },
-  { id: 4, name: "environmental" },
+  { id: 1, name: { en: "cultural", da: "", pa: "" } },
+  { id: 2, name: { en: "scientific", da: "", pa: "" } },
+  { id: 3, name: { en: "historical", da: "", pa: "" } },
+  { id: 4, name: { en: "environmental", da: "", pa: "" } },
 ];
 
 export const trips: Trip[] = [
@@ -34,7 +34,6 @@ export const trips: Trip[] = [
     images:
       "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800&h=600&fit=crop",
 
-    status: "upcoming",
     participants: 45,
   },
   {
@@ -62,7 +61,6 @@ export const trips: Trip[] = [
     images:
       "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&h=600&fit=crop",
 
-    status: "upcoming",
     participants: 38,
   },
   {
@@ -90,7 +88,6 @@ export const trips: Trip[] = [
     images:
       "https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800&h=600&fit=crop",
 
-    status: "completed",
     participants: 52,
   },
   {
@@ -118,7 +115,6 @@ export const trips: Trip[] = [
     images:
       "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=800&h=600&fit=crop",
 
-    status: "completed",
     participants: 28,
   },
   {
@@ -146,7 +142,6 @@ export const trips: Trip[] = [
     images:
       "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
 
-    status: "upcoming",
     participants: 35,
   },
   {
@@ -174,7 +169,6 @@ export const trips: Trip[] = [
     images:
       "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=800&h=600&fit=crop",
 
-    status: "completed",
     participants: 42,
   },
 ];

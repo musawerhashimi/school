@@ -2,7 +2,7 @@ import { Search, X, Eye, BookOpen, ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { bookCategories, booksData } from "../../../data/online_library";
 import BookSkeleton from "./BookSkilton";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function OnlineLibrary() {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,7 +10,8 @@ export default function OnlineLibrary() {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
@@ -24,7 +25,7 @@ export default function OnlineLibrary() {
   // Filter books
   const filteredBooks = booksData.filter((book) => {
     // Search filter (by title only)
-    const matchesSearch = book.title
+    const matchesSearch = book.title[lang]
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
 
@@ -111,7 +112,7 @@ export default function OnlineLibrary() {
                 }`}
               >
                 {selectedCategory !== null
-                  ? getCategoryById(selectedCategory)?.name
+                  ? getCategoryById(selectedCategory)?.name[lang]
                   : t("library.action.byCategory")}
                 <ChevronDown
                   className={`w-4 h-4 transition-transform ${
@@ -143,7 +144,7 @@ export default function OnlineLibrary() {
                       }}
                       className="w-full px-4 py-2.5 text-left hover:bg-surface-hover flex items-center gap-2"
                     >
-                      <span className="font-medium">{category.name}</span>
+                      <span className="font-medium">{category.name[lang]}</span>
                     </button>
                   ))}
                 </div>
@@ -174,7 +175,7 @@ export default function OnlineLibrary() {
                   <div className="relative overflow-hidden h-80 bg-surface">
                     <img
                       src={book.coverImage}
-                      alt={book.title}
+                      alt={book.title[lang]}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
@@ -182,13 +183,13 @@ export default function OnlineLibrary() {
                   {/* Book Info */}
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-text-primary mb-2 line-clamp-2 leading-tight">
-                      {book.title}
+                      {book.title[lang]}
                     </h3>
                     <p className="text-sm text-text-secondary mb-3">
                       {book.author}
                     </p>
                     <p className="text-sm text-muted line-clamp-2 mb-4 leading-relaxed">
-                      {book.description}
+                      {book.description[lang]}
                     </p>
 
                     {/* Metadata */}
@@ -197,7 +198,7 @@ export default function OnlineLibrary() {
                         <span
                           className={`px-3 py-1 bg-accent text-xs rounded-full font-medium`}
                         >
-                          {category.name}
+                          {category.name[lang]}
                         </span>
                       )}
                       <span className="px-3 py-1 bg-surface text-text-secondary text-xs rounded-full font-medium">
@@ -224,10 +225,10 @@ export default function OnlineLibrary() {
           <div className="text-center py-20">
             <BookOpen className="w-20 h-20 mx-auto text-muted mb-6" />
             <p className="text-2xl text-text-secondary font-light">
-              No books found
+              {t("No books found")}
             </p>
             <p className="text-muted mt-2">
-              Try adjusting your search or filters
+              {t("Try adjusting your search or filters")}
             </p>
           </div>
         )}

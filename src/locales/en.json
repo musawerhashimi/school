@@ -266,6 +266,7 @@
   "educationalTrips.status.completed": "Completed",
   "educationalTrips.status.ongoing": "Ongoing",
   "educationalTrips.action.allTrips": "All Trips",
+  "educationalTrips.day": "Day",
 
   "competitions.detail.notFound": "Competition not found",
   "competitions": {
@@ -1299,7 +1300,10 @@
     }
   },
   "team.searchPlaceholder":"Search by name, role...",
- 
+  "studentProjects.card.awards":"Awards",
+"studentProjects.detail.notFound":"Project not found",
+"studentProjects.detail.projectInfo":"Project Information",
+"No books found":"No books found matching your search criteria.",
 
 
 
@@ -1420,6 +1424,8 @@
     "themeDark": "Dark",
     "themeSystem": "System"
   }
+
+ 
 
   
 

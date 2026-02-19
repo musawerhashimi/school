@@ -267,6 +267,7 @@
   "educationalTrips.status.completed": "تکمیل شده",
   "educationalTrips.status.ongoing": "در حال اجرا",
   "educationalTrips.action.allTrips": "همه سفرها",
+  "educationalTrips.day": "روز",
 
 
   "competitions.detail.notFound": "مسابقه یافت نشد",
@@ -1297,8 +1298,13 @@
       "view_details": "جزئیات را ببینید"
     }
   },
-  "team.searchPlaceholder":" جستجو بر اساس نام، نقش..."
-
+  "team.searchPlaceholder":" جستجو بر اساس نام، نقش...",
+   "studentProjects.card.awards":"دستاورد",
+   "studentProjects.detail.notFound":"پروژه یافت نشد",
+   "studentProjects.detail.projectInfo":"اطلاعات پروژه",
+   "No books found":"هیچ کتابی مطابق با معیارهای جستجوی شما یافت نشد."
   
+
+
 
 }

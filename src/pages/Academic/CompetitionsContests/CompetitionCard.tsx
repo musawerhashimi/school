@@ -1,154 +1,88 @@
-// components/competitions/CompetitionCard.tsx
-import { Calendar, MapPin, Users } from "lucide-react";
-import type { Competition } from "../../../entities/Competition";
+import { Calendar, MapPin } from "lucide-react";
+import type {
+  Competition,
+  CompetitionStatus,
+} from "../../../entities/Competition";
 import { competitionCategories } from "../../../data/competitions";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 interface CompetitionCardProps {
   competition: Competition;
 }
 
 export default function CompetitionCard({ competition }: CompetitionCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
   const navigate = useNavigate();
 
-  const getStatusColor = (status: string) => {
+  const getStatus = (startDate: string): CompetitionStatus => {
+    const today = new Date();
+    const start = new Date(startDate);
+
+    today.setHours(0, 0, 0, 0);
+    start.setHours(0, 0, 0, 0);
+
+    return today < start ? "upcoming" : "completed";
+  };
+
+  const status = getStatus(competition.startDate);
+
+  const getStatusColor = (status: CompetitionStatus) => {
     switch (status) {
       case "upcoming":
         return "bg-info text-white";
-      case "ongoing":
-        return "bg-success text-white";
       case "completed":
-        return "bg-muted text-text-primary";
-      default:
         return "bg-muted text-text-primary";
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  // Truncate description to approximately 2 lines (around 100 characters)
-  const truncateDescription = (text: string, maxLength: number = 100) => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength).trim() + "...";
-  };
-
-  // Get category name by ID
   const getCategoryName = () => {
     const category = competitionCategories.find(
-      (cat) => cat.id === competition.category_id,
+      (cat) => Number(cat.id) === competition.category_id,
     );
-    return category ? category.name : "Unknown";
+    return category ? category.name[lang] : "Unknown";
   };
 
-  const spotsLeft =
-    competition.maxParticipants && competition.currentParticipants
-      ? competition.maxParticipants - competition.currentParticipants
-      : null;
-
-  const isRegistrationOpen =
-    competition.status !== "completed" &&
-    new Date(competition.registrationDeadline) > new Date();
-
   return (
-    <div className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 group">
-      {/* Image */}
-      <div className="relative h-48 overflow-hidden">
+    <div className="bg-card border rounded-xl overflow-hidden">
+      <div className="relative h-48">
         <img
           src={competition.image}
-          alt={competition.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          alt={competition.title[lang]}
+          className="w-full h-full object-cover"
         />
-        <div className="absolute top-4 left-4 flex gap-2">
-          <span
-            className={`badge ${getStatusColor(competition.status)} px-3 py-1`}
-          >
-            {t(`competitions.status.${competition.status}`)}
-          </span>
-        </div>
+
+        <span
+          className={`absolute top-4 left-4 badge ${getStatusColor(status)}`}
+        >
+          {t(`competitions.status.${status}`)}
+        </span>
       </div>
 
-      {/* Content */}
       <div className="p-6 space-y-4">
-        {/* Category Badge */}
-        <span className="badge bg-accent text-white inline-block">
-          {getCategoryName()}
-        </span>
+        <span className="badge bg-accent text-white">{getCategoryName()}</span>
 
-        {/* Title */}
-        <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors line-clamp-2">
-          {competition.title}
-        </h3>
+        <h3 className="text-xl font-bold">{competition.title[lang]}</h3>
 
-        {/* Description - Using both line-clamp and manual truncation as fallback */}
-        <p
-          className="text-text-secondary text-sm line-clamp-2"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {truncateDescription(competition.description, 120)}
-        </p>
-
-        {/* Meta Information */}
-        <div className="space-y-2 text-sm text-text-secondary">
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4 text-primary" />
-            <span>{formatDate(competition.startDate)}</span>
-          </div>
-
-          {competition.location && (
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-primary" />
-              <span>{competition.location}</span>
-            </div>
-          )}
-
-          {spotsLeft !== null && spotsLeft > 0 && isRegistrationOpen && (
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-primary" />
-              <span className="text-warning font-medium">
-                {spotsLeft} {t("competitions.card.spotsLeft")}
-              </span>
-            </div>
-          )}
+        <div className="flex items-center gap-2 text-sm">
+          <Calendar className="w-4 h-4" />
+          {formatLocalDateTime(competition.startDate)}
         </div>
 
-        {/* Action Button */}
+        {competition.location && (
+          <div className="flex items-center gap-2 text-sm">
+            <MapPin className="w-4 h-4" />
+            {competition.location}
+          </div>
+        )}
+
         <button
-          className="w-full btn-primary mt-4 flex items-center justify-center gap-2 group-hover:bg-primary-dark"
+          className="btn-primary w-full"
           onClick={() => navigate("/competitions-contests/" + competition.id)}
         >
-          {competition.status === "completed"
-            ? t("competitions.card.viewDetails")
-            : isRegistrationOpen
-              ? t("competitions.card.register")
-              : t("competitions.card.viewDetails")}
-          <svg
-            className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          {t("competitions.card.viewDetails")}
         </button>
       </div>
     </div>

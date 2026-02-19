@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   ArrowLeft,
   Calendar,
@@ -6,21 +6,20 @@ import {
   Users,
   Mail,
   Trophy,
-  CheckCircle2,
   AlertCircle,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import CompetitionRegistrationModal from "./CompetitionRegistrationModal";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   competitionCategories,
   competitions,
 } from "../../../data/competitions";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 export default function CompetitionDetail() {
-  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const { id } = useParams<{ id: string }>();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
   const navigate = useNavigate();
 
   const competition = useMemo(
@@ -38,33 +37,19 @@ export default function CompetitionDetail() {
     );
   }
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const isRegistrationOpen =
-    competition.status !== "completed" &&
-    new Date(competition.registrationDeadline) > new Date();
-
-  // Get category name by ID
   const getCategoryName = () => {
     const category = competitionCategories.find(
-      (cat) => cat.id === competition.category_id,
+      (cat) => Number(cat.id) === competition.category_id,
     );
-    return category ? category.name : "Unknown";
+
+    return category ? category.name[lang] : "Unknown";
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case "upcoming":
         return "bg-info text-white";
-      case "ongoing":
-        return "bg-success text-white";
+
       case "completed":
         return "bg-muted text-text-primary";
       default:
@@ -79,7 +64,7 @@ export default function CompetitionDetail() {
         <div className="relative h-80 overflow-hidden">
           <img
             src={competition.image}
-            alt={competition.title}
+            alt={competition.title[lang]}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -100,7 +85,7 @@ export default function CompetitionDetail() {
           {/* Title and Badges */}
           <div className="absolute md:bottom-8 bottom-4 left-8 right-8">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-              {competition.title}
+              {competition.title[lang]}
             </h1>
 
             <div className="flex flex-wrap gap-3 md:mt-4 mb-3">
@@ -126,22 +111,9 @@ export default function CompetitionDetail() {
                 <h2 className="text-2xl font-bold text-text-primary mb-4">
                   {t("competitions.detail.overview")}
                 </h2>
-                <p className="text-text-secondary">{competition.description}</p>
-              </section>
-
-              {/* Eligibility */}
-              <section className="bg-card border border-border rounded-xl p-8">
-                <h2 className="text-2xl font-bold text-text-primary mb-4">
-                  {t("competitions.detail.eligibility")}
-                </h2>
-                <ul className="space-y-3">
-                  {competition.eligibility.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                      <span className="text-text-secondary">{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-text-secondary">
+                  {competition.description[lang]}
+                </p>
               </section>
 
               {/* Rules */}
@@ -150,12 +122,12 @@ export default function CompetitionDetail() {
                   {t("competitions.detail.rules")}
                 </h2>
                 <ul className="space-y-3">
-                  {competition.rules.map((rule, index) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <AlertCircle className="w-5 h-5 text-info flex-shrink-0 mt-0.5" />
-                      <span className="text-text-secondary">{rule}</span>
-                    </li>
-                  ))}
+                  <li className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-info flex-shrink-0 mt-0.5" />
+                    <span className="text-text-secondary">
+                      {competition.rules[lang]}
+                    </span>
+                  </li>
                 </ul>
               </section>
 
@@ -175,14 +147,12 @@ export default function CompetitionDetail() {
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-text-primary mb-1">
-                          {prize.position}
+                          {prize.position[lang]}
                         </h3>
-                        <p className="text-text-secondary text-sm">
-                          {prize.award}
-                        </p>
+
                         {prize.description && (
                           <p className="text-text-secondary text-xs mt-1">
-                            {prize.description}
+                            {prize.description[lang]}
                           </p>
                         )}
                       </div>
@@ -190,35 +160,6 @@ export default function CompetitionDetail() {
                   ))}
                 </div>
               </section>
-
-              {/* Winners (if completed) */}
-              {competition.status === "completed" && competition.winners && (
-                <section className="bg-card border border-border rounded-xl p-8">
-                  <h2 className="text-2xl font-bold text-text-primary mb-6">
-                    {t("competitions.detail.winners")}
-                  </h2>
-                  <div className="space-y-3">
-                    {competition.winners.map((winner) => (
-                      <div
-                        key={winner.id}
-                        className="flex items-center justify-between p-4 bg-surface rounded-lg"
-                      >
-                        <div>
-                          <h3 className="font-semibold text-text-primary">
-                            {winner.studentName}
-                          </h3>
-                          <p className="text-text-secondary text-sm">
-                            {t("competitions.detail.grade")}: {winner.grade}
-                          </p>
-                        </div>
-                        <span className="badge badge-accent">
-                          {winner.position}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
             </div>
 
             {/* Sidebar */}
@@ -237,7 +178,7 @@ export default function CompetitionDetail() {
                         {t("competitions.detail.details.startDate")}
                       </p>
                       <p className="text-sm font-medium text-text-primary">
-                        {formatDate(competition.startDate)}
+                        {formatLocalDateTime(competition.startDate)}
                       </p>
                     </div>
                   </div>
@@ -249,7 +190,7 @@ export default function CompetitionDetail() {
                         {t("competitions.detail.details.endDate")}
                       </p>
                       <p className="text-sm font-medium text-text-primary">
-                        {formatDate(competition.endDate)}
+                        {formatLocalDateTime(competition.endDate)}
                       </p>
                     </div>
                   </div>
@@ -261,7 +202,7 @@ export default function CompetitionDetail() {
                         {t("competitions.detail.details.registrationDeadline")}
                       </p>
                       <p className="text-sm font-medium text-text-primary">
-                        {formatDate(competition.registrationDeadline)}
+                        {formatLocalDateTime(competition.registrationDeadline)}
                       </p>
                     </div>
                   </div>
@@ -288,7 +229,6 @@ export default function CompetitionDetail() {
                           {t("competitions.detail.details.participants")}
                         </p>
                         <p className="text-sm font-medium text-text-primary">
-                          {competition.currentParticipants} /{" "}
                           {competition.maxParticipants}
                         </p>
                       </div>
@@ -302,7 +242,7 @@ export default function CompetitionDetail() {
                         {t("competitions.detail.details.contact")}
                       </p>
                       <p className="text-sm font-medium text-text-primary">
-                       info@sultanzoi-phs.com
+                        info@sultanzoi-phs.com
                       </p>
                     </div>
                   </div>
@@ -323,44 +263,11 @@ export default function CompetitionDetail() {
                     </div>
                   )}
                 </div>
-
-                {/* Registration Button */}
-                <div className="pt-4 border-t border-border">
-                  {competition.status === "completed" ? (
-                    <button
-                      disabled
-                      className="w-full py-3 px-4 bg-muted text-text-secondary rounded-xl font-medium cursor-not-allowed"
-                    >
-                      {t("competitions.detail.eventCompleted")}
-                    </button>
-                  ) : isRegistrationOpen ? (
-                    <button
-                      onClick={() => setShowRegistrationModal(true)}
-                      className="w-full btn-primary"
-                    >
-                      {t("competitions.detail.registerNow")}
-                    </button>
-                  ) : (
-                    <button
-                      disabled
-                      className="w-full py-3 px-4 bg-muted text-text-secondary rounded-xl font-medium cursor-not-allowed"
-                    >
-                      {t("competitions.detail.registrationClosed")}
-                    </button>
-                  )}
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Registration Modal */}
-      <CompetitionRegistrationModal
-        competition={competition}
-        isOpen={showRegistrationModal}
-        onClose={() => setShowRegistrationModal(false)}
-      />
     </>
   );
 }

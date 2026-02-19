@@ -1,4 +1,8 @@
-// src/types/studentProjects.types.ts
+export interface MultiLangText {
+  en: string;
+  da: string;
+  pa: string;
+}
 
 export interface Student {
   id: string;
@@ -8,26 +12,22 @@ export interface Student {
 }
 
 export interface ProjectCategory {
-  id: string;
-  name: string;
+  id: number;
+  name: MultiLangText;
 }
 
 export interface StudentProject {
   id: string;
-  title: string;
+  title: MultiLangText;
   students: Student[];
-  category: string;
-  grade: string;
-  description: string;
+  category_id: number;
+  description: MultiLangText;
   images: string[];
-  date: string;
-  awards?: string[];
+  completion_date: string;
+  awards?: MultiLangText[];
 }
 
 export interface ProjectFilters {
   category: string;
-  grade: string;
-  year: string;
   search: string;
-  sortBy: "newest" | "oldest";
 }

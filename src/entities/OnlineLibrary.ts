@@ -1,9 +1,15 @@
+export interface MultiLangText {
+  en: string;
+  da: string;
+  pa: string;
+}
+
 export interface Book {
   id: string;
-  title: string;
+  title: MultiLangText;
   author: string;
   category_id: number;
-  description: string;
+  description: MultiLangText;
   coverImage: string;
   publicationYear: number;
   language: string;
@@ -12,5 +18,5 @@ export interface Book {
 // BookCategories Interface
 export interface BookCategory {
   id: number;
-  name: string;
+  name: MultiLangText;
 }

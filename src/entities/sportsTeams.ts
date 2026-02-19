@@ -29,9 +29,9 @@ export interface Coach {
     pa: string;
   };
   certifications?: {
-    en: string[];
-    da: string[];
-    pa: string[];
+    en: string;
+    da: string;
+    pa: string;
   };
 }
 
@@ -48,7 +48,6 @@ export interface Achievement {
     pa: string;
   };
   year: number;
-  trophy?: string;
 }
 
 export interface SportsTeam {
@@ -69,12 +68,6 @@ export interface SportsTeam {
   members: TeamMember[];
   achievements: Achievement[];
   establishedYear: number;
-
-  facilities?: {
-    en: string[];
-    da: string[];
-    pa: string[];
-  };
 }
 
 export type LanguageType = "en" | "da" | "pa";

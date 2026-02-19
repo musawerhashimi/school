@@ -61,9 +61,21 @@ export default function Sidebar() {
           label: "All Students",
           icon: GraduationCap,
           children: [
-            { id: "students-active", path: "/mis/students?status=active", label: "Active" },
-            { id: "students-inactive", path: "/mis/students?status=inactive", label: "Inactive" },
-            { id: "students-graduated", path: "/mis/students?status=graduated", label: "Graduated" },
+            {
+              id: "students-active",
+              path: "/mis/students?status=active",
+              label: "Active",
+            },
+            {
+              id: "students-inactive",
+              path: "/mis/students?status=inactive",
+              label: "Inactive",
+            },
+            {
+              id: "students-graduated",
+              path: "/mis/students?status=graduated",
+              label: "Graduated",
+            },
           ],
         },
         {
@@ -208,9 +220,21 @@ export default function Sidebar() {
           label: "Schedules",
           icon: Calendar,
           children: [
-            { id: "schedules-list", path: "/mis/exams/schedules", label: "List View" },
-            { id: "schedules-calendar", path: "/mis/exams/schedules/calendar", label: "Calendar View" },
-            { id: "schedules-new", path: "/mis/exams/schedules/new", label: "Add Schedule" },
+            {
+              id: "schedules-list",
+              path: "/mis/exams/schedules",
+              label: "List View",
+            },
+            {
+              id: "schedules-calendar",
+              path: "/mis/exams/schedules/calendar",
+              label: "Calendar View",
+            },
+            {
+              id: "schedules-new",
+              path: "/mis/exams/schedules/new",
+              label: "Add Schedule",
+            },
           ],
         },
         {
@@ -220,8 +244,16 @@ export default function Sidebar() {
           icon: FileCheck,
           quickAction: true,
           children: [
-            { id: "grades-entry", path: "/mis/exams/grades", label: "Enter Grades" },
-            { id: "grades-list", path: "/mis/exams/grades/list", label: "View Grades" },
+            {
+              id: "grades-entry",
+              path: "/mis/exams/grades",
+              label: "Enter Grades",
+            },
+            {
+              id: "grades-list",
+              path: "/mis/exams/grades/list",
+              label: "View Grades",
+            },
           ],
         },
         {
@@ -343,9 +375,21 @@ export default function Sidebar() {
           label: "Borrow Records",
           icon: ClipboardList,
           children: [
-            { id: "borrows-all", path: "/mis/library/borrows", label: "All Records" },
-            { id: "borrows-active", path: "/mis/library/borrows?status=active", label: "Active" },
-            { id: "borrows-overdue", path: "/mis/library/borrows?status=overdue", label: "Overdue" },
+            {
+              id: "borrows-all",
+              path: "/mis/library/borrows",
+              label: "All Records",
+            },
+            {
+              id: "borrows-active",
+              path: "/mis/library/borrows?status=active",
+              label: "Active",
+            },
+            {
+              id: "borrows-overdue",
+              path: "/mis/library/borrows?status=overdue",
+              label: "Overdue",
+            },
           ],
         },
       ] as SubNavItem[],
@@ -379,6 +423,23 @@ export default function Sidebar() {
       divider: true,
     },
     {
+      path: "/mis/cms",
+      label: "CMS",
+      icon: Settings,
+      subItems: [
+        {
+          id: "cms-home",
+          path: "/mis/cms/home",
+          label: "Home",
+        },
+        {
+          id: "cms-about",
+          path: "/mis/cms/about",
+          label: "About",
+        },
+      ] as SubNavItem[],
+    },
+    {
       path: "/mis/settings",
       label: "Settings",
       icon: Settings,
@@ -406,61 +467,67 @@ export default function Sidebar() {
         {/* Decorative gradient overlay */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
 
-      {/* Logo & Toggle */}
-      <div className={`relative z-10 flex items-center border-b border-white/10 bg-slate-900/50 backdrop-blur-xl px-4 ${isCollapsed ? 'h-auto py-4 flex-col gap-3' : 'h-16 justify-between'}`}>
-        {!isCollapsed ? (
-          <>
-            <div className="flex items-center gap-3">
+        {/* Logo & Toggle */}
+        <div
+          className={`relative z-10 flex items-center border-b border-white/10 bg-slate-900/50 backdrop-blur-xl px-4 ${isCollapsed ? "h-auto py-4 flex-col gap-3" : "h-16 justify-between"}`}
+        >
+          {!isCollapsed ? (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30">
+                  <School className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-base font-bold text-white leading-none">
+                    School MIS
+                  </h1>
+                  <p className="text-[10px] text-slate-400 leading-none mt-0.5">
+                    Management System
+                  </p>
+                </div>
+              </div>
+              <SidebarToggle />
+            </>
+          ) : (
+            <>
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30">
                 <School className="h-5 w-5 text-white" />
               </div>
-              <div>
-                <h1 className="text-base font-bold text-white leading-none">School MIS</h1>
-                <p className="text-[10px] text-slate-400 leading-none mt-0.5">Management System</p>
-              </div>
-            </div>
-            <SidebarToggle />
-          </>
-        ) : (
-          <>
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30">
-              <School className="h-5 w-5 text-white" />
-            </div>
-            <SidebarToggle />
-          </>
-        )}
-      </div>
+              <SidebarToggle />
+            </>
+          )}
+        </div>
 
-      {/* Navigation */}
-      <nav className="relative z-10 flex-1 overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
-        <ul className="space-y-1">
-          {navItems.map((item) => (
-            <SidebarItem
-              key={item.path}
-              path={item.path}
-              label={item.label}
-              icon={item.icon}
-              badge={item.badge}
-              subItems={item.subItems}
-              divider={item.divider}
-            />
-          ))}
-        </ul>
-      </nav>
+        {/* Navigation */}
+        <nav className="relative z-10 flex-1 overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
+          <ul className="space-y-1">
+            {navItems.map((item) => (
+              <SidebarItem
+                key={item.path}
+                path={item.path}
+                label={item.label}
+                icon={item.icon}
+                badge={item.badge}
+                subItems={item.subItems}
+                divider={item.divider}
+              />
+            ))}
+          </ul>
+        </nav>
 
-      {/* Logout */}
-      <div className="relative z-10 border-t border-white/10 bg-slate-900/30 backdrop-blur-xl p-3">
-        <button
-          onClick={logout}
-          className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-error/20 hover:text-error active:scale-95 ${
-            isCollapsed ? "justify-center" : ""
-          }`}
-        >
-          <LogOut className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-          {!isCollapsed && <span>{t("mis.nav.logout", "Logout")}</span>}
-        </button>
-      </div>
-    </aside>
+        {/* Logout */}
+        <div className="relative z-10 border-t border-white/10 bg-slate-900/30 backdrop-blur-xl p-3">
+          <button
+            onClick={logout}
+            className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-error/20 hover:text-error active:scale-95 ${
+              isCollapsed ? "justify-center" : ""
+            }`}
+          >
+            <LogOut className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+            {!isCollapsed && <span>{t("mis.nav.logout", "Logout")}</span>}
+          </button>
+        </div>
+      </aside>
     </>
   );
 }

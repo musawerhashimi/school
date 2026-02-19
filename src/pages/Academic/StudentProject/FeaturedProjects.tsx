@@ -1,16 +1,16 @@
-// src/components/studentProjects/RecentProjects.tsx
-
 import { Link } from "react-router-dom";
 import type { StudentProject } from "../../../entities/StudentProject";
 import { useTranslation } from "react-i18next";
 import { projectCategories } from "../../../data/studenProject";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 interface RecentProjectsProps {
   projects: StudentProject[];
 }
 
 const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
 
   return (
     <div className="mb-6 md:mx-6">
@@ -24,7 +24,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {projects.map((project) => {
           const category = projectCategories.find(
-            (c) => c.id === project.category
+            (c) => Number(c.id) === project.category_id,
           );
 
           return (
@@ -38,7 +38,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
                 <div className="relative h-64 -m-6 mb-6 overflow-hidden rounded-t-xl">
                   <img
                     src={project.images[0]}
-                    alt={project.title}
+                    alt={project.title[lang]}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -48,12 +48,13 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
                     {category && (
                       <span className={`badge badge-secondary shadow-lg`}>
                         <span className="mr-1">⭐</span>
-                        {t(`studentProjects.categories.${project.category}`)}
+                        {category.name[lang]}
                       </span>
                     )}
                     {project.awards && project.awards.length > 0 && (
                       <span className="badge bg-accent text-text-primary shadow-lg font-semibold">
-                        🏆 {project.awards.length} Awards
+                        🏆 {project.awards.length}{" "}
+                        {t("studentProjects.card.awards")}
                       </span>
                     )}
                   </div>
@@ -61,7 +62,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
                   {/* Title on Image */}
                   <div className="absolute bottom-4 left-4 right-4">
                     <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-accent transition-colors">
-                      {project.title}
+                      {project.title[lang]}
                     </h3>
                   </div>
                 </div>
@@ -69,7 +70,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
                 {/* Content */}
                 <div>
                   <p className="text-text-secondary mb-4 line-clamp-2">
-                    {project.description}
+                    {project.description[lang]}
                   </p>
 
                   {/* Students with Avatars */}
@@ -100,12 +101,9 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
                         <div className="text-sm font-medium text-text-primary">
                           {project.students.length > 1
                             ? `${project.students.length} ${t(
-                                "studentProjects.card.collaborators"
+                                "studentProjects.card.collaborators",
                               )}`
                             : project.students[0].name}
-                        </div>
-                        <div className="text-xs text-text-secondary">
-                          {project.grade}
                         </div>
                       </div>
                     </div>
@@ -114,10 +112,7 @@ const RecentProjects: React.FC<RecentProjectsProps> = ({ projects }) => {
                   {/* View Details */}
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-text-secondary">
-                      {new Date(project.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                      })}
+                      {formatLocalDateTime(project.completion_date)}
                     </div>
                     <div className="text-primary font-semibold group-hover:gap-3 flex items-center gap-2 transition-all">
                       {t("studentProjects.card.viewDetails")}

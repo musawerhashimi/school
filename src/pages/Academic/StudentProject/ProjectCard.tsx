@@ -1,26 +1,20 @@
-// src/components/studentProjects/ProjectCard.tsx
-
 import { useTranslation } from "react-i18next";
 import type { StudentProject } from "../../../entities/StudentProject";
 import { projectCategories } from "../../../data/studenProject";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 interface ProjectCardProps {
   project: StudentProject;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
 
-  const category = projectCategories.find((c) => c.id === project.category);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  // ✅ FIX: handle string/number mismatch
+  const category = projectCategories.find(
+    (c) => Number(c.id) === project.category_id
+  );
 
   return (
     <div className="card group cursor-pointer overflow-hidden h-full flex flex-col md:mx-6">
@@ -28,17 +22,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       <div className="relative h-48 overflow-hidden rounded-t-xl -m-6 mb-4">
         <img
           src={project.images[0]}
-          alt={project.title}
+          alt={project.title[lang]}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
-        {/* Category Badge */}
+        {/* ✅ Category Badge FIXED */}
         {category && (
           <div className="absolute top-4 left-4">
             <span className={`badge badge-secondary shadow-lg`}>
               <span className="mr-1">⭐</span>
-              {t(`studentProjects.categories.${project.category}`)}
+              {category.name[lang]}
             </span>
           </div>
         )}
@@ -56,11 +50,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
       {/* Content */}
       <div className="flex-1 flex flex-col">
         <h3 className="text-xl font-bold text-text-primary mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-          {project.title}
+          {project.title[lang]}
         </h3>
 
         <p className="text-text-secondary text-sm mb-4 line-clamp-3 flex-1">
-          {project.description}
+          {project.description[lang]}
         </p>
 
         {/* Students */}
@@ -94,6 +88,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               )}
             </div>
           </div>
+
           <div className="text-xs text-text-secondary mt-1">
             {project.students
               .slice(0, 2)
@@ -106,9 +101,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {/* Footer */}
         <div className="flex items-center justify-between pt-4 border-t border-border">
           <div className="flex flex-col">
-            <span className="text-xs text-text-secondary">{project.grade}</span>
             <span className="text-xs text-text-secondary">
-              {formatDate(project.date)}
+              {formatLocalDateTime(project.completion_date)}
             </span>
           </div>
 

@@ -544,3 +544,55 @@ Navbar, Footer, CTASection, PageHeader and others which can be imported from com
 now i want you to make the Hall of Fame section good.
 
 if you have any question or do not understand any part, tell me, if no then go.
+
+make a function to return the categories when wy pass the category id
+export const projectCategories: ProjectCategory[] = [
+{
+id: 1,
+name: {
+en: "Science & Technology",
+da: "ساینس و تکنالوژی",
+pa: "ساینس او ټکنالوژي",
+},
+},
+{
+id: 2,
+name: {
+en: "Arts & Literature",
+da: "هنر و ادبیات",
+pa: "هنر او ادبیات",
+},
+},
+{
+id: 3,
+name: {
+en: "Mathematics",
+da: "ریاضیات",
+pa: "ریاضیات",
+},
+},
+{
+id: 4,
+name: {
+en: "Engineering",
+da: "انجینری",
+pa: "انجنیري",
+},
+},
+{
+id: 5,
+name: {
+en: "Social Studies",
+da: "مطالعات اجتماعی",
+pa: "ټولنیزې مطالعې",
+},
+},
+{
+id: 6,
+name: {
+en: "Environmental Studies",
+da: "مطالعات محیط زیست",
+pa: "د چاپېریال مطالعې",
+},
+},
+];

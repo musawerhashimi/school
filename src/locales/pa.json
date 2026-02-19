@@ -270,6 +270,7 @@
   "educationalTrips.status.completed": "بشپړ شوی",
   "educationalTrips.status.ongoing": "روان",
   "educationalTrips.action.allTrips": "ټول سفرونه",
+  "educationalTrips.day": "ورځ",
 
 "competitions.detail.notFound": "سیالي ونه موندل شوه",
   "competitions": {
@@ -1292,7 +1293,11 @@
     }
     
   },
-  "team.searchPlaceholder":"د نوم، رول له مخې لټون وکړئ..."
+  "team.searchPlaceholder":"د نوم، رول له مخې لټون وکړئ...",
+   "studentProjects.card.awards":"جایزې",
+"studentProjects.detail.notFound":"پروژه ونه موندل شوه",
+"studentProjects.detail.projectInfo":"د پروژې معلومات",
+"No books found":"هیڅ کتاب ونه موندل شو"
 
 
 }

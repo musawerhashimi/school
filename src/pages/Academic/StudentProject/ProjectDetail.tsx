@@ -1,5 +1,3 @@
-// src/pages/ProjectDetail.tsx
-
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,11 +5,13 @@ import {
   projectCategories,
   studentProjects,
 } from "../../../data/studenProject";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 const ProjectDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "en" | "da" | "pa";
   const [selectedImage, setSelectedImage] = useState(0);
 
   const project = studentProjects.find((p) => p.id === id);
@@ -22,7 +22,7 @@ const ProjectDetail: React.FC = () => {
         <div className="text-center">
           <div className="text-6xl mb-4">🔍</div>
           <h2 className="text-2xl font-bold text-text-primary mb-2">
-            Project Not Found
+            {t("studentProjects.detail.notFound")}
           </h2>
           <Link to="/student-projects" className="text-primary hover:underline">
             {t("studentProjects.detail.backToProjects")}
@@ -31,17 +31,10 @@ const ProjectDetail: React.FC = () => {
       </div>
     );
   }
-
-  const category = projectCategories.find((c) => c.id === project.category);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  // ✅ FIX: handle string/number mismatch
+  const category = projectCategories.find(
+    (c) => Number(c.id) === project.category_id,
+  );
 
   return (
     <div className="min-h-screen bg-background md:mx-6">
@@ -78,7 +71,7 @@ const ProjectDetail: React.FC = () => {
             <div className="relative h-96 rounded-2xl overflow-hidden mb-8 group">
               <img
                 src={project.images[selectedImage]}
-                alt={project.title}
+                alt={project.title[lang]}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -90,7 +83,7 @@ const ProjectDetail: React.FC = () => {
                     onClick={() =>
                       setSelectedImage(
                         (selectedImage - 1 + project.images.length) %
-                          project.images.length
+                          project.images.length,
                       )
                     }
                     className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-text-primary p-3 rounded-full shadow-lg transition-all"
@@ -112,7 +105,7 @@ const ProjectDetail: React.FC = () => {
                   <button
                     onClick={() =>
                       setSelectedImage(
-                        (selectedImage + 1) % project.images.length
+                        (selectedImage + 1) % project.images.length,
                       )
                     }
                     className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-text-primary p-3 rounded-full shadow-lg transition-all"
@@ -137,9 +130,9 @@ const ProjectDetail: React.FC = () => {
               {/* Category Badge */}
               {category && (
                 <div className="absolute top-6 left-6">
-                  <span className={`badge badge-primary shadow-lg text-base`}>
-                    <span className="mr-2">⭐</span>
-                    {t(`studentProjects.categories.${project.category}`)}
+                  <span className={`badge badge-secondary shadow-lg`}>
+                    <span className="mr-1">⭐</span>
+                    {category.name[lang]}
                   </span>
                 </div>
               )}
@@ -152,7 +145,7 @@ const ProjectDetail: React.FC = () => {
                 {t("studentProjects.detail.overview")}
               </h2>
               <p className="text-text-secondary leading-relaxed text-lg">
-                {project.description}
+                {project.description[lang]}
               </p>
             </div>
 
@@ -171,7 +164,7 @@ const ProjectDetail: React.FC = () => {
                     >
                       <span className="text-2xl">🥇</span>
                       <span className="text-text-primary font-medium">
-                        {award}
+                        {award[lang]}
                       </span>
                     </div>
                   ))}
@@ -184,7 +177,7 @@ const ProjectDetail: React.FC = () => {
           <div className="lg:col-span-1">
             {/* Project Title */}
             <div className="card mb-6 bg-primary text-white">
-              <h1 className="text-3xl font-bold mb-2">{project.title}</h1>
+              <h1 className="text-3xl font-bold mb-2">{project.title[lang]}</h1>
               <div className="flex items-center gap-2 text-white/80">
                 <svg
                   className="w-5 h-5"
@@ -199,7 +192,7 @@ const ProjectDetail: React.FC = () => {
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                   />
                 </svg>
-                {formatDate(project.date)}
+                {formatLocalDateTime(project.completion_date)}
               </div>
             </div>
 
@@ -236,23 +229,23 @@ const ProjectDetail: React.FC = () => {
             {/* Project Info */}
             <div className="card">
               <h3 className="text-xl font-bold text-text-primary mb-4">
-                Project Information
+                {t("studentProjects.detail.projectInfo")}
               </h3>
               <div className="space-y-4">
                 <div>
                   <div className="text-sm text-text-secondary mb-1">
                     {t("studentProjects.detail.category")}
                   </div>
-                  <div className="font-semibold text-text-primary">
-                    ⭐ {t(`studentProjects.categories.${project.category}`)}
-                  </div>
+                  {category && (
+                    <div className="font-semibold text-text-primary">
+                      ⭐ {category.name[lang]}
+                      {/* Category Badge */}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <div className="text-sm text-text-secondary mb-1">
                     {t("studentProjects.detail.grade")}
-                  </div>
-                  <div className="font-semibold text-text-primary">
-                    {project.grade}
                   </div>
                 </div>
                 <div>
@@ -260,7 +253,7 @@ const ProjectDetail: React.FC = () => {
                     {t("studentProjects.detail.date")}
                   </div>
                   <div className="font-semibold text-text-primary">
-                    {formatDate(project.date)}
+                    {formatLocalDateTime(project.completion_date)}
                   </div>
                 </div>
               </div>
