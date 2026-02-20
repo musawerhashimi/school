@@ -47,7 +47,7 @@ export default function AmazingLoader() {
         {/* Animated text */}
         <div className="space-y-4">
           <h1 className="text-4xl md:text-5xl mb-8 font-bold text-white animate-fade-in">
-            {t("slide1Title")}{" "}
+            {t("loder.welcome")}{" "}
           </h1>
 
           {/* Loading bar */}
@@ -56,7 +56,7 @@ export default function AmazingLoader() {
           </div>
 
           <p className="text-white/90 text-lg animate-fade-in delay-300">
-            {t("BeingProcessed")}
+            {t("loder.beingProcessed")}
           </p>
         </div>
 

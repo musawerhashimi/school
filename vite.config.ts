@@ -35,6 +35,7 @@ export default defineConfig({
       "@mis-lib": path.resolve(__dirname, "./src/mis/lib"),
       "@mis-providers": path.resolve(__dirname, "./src/mis/providers"),
       "@mis-stores": path.resolve(__dirname, "./src/mis/stores"),
+      "@cms": path.resolve(__dirname, "./src/mis/modules/cms"),
     },
   },
 });

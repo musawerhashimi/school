@@ -15,7 +15,7 @@ export const EventsListPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [eventFilter, setEventFilter] = useState<EventFilterType>("upcoming");
+  const [eventFilter, setEventFilter] = useState<EventFilterType>("all");
 
   // Fetch data from API
   const { data: eventsData } = useNewsEvents();
@@ -73,7 +73,7 @@ export const EventsListPage: React.FC = () => {
         ? dateB.getTime() - dateA.getTime() // Descending for past events
         : dateA.getTime() - dateB.getTime(); // Ascending for upcoming
     });
-  }, [searchQuery, selectedCategory, eventFilter, lang]);
+  }, [events, searchQuery, selectedCategory, eventFilter, lang]);
 
   // Separate featured and regular events
   const featuredEvents = filteredEvents.filter((event) => event.featured);

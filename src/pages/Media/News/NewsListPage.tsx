@@ -43,7 +43,7 @@ export const NewsListPage: React.FC = () => {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategory, lang]);
+  }, [articles, searchQuery, selectedCategory, lang]);
 
   // Separate featured and regular articles
   const featuredArticles = filteredArticles.filter(

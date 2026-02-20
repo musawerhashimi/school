@@ -4,7 +4,7 @@ import StatsSection from "./StatsSection";
 import FeaturesSection from "./FeaturesSection";
 import TestimonialsSection from "./TestimonialsSection";
 import { useEffect, useState } from "react";
-import AmazingLoader from "../../components/Lodear";
+import AmazingLoader from "../../components/WelcomeLodear";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);

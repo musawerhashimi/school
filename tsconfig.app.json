@@ -50,8 +50,9 @@
       "@mis-data/*": ["src/mis/data/*"],
       "@mis-lib/*": ["src/mis/lib/*"],
       "@mis-providers/*": ["src/mis/providers/*"],
-      "@mis-stores/*": ["src/mis/stores/*"]
+      "@mis-stores/*": ["src/mis/stores/*"],
+      "@cms/*": ["src/mis/modules/cms/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/mis/modules/cms/pages/About/AboutDashboard.tsx"]
 }

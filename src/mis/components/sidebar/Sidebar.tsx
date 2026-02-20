@@ -20,6 +20,8 @@ import {
   Clock,
   FileCheck,
   Briefcase,
+  Home,
+  Globe,
 } from "lucide-react";
 import SidebarItem from "./SidebarItem";
 import SidebarToggle from "./SidebarToggle";
@@ -425,17 +427,50 @@ export default function Sidebar() {
     {
       path: "/mis/cms",
       label: "CMS",
-      icon: Settings,
+      icon: Globe,
       subItems: [
         {
           id: "cms-home",
           path: "/mis/cms/home",
-          label: "Home",
+          label: "Home Page",
+          icon: Home,
+          description: "Manage home page content",
+          children: [
+            {
+              id: "cms-home-overview",
+              path: "/mis/cms/home",
+              label: "Overview",
+            },
+            {
+              id: "cms-home-sliders",
+              path: "/mis/cms/home/sliders",
+              label: "Hero Sliders",
+            },
+          ],
         },
         {
           id: "cms-about",
           path: "/mis/cms/about",
-          label: "About",
+          label: "About Page",
+          icon: Users,
+          description: "Manage team and departments",
+          children: [
+            {
+              id: "cms-about-overview",
+              path: "/mis/cms/about",
+              label: "Overview",
+            },
+            {
+              id: "cms-about-team",
+              path: "/mis/cms/about/team",
+              label: "Team Members",
+            },
+            {
+              id: "cms-about-departments",
+              path: "/mis/cms/about/departments",
+              label: "Departments",
+            },
+          ],
         },
       ] as SubNavItem[],
     },
