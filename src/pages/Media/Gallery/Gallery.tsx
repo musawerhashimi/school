@@ -1,15 +1,34 @@
 import { useState, useMemo } from "react";
-import { Search, X, Filter } from "lucide-react";
+import { Search, X, Filter, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import PageHeader from "../../../components/layout/PageHeader";
 import type { GalleryItem } from "../../../entities/gallerytype";
-import { categoryData, mockGalleryItems } from "../../../data/galleryData";
+import { useGalleryCategories, useGalleryItems } from "./api/useGallery";
 import GalleryCard from "./GalleryCard";
 import Lightbox from "./LightboxModal";
 
 export default function Gallery() {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language as "en" | "pa" | "da";
+
+  // Fetch data from API
+  const {
+    data: categories = [],
+    isLoading: categoriesLoading,
+    error: categoriesError,
+  } = useGalleryCategories();
+  const {
+    data: galleryItems = [],
+    isLoading: itemsLoading,
+    error: itemsError,
+  } = useGalleryItems();
+
+  const isLoading = categoriesLoading || itemsLoading;
+  const hasError = categoriesError || itemsError;
+
+  // Ensure data is always an array (defensive coding)
+  const safeCategories = Array.isArray(categories) ? categories : [];
+  const safeGalleryItems = Array.isArray(galleryItems) ? galleryItems : [];
 
   const [selectedCategory, setSelectedCategory] = useState<number | "all">(
     "all",
@@ -19,7 +38,7 @@ export default function Gallery() {
 
   // Filter and search logic
   const filteredItems = useMemo(() => {
-    let items = mockGalleryItems;
+    let items = safeGalleryItems;
 
     if (selectedCategory !== "all") {
       items = items.filter((item) => item.category === selectedCategory);
@@ -35,7 +54,7 @@ export default function Gallery() {
     }
 
     return items;
-  }, [selectedCategory, searchQuery, currentLang]);
+  }, [selectedCategory, searchQuery, currentLang, safeGalleryItems]);
 
   // Navigate lightbox
   const navigateLightbox = (direction: "prev" | "next") => {
@@ -103,12 +122,12 @@ export default function Gallery() {
             >
               <span>{t("gallery.all")}</span>
               <span className="ml-1 text-xs opacity-75">
-                ({mockGalleryItems.length})
+                ({safeGalleryItems.length})
               </span>
             </button>
 
             {/* Category Buttons */}
-            {categoryData.map((cat) => (
+            {safeCategories.map((cat) => (
               <button
                 key={cat.category_id}
                 onClick={() => setSelectedCategory(cat.category_id)}
@@ -127,7 +146,24 @@ export default function Gallery() {
 
       {/* Gallery Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {filteredItems.length === 0 ? (
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <span className="ml-2 text-text-secondary">
+              {t("common.loading")}
+            </span>
+          </div>
+        ) : hasError ? (
+          <div className="text-center py-20">
+            <div className="text-6xl mb-4">⚠️</div>
+            <h3 className="text-2xl font-semibold text-text-primary mb-2">
+              {t("common.error")}
+            </h3>
+            <p className="text-text-secondary">
+              {t("common.errorLoadingData")}
+            </p>
+          </div>
+        ) : filteredItems.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-2xl font-semibold text-text-primary mb-2">
@@ -139,16 +175,17 @@ export default function Gallery() {
           <>
             {/* Results count */}
             <div className="mb-6 text-text-secondary">
-              {t("gallery.showing")} {mockGalleryItems.length} {t("gallery.of")}{" "}
+              {t("gallery.showing")} {safeGalleryItems.length} {t("gallery.of")}{" "}
               {filteredItems.length} {t("gallery.items")}
             </div>
 
             {/* Masonry Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {mockGalleryItems.map((item, index) => (
+              {filteredItems.map((item, index) => (
                 <GalleryCard
                   key={item.id}
                   item={item}
+                  categories={safeCategories}
                   onClick={() => setSelectedItem(item)}
                   index={index}
                   currentLang={currentLang}

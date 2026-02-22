@@ -1,9 +1,12 @@
 import { Play, Calendar } from "lucide-react";
-import { categoryData } from "../../../data/galleryData";
-import type { GalleryItem } from "../../../entities/gallerytype";
+import type {
+  GalleryItem,
+  GalleryCategory,
+} from "../../../entities/gallerytype";
 
 interface GalleryCardProps {
   item: GalleryItem;
+  categories: GalleryCategory[];
   featured?: boolean;
   onClick: () => void;
   index: number;
@@ -12,13 +15,14 @@ interface GalleryCardProps {
 
 export default function GalleryCard({
   item,
+  categories,
   onClick,
   index,
   currentLang,
 }: GalleryCardProps) {
-  // Get the category name for display
+  // Get the category name for display from API categories
   const getCategoryName = (categoryId: number): string => {
-    const category = categoryData.find((cat) => cat.category_id === categoryId);
+    const category = categories.find((cat) => cat.category_id === categoryId);
     return category ? category.name[currentLang] : "";
   };
 

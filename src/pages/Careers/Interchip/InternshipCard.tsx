@@ -1,32 +1,26 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import type { Internship } from "../../../entities/intership";
-import { internshipCategories } from "../../../data/intership";
+import type {
+  Internship,
+  InternshipCategory,
+} from "../../../entities/intership";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 interface InternshipCardProps {
   internship: Internship;
   onClick: () => void;
+  categories?: InternshipCategory[];
 }
 
 const InternshipCard: React.FC<InternshipCardProps> = ({
   internship,
   onClick,
+  categories = [],
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
 
-  const category = internshipCategories.find(
-    (cat) => cat.id === internship.categoryId,
-  );
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(lang === "en" ? "en-US" : "fa-AF", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  const category = categories.find((cat) => cat.id === internship.categoryId);
 
   const isDeadlineNear = () => {
     const deadline = new Date(internship.applicationDeadline);
@@ -102,7 +96,7 @@ const InternshipCard: React.FC<InternshipCardProps> = ({
                 {t("internships.card.duration")}
               </p>
               <p className="font-medium text-text-primary">
-                {internship.duration[lang]}
+                {internship.duration} Day
               </p>
             </div>
           </div>
@@ -140,11 +134,6 @@ const InternshipCard: React.FC<InternshipCardProps> = ({
           </div>
         </div>
 
-        {/* Description Preview */}
-        <p className="text-text-secondary text-sm line-clamp-3 leading-relaxed">
-          {internship.description[lang]}
-        </p>
-
         {/* Footer */}
         <div className="pt-4 border-t border-border flex items-center justify-between">
           <div className="text-sm">
@@ -152,7 +141,7 @@ const InternshipCard: React.FC<InternshipCardProps> = ({
               {t("internships.card.deadline")}:
             </span>
             <span className="ml-2 font-semibold text-text-primary">
-              {formatDate(internship.applicationDeadline)}
+              {formatLocalDateTime(internship.applicationDeadline)}
             </span>
           </div>
 

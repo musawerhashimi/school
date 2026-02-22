@@ -1,32 +1,26 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import type { Internship } from "../../../entities/intership";
-import { internshipCategories } from "../../../data/intership";
+import type {
+  Internship,
+  InternshipCategory,
+} from "../../../entities/intership";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 interface InternshipModalProps {
   internship: Internship;
   onClose: () => void;
+  categories?: InternshipCategory[];
 }
 
 const InternshipModal: React.FC<InternshipModalProps> = ({
   internship,
   onClose,
+  categories = [],
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
 
-  const category = internshipCategories.find(
-    (cat) => cat.id === internship.categoryId,
-  );
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(lang === "en" ? "en-US" : "fa-AF", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const category = categories.find((cat) => cat.id === internship.categoryId);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -127,7 +121,7 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
                   {t("internships.details.duration")}
                 </p>
                 <p className="font-bold text-text-primary">
-                  {internship.duration[lang]}
+                  {internship.duration} Day
                 </p>
               </div>
 
@@ -181,7 +175,7 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
                   {t("internships.details.startDate")}
                 </p>
                 <p className="font-bold text-text-primary text-sm">
-                  {formatDate(internship.startDate)}
+                  {formatLocalDateTime(internship.startDate)}
                 </p>
               </div>
 
@@ -205,7 +199,7 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
                   {t("internships.details.deadline")}
                 </p>
                 <p className="font-bold text-text-primary text-sm">
-                  {formatDate(internship.applicationDeadline)}
+                  {formatLocalDateTime(internship.applicationDeadline)}
                 </p>
               </div>
             </div>
@@ -217,7 +211,7 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
                 {t("internships.details.description")}
               </h3>
               <p className="text-text-secondary leading-relaxed">
-                {internship.description[lang]}
+                {internship.description?.[lang]}
               </p>
             </div>
 
@@ -245,7 +239,7 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
                     </svg>
                   </div>
                   <span className="text-text-secondary">
-                    {internship.requirements[lang]}
+                    {internship.requirements?.[lang]}
                   </span>
                 </li>
               </ul>
@@ -269,7 +263,7 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
                     </svg>
                   </div>
                   <span className="text-text-secondary">
-                    {internship.benefits[lang]}
+                    {internship.benefits?.[lang]}
                   </span>
                 </li>
               </ul>
