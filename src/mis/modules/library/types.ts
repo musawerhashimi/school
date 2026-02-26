@@ -79,6 +79,7 @@ export interface LibraryItemListResponse {
   category: number;
   category_name: string;
   cover_image: string | null;
+  digital_file: string | null;
   total_copies: number;
   available_copies: number;
   times_borrowed: number;
@@ -130,7 +131,6 @@ export interface BookCopyListResponse {
   is_reference_only: boolean;
   is_available: boolean;
   current_borrower: string | null;
-  created_at: string;
 }
 
 /**
@@ -152,7 +152,7 @@ export interface BorrowRecordListResponse {
   barcode: string;
   book_title: string;
   book_author: string;
-  cover_image: string | null;
+  cover_thumbnail: string | null;
   student: number;
   student_name: string;
   student_id_number: string;

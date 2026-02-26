@@ -24,15 +24,21 @@ function buildTeamMemberFormData(input: TeamMemberInput): FormData {
   const formData = new FormData();
 
   formData.append("name", input.name);
-  formData.append("type", input.type);
-  formData.append("role", JSON.stringify(input.role));
-  formData.append("department_id", String(input.department_id));
+  formData.append("member_type", input.type);
+  formData.append("role.en", input.role.en);
+  formData.append("role.da", input.role.da);
+  formData.append("role.pa", input.role.pa);
+  formData.append("department", String(input.department_id));
   formData.append("email", input.email);
   formData.append("phone", input.phone);
-  formData.append("experience", JSON.stringify(input.experience));
-  formData.append("bio", JSON.stringify(input.bio));
+  formData.append("experience.en", input.experience.en);
+  formData.append("experience.da", input.experience.da);
+  formData.append("experience.pa", input.experience.pa);
+  formData.append("bio.en", input.bio.en);
+  formData.append("bio.da", input.bio.da);
+  formData.append("bio.pa", input.bio.pa);
   formData.append("education", JSON.stringify(input.education));
-  formData.append("joinedDate", input.joinedDate);
+  formData.append("joined_date", input.joinedDate);
 
   if (input.subjects) {
     formData.append("subjects", JSON.stringify(input.subjects));
@@ -143,13 +149,14 @@ export const cmsAboutService = {
      */
     async update(id: number, input: TeamMemberInput): Promise<TeamMember> {
       const formData = buildTeamMemberFormData(input);
-      const response = await api.put<TeamMember>(
-        `${TEAM_MEMBERS_URL}${id}/`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        },
-      );
+      const url = `${TEAM_MEMBERS_URL}${id}/`;
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      };
+      const response =
+        input.image instanceof File
+          ? await api.put<TeamMember>(url, formData, config)
+          : await api.patch<TeamMember>(url, formData, config);
       return response.data;
     },
 

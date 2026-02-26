@@ -1,26 +1,30 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import type {
-  Internship,
-  InternshipCategory,
-} from "../../../entities/intership";
+import type { InternshipCategory } from "../../../entities/intership";
+import { useInternship } from "../Api/useCareers";
 import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 interface InternshipModalProps {
-  internship: Internship;
+  internshipId: number;
   onClose: () => void;
   categories?: InternshipCategory[];
 }
 
 const InternshipModal: React.FC<InternshipModalProps> = ({
-  internship,
+  internshipId,
   onClose,
   categories = [],
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
 
-  const category = categories.find((cat) => cat.id === internship.categoryId);
+  // Fetch detailed internship data from the detail endpoint
+  const { data: internship, isLoading, error } = useInternship(internshipId);
+
+  // Use category from detail response, or fallback to finding from categories array
+  const category =
+    internship?.category ||
+    categories.find((cat) => cat.id === internship?.categoryId);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -38,6 +42,47 @@ const InternshipModal: React.FC<InternshipModalProps> = ({
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div
+          className="absolute inset-0"
+          onClick={onClose}
+          aria-label="Close modal"
+        />
+        <div className="relative bg-card rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scale-in p-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error || !internship) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+        <div
+          className="absolute inset-0"
+          onClick={onClose}
+          aria-label="Close modal"
+        />
+        <div className="relative bg-card rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scale-in p-8">
+          <div className="flex flex-col items-center justify-center h-64">
+            <p className="text-red-600 font-semibold mb-2">
+              Failed to load internship details
+            </p>
+            <button onClick={onClose} className="btn-primary px-6 py-2">
+              {t("internships.details.close")}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">

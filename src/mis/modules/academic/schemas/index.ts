@@ -115,27 +115,14 @@ export const subjectSchema = z.object({
   ], {
     required_error: 'Subject type is required',
   }),
-  class_levels: z.array(z.number()).min(1, 'At least one class level is required'),
-  total_marks: z.number()
-    .min(1, 'Total marks must be at least 1')
-    .max(1000, 'Total marks seems too large')
-    .default(100),
-  pass_marks: z.number()
-    .min(1, 'Pass marks must be at least 1')
-    .max(1000, 'Pass marks seems too large'),
-  credit_hours: z.number()
-    .min(0.5, 'Credit hours must be at least 0.5')
-    .max(20, 'Credit hours seems too large')
-    .default(1),
+  class_levels: z.array(z.object({
+    class_level: z.number(),
+    credit_hours: z.number().min(0.5).max(20),
+  })).min(1, 'At least one class level is required'),
   moe_code: z.string().max(50).optional(),
   description: z.string().optional(),
   syllabus: z.string().optional(),
-  is_active: z.boolean().default(true),
-}).refine((data) => {
-  return data.pass_marks <= data.total_marks;
-}, {
-  message: 'Pass marks cannot exceed total marks',
-  path: ['pass_marks'],
+  is_active: z.boolean().optional().default(true),
 });
 
 export const subjectUpdateSchema = subjectSchema;

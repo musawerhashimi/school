@@ -1,7 +1,7 @@
 import { Card, CardContent, Select, Spinner } from '@mis-components/ui';
 import { AlertCircle, BookOpen, ChevronRight, GraduationCap, ClipboardList, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import type { SubjectApiResponse } from '../../../academic/types';
+import type { SubjectApiResponse } from '../../../reference/types';
 import { useSaveSubjectScores, useSubjectScores } from '../../hooks/useClassExams';
 import type { BulkScoreSaveInput, ExamApiResponse, ExamType } from '../../types';
 import ScoreEntryTable from '../ScoreEntryTable';

@@ -9,6 +9,7 @@ import type {
   StudentFilters,
   GuardianApiResponse,
   StudentDocumentApiResponse,
+  StudentAcademicPerformanceResponse,
 } from '../types';
 
 const BASE_URL = '/students';
@@ -220,6 +221,7 @@ export const studentService = {
   getGuardians: async (params?: {
     search?: string;
     page?: number;
+    page_size?: number;
   }): Promise<{
     count: number;
     next: string | null;
@@ -229,6 +231,7 @@ export const studentService = {
     const searchParams = new URLSearchParams();
     if (params?.search) searchParams.append('search', params.search);
     if (params?.page) searchParams.append('page', String(params.page));
+    if (params?.page_size) searchParams.append('page_size', String(params.page_size));
 
     const response = await apiClient.get(
       `${BASE_URL}/guardians/?${searchParams.toString()}`
@@ -328,11 +331,25 @@ export const studentService = {
   /**
    * Get student enrollment history
    */
-  getEnrollments: async (studentId: number): Promise<any[]> => {
+  getEnrollments: async (studentId: number): Promise<unknown[]> => {
     const response = await apiClient.get(
       `${BASE_URL}/students/${studentId}/enrollments/`
     );
     return response.data.results || response.data;
+  },
+
+  // ============================================================================
+  // ACADEMIC PERFORMANCE
+  // ============================================================================
+
+  /**
+   * Get student academic performance (grades, GPA, history)
+   */
+  getAcademicPerformance: async (studentId: number): Promise<StudentAcademicPerformanceResponse> => {
+    const response = await apiClient.get<StudentAcademicPerformanceResponse>(
+      `${BASE_URL}/students/${studentId}/academic-performance/`
+    );
+    return response.data;
   },
 };
 

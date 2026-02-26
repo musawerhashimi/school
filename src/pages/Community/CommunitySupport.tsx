@@ -1,11 +1,20 @@
 import { useTranslation } from "react-i18next";
 import { ExternalLink, Heart, Users, Handshake, Globe } from "lucide-react";
 import PageHeader from "../../components/layout/PageHeader";
-import { communityPartners, supportPrograms } from "../../data/community";
+import { supportPrograms } from "../../data/community";
+import { useCommunityPartners } from "./Api/useCommunity";
 
 export default function CommunitySupport() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
+  const {
+    data: communityPartners = [],
+    isLoading,
+    error,
+  } = useCommunityPartners();
+
+  // Ensure communityPartners is always an array
+  const partners = Array.isArray(communityPartners) ? communityPartners : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,50 +130,69 @@ export default function CommunitySupport() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {communityPartners.map((partner, index) => (
-              <div
-                key={index}
-                className="bg-card rounded-2xl overflow-hidden border border-border hover:border-primary transition-all duration-300 hover:shadow-2xl group"
-              >
-                <div className="h-48 bg-gradient-to-br from-surface to-surface-hover flex items-center justify-center p-8 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <img
-                    src={partner.logo}
-                    alt={partner.name[lang]}
-                    className="max-w-full max-h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 space-y-4">
-                  <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
-                    {partner.name[lang]}
-                  </h3>
-                  <p className="text-sm text-text-secondary line-clamp-3">
-                    {partner.description[lang]}
-                  </p>
-                  <div className="pt-4 border-t border-border space-y-3">
-                    <div>
-                      <span className="text-xs font-semibold text-muted uppercase tracking-wide">
-                        {t("community.partners.collaboration")}
-                      </span>
-                      <p className="text-sm text-text-secondary mt-1">
-                        {partner.collaboration[lang]}
-                      </p>
+            {isLoading ? (
+              <div className="col-span-full flex justify-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              </div>
+            ) : error ? (
+              <div className="col-span-full text-center py-12">
+                <p className="text-red-500 font-semibold mb-2">
+                  {t("common.error")}
+                </p>
+                <p className="text-text-secondary text-sm">
+                  {error.message || "Failed to load community partners"}
+                </p>
+              </div>
+            ) : partners.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-text-secondary">
+                {t("common.noData")}
+              </div>
+            ) : (
+              partners.map((partner) => (
+                <div
+                  key={partner.id}
+                  className="bg-card rounded-2xl overflow-hidden border border-border hover:border-primary transition-all duration-300 hover:shadow-2xl group"
+                >
+                  <div className="h-48 bg-gradient-to-br from-surface to-surface-hover flex items-center justify-center p-8 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <img
+                      src={partner.logo}
+                      alt={partner.name[lang]}
+                      className="max-w-full max-h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
+                      {partner.name[lang]}
+                    </h3>
+                    <p className="text-sm text-text-secondary line-clamp-3">
+                      {partner.description[lang]}
+                    </p>
+                    <div className="pt-4 border-t border-border space-y-3">
+                      <div>
+                        <span className="text-xs font-semibold text-muted uppercase tracking-wide">
+                          {t("community.partners.collaboration")}
+                        </span>
+                        <p className="text-sm text-text-secondary mt-1">
+                          {partner.collaboration[lang]}
+                        </p>
+                      </div>
+                      {partner.website && (
+                        <a
+                          href={partner.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
+                        >
+                          <span>{t("community.partners.visitWebsite")}</span>
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
                     </div>
-                    {partner.website && (
-                      <a
-                        href={partner.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-dark transition-colors"
-                      >
-                        <span>{t("community.partners.visitWebsite")}</span>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </section>

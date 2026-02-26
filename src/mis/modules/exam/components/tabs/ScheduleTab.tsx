@@ -177,7 +177,6 @@ export default function ScheduleTab({
           onClose={handleSlotModalClose}
           classId={classId}
           examId={currentExam.id}
-          examType={examType}
         />
       )}
 
@@ -187,7 +186,6 @@ export default function ScheduleTab({
         onClose={handleCreateModalClose}
         classId={classId}
         examId={currentExam.id}
-        examType={examType}
         createMode
         prefilledDate={createModalDate}
       />

@@ -14,21 +14,18 @@ import {
 } from "lucide-react";
 
 import { PageHeader } from "@mis-components/index";
-import {
-  Card,
-  CardContent,
-  Button,
-  Badge,
-  Skeleton,
-} from "@mis-components/ui";
+import { Card, CardContent, Button, Badge, Skeleton } from "@mis-components/ui";
 import Input from "@mis-components/ui/Input";
 import {
   useAcademicYears,
   useCreateAcademicYear,
   useDeleteAcademicYear,
   useSetActiveAcademicYear,
-} from "@/mis/queries/useAcademicYears";
-import type { AcademicYear as AcademicYearType, CreateAcademicYearData } from "@/mis/lib/academicYearService";
+} from "@/queries/useAcademicYears";
+import type {
+  AcademicYear as AcademicYearType,
+  CreateAcademicYearData,
+} from "@/lib/academicYearService";
 
 // Academic Year Schema
 const academicYearSchema = z
@@ -79,12 +76,7 @@ export default function AcademicYear() {
   const [setActiveId, setSetActiveId] = useState<number | null>(null);
 
   // Fetch academic years
-  const {
-    data: yearsData,
-    isLoading,
-    error,
-    refetch,
-  } = useAcademicYears();
+  const { data: yearsData, isLoading, error, refetch } = useAcademicYears();
 
   // Mutations
   const createMutation = useCreateAcademicYear();
@@ -137,7 +129,9 @@ export default function AcademicYear() {
     // Find the year to check if it's active
     const yearToDelete = academicYears.find((y) => y.id === deleteYearId);
     if (yearToDelete?.isActive) {
-      toast.error(t("settings.cantDeleteActive", "Cannot delete the active academic year"));
+      toast.error(
+        t("settings.cantDeleteActive", "Cannot delete the active academic year")
+      );
       setDeleteYearId(null);
       return;
     }
@@ -166,7 +160,10 @@ export default function AcademicYear() {
   const TableSkeleton = () => (
     <div className="space-y-4">
       {[1, 2, 3].map((i) => (
-        <div key={i} className="flex items-center gap-4 p-4 border border-border rounded-lg">
+        <div
+          key={i}
+          className="flex items-center gap-4 p-4 border border-border rounded-lg"
+        >
           <div className="flex-1 space-y-2">
             <Skeleton className="h-4 w-1/4" />
             <Skeleton className="h-3 w-1/3" />
@@ -182,12 +179,17 @@ export default function AcademicYear() {
     <div className="space-y-6">
       <PageHeader
         title={t("mis.settings.academicYear", "Academic Year")}
-        subtitle={t("mis.settings.yearSubtitle", "Manage academic years and set the current active year")}
-        actions={
-          <Button onClick={() => setIsModalOpen(true)} leftIcon={<Plus className="h-4 w-4" />}>
-            {t("settings.addYear", "Add Year")}
-          </Button>
-        }
+        subtitle={t(
+          "mis.settings.yearSubtitle",
+          "Manage academic years and set the current active year"
+        )}
+        actions={[
+          {
+            label: t("settings.addYear", "Add Year"),
+            icon: <Plus className="h-4 w-4" />,
+            onClick: () => setIsModalOpen(true),
+          },
+        ]}
       />
 
       {/* Academic Years List */}
@@ -212,7 +214,10 @@ export default function AcademicYear() {
               <p className="text-sm text-text-secondary mb-4">
                 {t("settings.noYears", "No academic years found")}
               </p>
-              <Button onClick={() => setIsModalOpen(true)} leftIcon={<Plus className="h-4 w-4" />}>
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                leftIcon={<Plus className="h-4 w-4" />}
+              >
                 {t("settings.addFirstYear", "Add First Academic Year")}
               </Button>
             </div>
@@ -240,18 +245,27 @@ export default function AcademicYear() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {academicYears.map((year) => (
-                    <tr key={year.id} className="hover:bg-surface-hover transition-colors">
+                    <tr
+                      key={year.id}
+                      className="hover:bg-surface-hover transition-colors"
+                    >
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-2">
                           <CalendarDays className="h-4 w-4 text-primary" />
-                          <span className="text-sm font-medium text-text-primary">{year.name}</span>
+                          <span className="text-sm font-medium text-text-primary">
+                            {year.name}
+                          </span>
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="text-sm text-text-secondary">{formatDate(year.startDate)}</span>
+                        <span className="text-sm text-text-secondary">
+                          {formatDate(year.startDate)}
+                        </span>
                       </td>
                       <td className="px-4 py-4">
-                        <span className="text-sm text-text-secondary">{formatDate(year.endDate)}</span>
+                        <span className="text-sm text-text-secondary">
+                          {formatDate(year.endDate)}
+                        </span>
                       </td>
                       <td className="px-4 py-4">
                         {year.isActive ? (
@@ -323,7 +337,10 @@ export default function AcademicYear() {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <Input
                 label={t("settings.yearName", "Year Name")}
-                placeholder={t("settings.yearNamePlaceholder", "e.g., 2024-2025")}
+                placeholder={t(
+                  "settings.yearNamePlaceholder",
+                  "e.g., 2024-2025"
+                )}
                 error={errors.name?.message}
                 {...register("name")}
               />

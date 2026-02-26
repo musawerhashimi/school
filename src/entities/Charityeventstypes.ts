@@ -7,11 +7,14 @@ export interface MultiLangText {
 }
 
 export interface CharityEvent {
+  id: number;
   name: MultiLangText;
   date: string; // ISO format: YYYY-MM-DD
   description: MultiLangText;
   purpose: MultiLangText;
   image: string;
+  isPast: boolean;
+  isUpcoming: boolean;
 }
 
 export interface BreadcrumbItem {

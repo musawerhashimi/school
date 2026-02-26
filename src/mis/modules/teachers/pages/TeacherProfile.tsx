@@ -1,34 +1,33 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import {
-  ArrowLeft,
-  Edit,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  Star,
-  BookOpen,
-  Users,
-  Clock,
-  Award,
-  FileText,
-} from "lucide-react";
-import {
-  Button,
-  Card,
-  Tabs,
-  Badge,
-  Avatar,
-  Spinner,
-  Alert,
-} from "@mis-components/ui";
 import { PageHeader } from "@mis-components/index";
 import {
+  Alert,
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Spinner,
+  Tabs
+} from "@mis-components/ui";
+import {
+  Award,
+  BookOpen,
+  Calendar,
+  Clock,
+  Edit,
+  FileText,
+  Mail,
+  MapPin,
+  Phone,
+  Star,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useTeacherClasses,
   useTeacherDetail,
   useTeacherSchedule,
-  useTeacherClasses,
   useTeacherStudents,
 } from "../hooks/useTeachers";
 
@@ -38,7 +37,7 @@ export default function TeacherProfile() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
 
-  const teacherId = parseInt(id || "0", 10);
+  const teacherId = parseInt(id || "0");
 
   // Fetch data
   const { data: teacher, isLoading, error } = useTeacherDetail(teacherId);
@@ -97,19 +96,18 @@ export default function TeacherProfile() {
       <PageHeader
         title={staff.full_name}
         subtitle={`${staff.staff_id} • ${teacher.employee_code}`}
-        icon={Users}
-        backButton={{
-          label: t("mis.common.back"),
-          onClick: () => navigate("/mis/teachers"),
-        }}
-        actions={
-          <Button
-            leftIcon={<Edit className="h-4 w-4" />}
-            onClick={() => navigate(`/mis/staff/${staff.id}/edit`)}
-          >
-            {t("mis.common.edit")}
+        breadcrumb={
+          <Button onClick={() => navigate("/mis/teachers")}>
+            t("mis.common.back")
           </Button>
         }
+        actions={[
+          {
+            label: t("mis.common.edit"),
+            icon: <Edit className="h-4 w-4" />,
+            onClick: () => navigate(`/mis/staff/${staff.id}/edit`),
+          },
+        ]}
       />
 
       {/* Profile Header Card */}
@@ -215,6 +213,7 @@ export default function TeacherProfile() {
         activeTab={activeTab}
         onChange={setActiveTab}
         variant="pills"
+        
       />
 
       {/* Tab Content */}
@@ -290,34 +289,40 @@ export default function TeacherProfile() {
 
           {schedule && Object.keys(schedule.schedule).length > 0 ? (
             <div className="space-y-4">
-              {Object.entries(schedule.schedule).map(([day, slots]: [string, any[]]) => (
-                <div key={day} className="border border-border rounded-lg p-4">
-                  <h4 className="font-semibold mb-3">{day}</h4>
-                  <div className="space-y-2">
-                    {slots.map((slot) => (
-                      <div
-                        key={slot.id}
-                        className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="text-sm font-medium text-text-secondary">
-                            P{slot.period_number}
-                          </div>
-                          <div>
-                            <div className="font-medium">{slot.subject}</div>
-                            <div className="text-sm text-text-secondary">
-                              {slot.class} • {slot.room || t("mis.common.noRoom")}
+              {Object.entries(schedule.schedule).map(
+                ([day, slots]) => (
+                  <div
+                    key={day}
+                    className="border border-border rounded-lg p-4"
+                  >
+                    <h4 className="font-semibold mb-3">{day}</h4>
+                    <div className="space-y-2">
+                      {slots.map((slot) => (
+                        <div
+                          key={slot.id}
+                          className="flex items-center justify-between p-3 bg-bg-secondary rounded-lg"
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className="text-sm font-medium text-text-secondary">
+                              P{slot.period_number}
+                            </div>
+                            <div>
+                              <div className="font-medium">{slot.subject}</div>
+                              <div className="text-sm text-text-secondary">
+                                {slot.class} •{" "}
+                                {slot.room || t("mis.common.noRoom")}
+                              </div>
                             </div>
                           </div>
+                          <div className="text-sm text-text-secondary">
+                            {slot.start_time} - {slot.end_time}
+                          </div>
                         </div>
-                        <div className="text-sm text-text-secondary">
-                          {slot.start_time} - {slot.end_time}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           ) : (
             <Alert variant="info">
@@ -359,7 +364,8 @@ export default function TeacherProfile() {
                     </div>
                     {cls.academic_year && (
                       <div>
-                        {t("mis.classes.fields.academicYear")}: {cls.academic_year}
+                        {t("mis.classes.fields.academicYear")}:{" "}
+                        {cls.academic_year}
                       </div>
                     )}
                   </div>
@@ -367,9 +373,7 @@ export default function TeacherProfile() {
               ))}
             </div>
           ) : (
-            <Alert variant="info">
-              {t("mis.teachers.messages.noClasses")}
-            </Alert>
+            <Alert variant="info">{t("mis.teachers.messages.noClasses")}</Alert>
           )}
         </Card>
       )}
@@ -424,7 +428,9 @@ export default function TeacherProfile() {
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => navigate(`/mis/students/${student.id}`)}
+                          onClick={() =>
+                            navigate(`/mis/students/${student.id}`)
+                          }
                         >
                           {t("mis.common.view")}
                         </Button>

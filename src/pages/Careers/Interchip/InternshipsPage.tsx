@@ -153,11 +153,6 @@ const InternshipsPage: React.FC = () => {
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
               }
-              endMessage={
-                <p className="text-center py-4 text-text-secondary">
-                  {t("internships.noMore")}
-                </p>
-              }
             >
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredInternships.map((internship) => (
@@ -204,7 +199,7 @@ const InternshipsPage: React.FC = () => {
       {/* Modal for internship details */}
       {selectedInternship && (
         <InternshipModal
-          internship={selectedInternship}
+          internshipId={selectedInternship.id}
           onClose={() => setSelectedInternship(null)}
           categories={categories}
         />

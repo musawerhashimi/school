@@ -1,4 +1,5 @@
 import {
+  Alert,
   Badge,
   Button,
   Input,
@@ -17,9 +18,9 @@ import {
   Users,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useClassrooms } from "../../academic/hooks/useClassrooms";
+import { useClassrooms } from "../../reference/hooks/useClassrooms";
 import { useTeachers } from "../../teachers/hooks/useTeachers";
-import { useClassSubjects } from "../hooks/useClassExams";
+import { useAvailableScheduleSubjects } from "../hooks/useClassExams";
 import {
   useCreateExamSchedule,
   useDeleteExamSchedule,
@@ -28,7 +29,6 @@ import {
 import type {
   CreateExamScheduleData,
   ExamScheduleDetailApiResponse,
-  ExamType,
 } from "../types";
 
 interface ExamScheduleSlotModalProps {
@@ -36,7 +36,6 @@ interface ExamScheduleSlotModalProps {
   onClose: () => void;
   classId: number;
   examId: number;
-  examType: ExamType;
   slot?: ExamScheduleDetailApiResponse | null;
   createMode?: boolean;
   prefilledDate?: string; // Date pre-filled when clicking an empty slot
@@ -52,6 +51,7 @@ export default function ExamScheduleSlotModal({
   prefilledDate,
 }: ExamScheduleSlotModalProps) {
   const [isEditing, setIsEditing] = useState(createMode);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<CreateExamScheduleData>>({
     exam: examId,
     class_instance: classId,
@@ -64,7 +64,12 @@ export default function ExamScheduleSlotModal({
     notes: slot?.notes || "",
   });
 
-  const { data: subjects } = useClassSubjects(classId);
+  const {
+    data: availableSubjects,
+    isLoading: isLoadingAvailableSubjects,
+  } = useAvailableScheduleSubjects(classId, examId, slot?.id, {
+    enabled: isOpen && classId > 0 && examId > 0,
+  });
   const { data: classrooms } = useClassrooms();
   const { data: teachersData } = useTeachers();
 
@@ -73,8 +78,15 @@ export default function ExamScheduleSlotModal({
   const deleteExamSchedule = useDeleteExamSchedule();
 
   const teachers = teachersData?.results || [];
+  const hasAnyAvailableSubject = (availableSubjects?.length || 0) > 0;
+  const canValidateSubject = !isLoadingAvailableSubjects && Array.isArray(availableSubjects);
+  const selectedSubjectIsUnavailable =
+    canValidateSubject &&
+    typeof formData.subject === "number" &&
+    !availableSubjects.some((subject) => subject.id === formData.subject);
 
   useEffect(() => {
+    setSubmitError(null);
     if (slot) {
       setFormData({
         exam: examId,
@@ -104,13 +116,54 @@ export default function ExamScheduleSlotModal({
     }
   }, [slot, createMode, examId, classId, prefilledDate]);
 
+  const getErrorMessage = (error: unknown): string => {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "response" in error &&
+      typeof (error as { response?: unknown }).response === "object"
+    ) {
+      const response = (error as { response?: { data?: unknown } }).response;
+      const data = response?.data;
+      if (typeof data === "string") {
+        return data;
+      }
+      if (typeof data === "object" && data !== null) {
+        const payload = data as Record<string, unknown>;
+        const nonFieldErrors = payload.non_field_errors;
+        if (Array.isArray(nonFieldErrors) && nonFieldErrors.length > 0) {
+          const firstError = String(nonFieldErrors[0]);
+          if (firstError.includes("must make a unique set")) {
+            return "This subject is already scheduled for this exam and class. Please choose another subject.";
+          }
+          return firstError;
+        }
+        if (typeof payload.error === "string") {
+          return payload.error;
+        }
+      }
+    }
+    if (error instanceof Error) {
+      return error.message;
+    }
+    return "Failed to save schedule. Please resolve conflicts and try again.";
+  };
+
   const handleSubmit = async () => {
+    setSubmitError(null);
     if (
       !formData.subject ||
       !formData.exam_date ||
       !formData.start_time ||
       !formData.end_time
     ) {
+      setSubmitError("Subject, date, start time, and end time are required.");
+      return;
+    }
+    if (selectedSubjectIsUnavailable) {
+      setSubmitError(
+        "This subject is already scheduled for this exam and class. Please choose another subject."
+      );
       return;
     }
 
@@ -127,9 +180,18 @@ export default function ExamScheduleSlotModal({
     };
 
     if (createMode) {
-      createExamSchedule.mutate(data, { onSuccess: onClose });
+      createExamSchedule.mutate(data, {
+        onSuccess: onClose,
+        onError: (error) => setSubmitError(getErrorMessage(error)),
+      });
     } else if (slot) {
-      updateExamSchedule.mutate({ id: slot.id, data }, { onSuccess: onClose });
+      updateExamSchedule.mutate(
+        { id: slot.id, data },
+        {
+          onSuccess: onClose,
+          onError: (error) => setSubmitError(getErrorMessage(error)),
+        }
+      );
     }
   };
 
@@ -156,23 +218,54 @@ export default function ExamScheduleSlotModal({
       size="lg"
     >
       <div className="space-y-6">
+        {submitError && (
+          <Alert variant="error" title="Schedule Conflict">
+            {submitError}
+          </Alert>
+        )}
+        {isEditing && createMode && canValidateSubject && !hasAnyAvailableSubject && (
+          <Alert variant="warning" title="No Subjects Available">
+            All subjects for this class are already scheduled in this exam.
+          </Alert>
+        )}
         {isEditing ? (
           /* Edit Mode */
           <div className="space-y-4">
             <Select
               label="Subject *"
               value={String(formData.subject || "")}
-              onChange={(e) =>
+              onChange={(e) => {
+                const selectedSubject = e.target.value
+                  ? parseInt(e.target.value, 10)
+                  : undefined;
+                const isUnavailable =
+                  canValidateSubject &&
+                  typeof selectedSubject === "number" &&
+                  !availableSubjects.some((subject) => subject.id === selectedSubject);
+
                 setFormData({
                   ...formData,
-                  subject: e.target.value
-                    ? parseInt(e.target.value)
-                    : undefined,
-                })
-              }
+                  subject: selectedSubject,
+                });
+
+                if (isUnavailable) {
+                  setSubmitError(
+                    "This subject is already scheduled for this exam and class. Please choose another subject."
+                  );
+                } else {
+                  setSubmitError(null);
+                }
+              }}
               options={[
-                { label: "Select Subject", value: "" },
-                ...(subjects || []).map((s) => ({
+                {
+                  label: isLoadingAvailableSubjects
+                    ? "Loading subjects..."
+                    : hasAnyAvailableSubject
+                    ? "Select Subject"
+                    : "No subjects available",
+                  value: "",
+                },
+                ...(availableSubjects || []).map((s) => ({
                   label: `${s.name} (${s.code})`,
                   value: String(s.id),
                 })),
@@ -283,6 +376,10 @@ export default function ExamScheduleSlotModal({
                 variant="primary"
                 onClick={handleSubmit}
                 loading={isSaving}
+                disabled={
+                  isLoadingAvailableSubjects ||
+                  (createMode && !hasAnyAvailableSubject) || selectedSubjectIsUnavailable
+                }
                 leftIcon={<Save className="h-4 w-4" />}
               >
                 {createMode ? "Create" : "Save Changes"}

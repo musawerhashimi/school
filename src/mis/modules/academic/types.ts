@@ -95,6 +95,7 @@ export interface ClassLevelFilters {
   category?: ClassLevelCategory;
   level_min?: number;
   level_max?: number;
+  is_active?: boolean;
   search?: string;
   page?: number;
   page_size?: number;
@@ -170,12 +171,8 @@ export interface SubjectApiResponse {
   code: string;
   subject_type: SubjectType;
   subject_type_display: string;
-  class_levels: number[];
-  class_levels_display: string[];
-  class_levels_detail?: ClassLevelApiResponse[];
-  total_marks: number;
-  pass_marks: number;
-  credit_hours: number;
+  total_credit_hours?: number;
+  class_levels?: SubjectClassLevelResponse[];
   moe_code?: string;
   description?: string;
   syllabus?: string;
@@ -184,16 +181,21 @@ export interface SubjectApiResponse {
   updated_at: string;
 }
 
+export interface SubjectClassLevelResponse {
+  id: number;
+  class_level: number;
+  class_level_name: string;
+  class_level_id: number;
+  credit_hours: number;
+}
+
 export interface CreateSubjectData {
   name: string;
   name_dari?: string;
   name_pashto?: string;
   code: string;
   subject_type: SubjectType;
-  class_levels: number[];
-  total_marks: number;
-  pass_marks: number;
-  credit_hours: number;
+  class_levels: { class_level: number; credit_hours: number }[];
   moe_code?: string;
   description?: string;
   syllabus?: string;
@@ -206,10 +208,7 @@ export interface UpdateSubjectData {
   name_pashto?: string;
   code?: string;
   subject_type?: SubjectType;
-  class_levels?: number[];
-  total_marks?: number;
-  pass_marks?: number;
-  credit_hours?: number;
+  class_levels?: { class_level: number; credit_hours: number }[];
   moe_code?: string;
   description?: string;
   syllabus?: string;

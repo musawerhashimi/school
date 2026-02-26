@@ -14,7 +14,7 @@ import {
   useCreateShift,
   useUpdateShift,
 } from "../hooks/useShifts";
-import { shiftSchema, type ShiftFormData } from "../schemas/staffSchema";
+import { shiftSchemaWithDefaults, type ShiftFormData } from "../schemas/staffSchema";
 import type { ShiftApiResponse } from "../types";
 
 interface ShiftFormProps {
@@ -37,7 +37,7 @@ export default function ShiftForm({ shift, onSuccess, onCancel }: ShiftFormProps
     setValue,
     watch,
   } = useForm<ShiftFormData>({
-    resolver: zodResolver(shiftSchema),
+    resolver: zodResolver(shiftSchemaWithDefaults),
     defaultValues: {
       is_active: true,
       working_days: "0,1,2,3,4", // Saturday to Wednesday (Afghan work week)

@@ -172,10 +172,10 @@ export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 
 export const EXAM_API_ENDPOINTS = {
   EXAMS: '/exams/',
-  GRADES: '/academic/grades/',
-  SCORES: '/academic/scores/',
+  GRADES: '/exam/grades/',
+  SCORES: '/exam/scores/',
   EXAM_SCHEDULES: '/exam/exam-schedules/',
-  QUESTIONS: '/academic/questions/',
+  QUESTIONS: '/exam/questions/',
   EXAM_QUESTIONS: '/exam/exam-questions/',
 } as const;
 

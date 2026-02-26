@@ -7,6 +7,7 @@ export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   name?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   status?: "online" | "offline" | "away" | "busy";
+  fallback?: string;
 }
 
 export default function Avatar({

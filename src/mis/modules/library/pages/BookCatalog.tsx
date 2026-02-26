@@ -3,17 +3,17 @@
  * Displays the library catalog with search and filters
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   Search,
-  Filter,
   Plus,
   X,
   ChevronLeft,
   ChevronRight,
   BookOpen,
   Library,
+  SlidersHorizontal,
 } from 'lucide-react';
 import Input from '@mis-components/ui/Input';
 import Button from '@mis-components/ui/Button';
@@ -28,12 +28,68 @@ import {
   LANGUAGE_OPTIONS,
   LIBRARY_DEFAULTS,
 } from '../constants';
-import type { LibraryItemFilters, LibraryItemFormat, LibraryItemListResponse } from '../types';
+import type { LibraryItemFilters, LibraryItemFormat } from '../types';
+
+// Debounce hook for search input
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
 
 export function BookCatalog() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [readingBook, setReadingBook] = useState<LibraryItemListResponse | null>(null);
+
+  // Local filter state for the filter modal
+  const [localFilters, setLocalFilters] = useState<{
+    category: string;
+    format: string;
+    language: string;
+    is_available: boolean;
+    has_digital: boolean;
+  }>({
+    category: '',
+    format: '',
+    language: '',
+    is_available: false,
+    has_digital: false,
+  });
+
+  // Local search state for immediate UI feedback
+  const [localSearch, setLocalSearch] = useState(searchParams.get('search') || '');
+  const debouncedSearch = useDebounce(localSearch, 400);
+  const isFirstRender = useRef(true);
+
+  // Sync debounced search to URL params
+  useEffect(() => {
+    // Skip first render to avoid unnecessary URL update
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const newParams = new URLSearchParams(searchParams);
+    if (debouncedSearch) {
+      newParams.set('search', debouncedSearch);
+    } else {
+      newParams.delete('search');
+    }
+    // Reset to page 1 when search changes
+    newParams.delete('page');
+    setSearchParams(newParams);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch]);
 
   // Get filters from URL
   const filters: LibraryItemFilters = {
@@ -51,11 +107,6 @@ export function BookCatalog() {
   // Queries
   const { data: booksData, isLoading } = useLibraryItems(filters);
   const { data: categories = [] } = useCategories();
-
-  // Handle reading online books
-  const handleReadBook = (book: LibraryItemListResponse) => {
-    setReadingBook(book);
-  };
 
   // Convert categories to options format
   const categoryOptions = useMemo(() => [
@@ -78,8 +129,60 @@ export function BookCatalog() {
     ITEM_ORDERING_OPTIONS.map((opt) => ({ value: opt.value, label: opt.label })),
   []);
 
-  // Update filters
-  const updateFilter = (key: string, value: string | number | boolean | undefined) => {
+  // Open filter modal and sync local filters with current URL params
+  const openFilters = useCallback(() => {
+    setLocalFilters({
+      category: filters.category?.toString() || '',
+      format: filters.format || '',
+      language: filters.language || '',
+      is_available: filters.is_available || false,
+      has_digital: filters.has_digital || false,
+    });
+    setFiltersOpen(true);
+  }, [filters]);
+
+  // Apply filters from local state to URL
+  const applyFilters = useCallback(() => {
+    const newParams = new URLSearchParams(searchParams);
+    
+    if (localFilters.category) {
+      newParams.set('category', localFilters.category);
+    } else {
+      newParams.delete('category');
+    }
+    
+    if (localFilters.format) {
+      newParams.set('format', localFilters.format);
+    } else {
+      newParams.delete('format');
+    }
+    
+    if (localFilters.language) {
+      newParams.set('language', localFilters.language);
+    } else {
+      newParams.delete('language');
+    }
+    
+    if (localFilters.is_available) {
+      newParams.set('is_available', 'true');
+    } else {
+      newParams.delete('is_available');
+    }
+    
+    if (localFilters.has_digital) {
+      newParams.set('has_digital', 'true');
+    } else {
+      newParams.delete('has_digital');
+    }
+    
+    // Reset to page 1 when filters change
+    newParams.delete('page');
+    setSearchParams(newParams);
+    setFiltersOpen(false);
+  }, [localFilters, searchParams, setSearchParams]);
+
+  // Update filters (for ordering, pagination, and removing badges)
+  const updateFilter = useCallback((key: string, value: string | number | boolean | undefined) => {
     const newParams = new URLSearchParams(searchParams);
     if (value === undefined || value === '' || value === false) {
       newParams.delete(key);
@@ -91,11 +194,12 @@ export function BookCatalog() {
       newParams.delete('page');
     }
     setSearchParams(newParams);
-  };
+  }, [searchParams, setSearchParams]);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
+    setLocalSearch('');
     setSearchParams({});
-  };
+  }, [setSearchParams]);
 
   const hasActiveFilters = [
     filters.category,
@@ -105,36 +209,48 @@ export function BookCatalog() {
     filters.has_digital,
   ].some((v) => v !== undefined);
 
+  const activeFilterCount = [
+    filters.category,
+    filters.format,
+    filters.language,
+    filters.is_available,
+    filters.has_digital,
+  ].filter(Boolean).length;
+
   // Pagination
   const totalPages = booksData ? Math.ceil(booksData.count / LIBRARY_DEFAULTS.pageSize) : 0;
   const currentPage = filters.page || 1;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header with gradient background */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-indigo-700 p-8 shadow-lg">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary-dark to-indigo-700 p-6 md:p-8 shadow-xl shadow-primary/20">
         <div className="absolute right-0 top-0 opacity-10">
-          <Library className="h-64 w-64 -translate-y-12 translate-x-12" />
+          <Library className="h-48 w-48 md:h-64 md:w-64 -translate-y-8 translate-x-8 md:-translate-y-12 md:translate-x-12" />
         </div>
-        <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="absolute left-1/2 bottom-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+
+        <div className="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="text-white">
-            <div className="mb-2 flex items-center gap-2">
-              <BookOpen className="h-8 w-8" />
-              <h1 className="text-3xl font-bold">Book Catalog</h1>
+            <div className="mb-2 flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-white/10 backdrop-blur-sm">
+                <BookOpen className="h-6 w-6 md:h-7 md:w-7" />
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold">Book Catalog</h1>
             </div>
-            <p className="text-indigo-100 text-lg">
+            <p className="text-indigo-100 text-sm md:text-base">
               Discover and explore our extensive library collection
             </p>
             {booksData && (
-              <div className="mt-4 flex items-center gap-6 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-accent"></div>
-                  <span className="text-indigo-100">{booksData.count} Total Books</span>
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                  <span className="text-white font-medium">{booksData.count} Books</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-secondary"></div>
-                  <span className="text-indigo-100">
-                    {booksData.results.filter(b => b.has_digital).length} Digital Available
+                <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1.5">
+                  <div className="h-2 w-2 rounded-full bg-secondary" />
+                  <span className="text-white font-medium">
+                    {booksData.results.filter(b => b.has_digital).length} Digital
                   </span>
                 </div>
               </div>
@@ -143,7 +259,7 @@ export function BookCatalog() {
           <Link to="/mis/library/catalog/new">
             <Button
               leftIcon={<Plus className="h-5 w-5" />}
-              className="bg-white text-primary hover:bg-indigo-50 shadow-lg hover:shadow-xl transition-all"
+              className="bg-primary text-primary hover:bg-indigo-50 shadow-lg hover:shadow-xl transition-all font-semibold"
               size="lg"
             >
               Add New Book
@@ -152,41 +268,53 @@ export function BookCatalog() {
         </div>
       </div>
 
-      {/* Search and Filters with enhanced styling */}
-      <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          {/* Search */}
-          <div className="flex-1">
+      {/* Search and Filters */}
+      <div className="bg-surface rounded-xl border border-border p-4 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* Search - using local state */}
+          <div className="flex-1 relative">
             <Input
               placeholder="Search by title, author, ISBN..."
-              value={filters.search || ''}
-              onChange={(e) => updateFilter('search', e.target.value)}
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
               leftIcon={<Search className="h-5 w-5 text-primary" />}
-              className="h-12 text-base"
+              className="h-11 text-base pr-10"
             />
+            {localSearch && (
+              <button
+                onClick={() => setLocalSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-surface-hover transition-colors"
+              >
+                <X className="h-4 w-4 text-text-secondary" />
+              </button>
+            )}
           </div>
 
           {/* Quick Filters */}
-          <div className="flex items-center gap-3">
-            <div className="w-[200px]">
+          <div className="flex items-center gap-2">
+            <div className="w-[180px]">
               <Select
                 options={orderingOptions}
                 value={filters.ordering || '-created_at'}
                 onChange={(e) => updateFilter('ordering', e.target.value)}
-                className="h-12"
+                className="h-11"
               />
             </div>
 
             {/* Filter Button */}
             <Button
               variant="outline"
-              onClick={() => setFiltersOpen(true)}
-              className="relative h-12 px-4 border-2 hover:border-primary hover:bg-primary/5 transition-all"
+              onClick={openFilters}
+              className={`relative h-11 px-4 border-2 transition-all ${
+                hasActiveFilters
+                  ? 'border-primary bg-primary/5 text-primary'
+                  : 'hover:border-primary hover:bg-primary/5'
+              }`}
             >
-              <Filter className="h-5 w-5" />
+              <SlidersHorizontal className="h-5 w-5" />
               {hasActiveFilters && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-semibold text-white">
-                  {[filters.category, filters.format, filters.language, filters.is_available, filters.has_digital].filter(Boolean).length}
+                <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white shadow-md">
+                  {activeFilterCount}
                 </span>
               )}
             </Button>
@@ -194,102 +322,100 @@ export function BookCatalog() {
         </div>
       </div>
 
-      {/* Filter Modal */}
+      {/* Filter Modal - with max-height fix */}
       <Modal
         isOpen={filtersOpen}
         onClose={() => setFiltersOpen(false)}
-        title="Filter Library Catalog"
-        description="Refine your search to find exactly what you're looking for"
+        title="Filter Catalog"
+        description="Refine your search"
       >
-        <div className="space-y-6">
+        <div className="max-h-[60vh] overflow-y-auto pr-2 -mr-2 space-y-4">
           {/* Category */}
-          <div className="space-y-2">
+          <div>
             <Select
               label="Category"
               options={categoryOptions}
-              value={filters.category?.toString() || ''}
+              value={localFilters.category}
               onChange={(e) =>
-                updateFilter('category', e.target.value ? Number(e.target.value) : undefined)
+                setLocalFilters(prev => ({ ...prev, category: e.target.value }))
               }
             />
-            <p className="text-xs text-text-secondary">Filter books by their category</p>
           </div>
 
           {/* Format */}
-          <div className="space-y-2">
+          <div>
             <Select
               label="Format"
               options={formatSelectOptions}
-              value={filters.format || ''}
-              onChange={(e) => updateFilter('format', e.target.value || undefined)}
+              value={localFilters.format}
+              onChange={(e) => setLocalFilters(prev => ({ ...prev, format: e.target.value }))}
             />
-            <p className="text-xs text-text-secondary">Choose between physical, digital, or both formats</p>
           </div>
 
           {/* Language */}
-          <div className="space-y-2">
+          <div>
             <Select
               label="Language"
               options={languageSelectOptions}
-              value={filters.language || ''}
-              onChange={(e) => updateFilter('language', e.target.value || undefined)}
+              value={localFilters.language}
+              onChange={(e) => setLocalFilters(prev => ({ ...prev, language: e.target.value }))}
             />
-            <p className="text-xs text-text-secondary">Filter by book language</p>
           </div>
 
-          <div className="border-t border-border pt-4">
-            <p className="text-sm font-semibold text-text-primary mb-4">Additional Options</p>
-
-            {/* Availability Toggle */}
-            <div className="mb-4 p-4 rounded-lg bg-success-soft border border-success/20">
+          {/* Toggle Options */}
+          <div className="space-y-3 pt-2">
+            <div className="p-3 rounded-lg bg-success/5 border border-success/20 hover:bg-success/10 transition-colors">
               <Switch
                 label="Available only"
-                checked={filters.is_available === true}
-                onChange={(e) => updateFilter('is_available', e.target.checked || undefined)}
+                checked={localFilters.is_available}
+                onChange={(e) => setLocalFilters(prev => ({ ...prev, is_available: e.target.checked }))}
               />
-              <p className="text-xs text-text-secondary mt-1 ml-8">Show only books currently available for borrowing</p>
             </div>
 
-            {/* Digital Toggle */}
-            <div className="p-4 rounded-lg bg-info-soft border border-info/20">
+            <div className="p-3 rounded-lg bg-info/5 border border-info/20 hover:bg-info/10 transition-colors">
               <Switch
                 label="Has digital version"
-                checked={filters.has_digital === true}
-                onChange={(e) => updateFilter('has_digital', e.target.checked || undefined)}
+                checked={localFilters.has_digital}
+                onChange={(e) => setLocalFilters(prev => ({ ...prev, has_digital: e.target.checked }))}
               />
-              <p className="text-xs text-text-secondary mt-1 ml-8">Show only books with digital reading options</p>
             </div>
           </div>
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-3 pt-4 border-t border-border">
-            {hasActiveFilters && (
-              <Button
-                variant="outline"
-                fullWidth
-                onClick={() => {
-                  clearFilters();
-                  setFiltersOpen(false);
-                }}
-                leftIcon={<X className="h-4 w-4" />}
-              >
-                Clear All
-              </Button>
-            )}
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-4 mt-4 border-t border-border">
+          {hasActiveFilters && (
             <Button
+              variant="outline"
               fullWidth
-              onClick={() => setFiltersOpen(false)}
+              onClick={() => {
+                setLocalFilters({
+                  category: '',
+                  format: '',
+                  language: '',
+                  is_available: false,
+                  has_digital: false,
+                });
+              }}
+              leftIcon={<X className="h-4 w-4" />}
+              className="text-error border-error/30 hover:bg-error/5"
             >
-              Apply Filters
+              Clear All
             </Button>
-          </div>
+          )}
+          <Button
+            fullWidth
+            onClick={applyFilters}
+          >
+            Apply Filters
+          </Button>
         </div>
       </Modal>
 
       {/* Active Filters Display */}
       {hasActiveFilters && (
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-semibold text-text-primary">Active Filters:</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">Filters:</span>
           {filters.category && (
             <FilterBadge
               label={categories.find((c) => c.id === filters.category)?.name || 'Category'}
@@ -310,44 +436,41 @@ export function BookCatalog() {
           )}
           {filters.is_available && (
             <FilterBadge
-              label="Available Only"
+              label="Available"
               onRemove={() => updateFilter('is_available', undefined)}
+              variant="success"
             />
           )}
           {filters.has_digital && (
             <FilterBadge
-              label="Digital Version"
+              label="Digital"
               onRemove={() => updateFilter('has_digital', undefined)}
+              variant="info"
             />
           )}
           <button
             onClick={clearFilters}
-            className="ml-2 text-sm font-medium text-error hover:text-error/80 transition-colors"
+            className="text-xs font-medium text-error hover:text-error/80 transition-colors ml-1"
           >
-            Clear All
+            Clear all
           </button>
         </div>
       )}
 
       {/* Results Count */}
       {booksData && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-text-primary">
+        <div className="flex items-center justify-between text-sm">
+          <p className="text-text-secondary">
             Showing{' '}
-            <span className="text-primary font-bold">
-              {((currentPage - 1) * LIBRARY_DEFAULTS.pageSize) + 1}
-            </span>
-            {' '}-{' '}
-            <span className="text-primary font-bold">
-              {Math.min(currentPage * LIBRARY_DEFAULTS.pageSize, booksData.count)}
+            <span className="font-semibold text-text-primary">
+              {((currentPage - 1) * LIBRARY_DEFAULTS.pageSize) + 1}-{Math.min(currentPage * LIBRARY_DEFAULTS.pageSize, booksData.count)}
             </span>
             {' '}of{' '}
-            <span className="text-primary font-bold">{booksData.count}</span>
-            {' '}books
+            <span className="font-semibold text-text-primary">{booksData.count}</span>
           </p>
           {filters.search && (
-            <p className="text-sm text-text-secondary">
-              Search results for: <span className="font-semibold text-text-primary">"{filters.search}"</span>
+            <p className="text-text-secondary">
+              Results for "<span className="font-semibold text-primary">{filters.search}</span>"
             </p>
           )}
         </div>
@@ -357,27 +480,26 @@ export function BookCatalog() {
       <BookGrid
         books={booksData?.results || []}
         isLoading={isLoading}
-        onRead={handleReadBook}
       />
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-3 bg-surface rounded-xl border border-border p-6">
+        <div className="flex items-center justify-center gap-2 bg-surface rounded-xl border border-border p-4">
           <Button
             variant="outline"
             disabled={currentPage <= 1}
             onClick={() => updateFilter('page', currentPage - 1)}
-            className="h-10 px-4 disabled:opacity-50"
+            className="h-9 px-3 disabled:opacity-40"
           >
-            <ChevronLeft className="h-5 w-5" />
-            <span className="ml-2 hidden sm:inline">Previous</span>
+            <ChevronLeft className="h-4 w-4" />
+            <span className="ml-1 hidden sm:inline text-sm">Prev</span>
           </Button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             {currentPage > 2 && (
               <>
                 <PageButton page={1} currentPage={currentPage} onClick={() => updateFilter('page', 1)} />
-                {currentPage > 3 && <span className="text-text-secondary">...</span>}
+                {currentPage > 3 && <span className="text-text-secondary px-1">...</span>}
               </>
             )}
 
@@ -401,7 +523,7 @@ export function BookCatalog() {
 
             {currentPage < totalPages - 1 && (
               <>
-                {currentPage < totalPages - 2 && <span className="text-text-secondary">...</span>}
+                {currentPage < totalPages - 2 && <span className="text-text-secondary px-1">...</span>}
                 <PageButton
                   page={totalPages}
                   currentPage={currentPage}
@@ -415,58 +537,12 @@ export function BookCatalog() {
             variant="outline"
             disabled={currentPage >= totalPages}
             onClick={() => updateFilter('page', currentPage + 1)}
-            className="h-10 px-4 disabled:opacity-50"
+            className="h-9 px-3 disabled:opacity-40"
           >
-            <span className="mr-2 hidden sm:inline">Next</span>
-            <ChevronRight className="h-5 w-5" />
+            <span className="mr-1 hidden sm:inline text-sm">Next</span>
+            <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
-      )}
-
-      {/* Reading Modal for Online Books */}
-      {readingBook && (
-        <Modal
-          isOpen={true}
-          onClose={() => setReadingBook(null)}
-          title={readingBook.title}
-          description={`by ${readingBook.author}`}
-          size="full"
-        >
-          <div className="h-[80vh] flex flex-col">
-            <div className="mb-4 flex items-center justify-between border-b border-border pb-4">
-              <div>
-                <h3 className="text-lg font-semibold text-text-primary">{readingBook.title}</h3>
-                <p className="text-sm text-text-secondary">by {readingBook.author}</p>
-              </div>
-              <Button
-                variant="outline"
-                onClick={() => setReadingBook(null)}
-                leftIcon={<X className="h-4 w-4" />}
-              >
-                Close Reader
-              </Button>
-            </div>
-            <div className="flex-1 overflow-hidden rounded-lg border border-border bg-surface">
-              {readingBook.has_digital ? (
-                <iframe
-                  src={`http://localhost:8000/api/library/items/${readingBook.id}/read/`}
-                  className="h-full w-full"
-                  title={`Read ${readingBook.title}`}
-                  sandbox="allow-same-origin allow-scripts"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <div className="text-center">
-                    <BookOpen className="mx-auto h-16 w-16 text-text-secondary mb-4" />
-                    <p className="text-text-secondary">
-                      Digital version not available for this book
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </Modal>
       )}
     </div>
   );
@@ -487,10 +563,10 @@ function PageButton({
       onClick={onClick}
       disabled={isActive}
       className={`
-        h-10 min-w-10 px-3 rounded-lg font-medium transition-all
+        h-9 min-w-9 px-3 rounded-lg text-sm font-medium transition-all
         ${isActive
-          ? 'bg-primary text-white shadow-md'
-          : 'bg-surface text-text-primary hover:bg-surface-hover border border-border'
+          ? 'bg-primary text-white shadow-md shadow-primary/30'
+          : 'bg-surface text-text-primary hover:bg-primary/10 hover:text-primary border border-border'
         }
       `}
     >
@@ -502,19 +578,27 @@ function PageButton({
 function FilterBadge({
   label,
   onRemove,
+  variant = 'default',
 }: {
   label: string;
   onRemove: () => void;
+  variant?: 'default' | 'success' | 'info';
 }) {
+  const variantClasses = {
+    default: 'bg-primary/10 border-primary/20 text-primary hover:bg-primary/15',
+    success: 'bg-success/10 border-success/20 text-success hover:bg-success/15',
+    info: 'bg-info/10 border-info/20 text-info hover:bg-info/15',
+  };
+
   return (
-    <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/30 px-4 py-2 text-sm font-medium text-primary transition-all hover:bg-primary/20">
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${variantClasses[variant]}`}>
       <span>{label}</span>
       <button
         onClick={onRemove}
-        className="rounded-full p-0.5 hover:bg-primary/30 transition-colors"
+        className="rounded-full p-0.5 hover:bg-black/10 transition-colors"
         aria-label={`Remove ${label} filter`}
       >
-        <X className="h-3.5 w-3.5" />
+        <X className="h-3 w-3" />
       </button>
     </span>
   );

@@ -10,10 +10,10 @@ import {
   CardContent,
   Spinner,
 } from '@mis-components/ui';
-import { useExamSchedules, useCreateExamSchedule, useUpdateExamSchedule } from '../hooks/useExamSchedules';
+import { useExamSchedule, useCreateExamSchedule, useUpdateExamSchedule } from '../hooks/useExamSchedules';
 import { useExams } from '../hooks/useExams';
-import { useSubjects } from '../../academic/hooks/useSubjects';
-import { useClassInstances } from '../../academic/hooks/useClassInstances';
+import { useSubjects } from '../../reference/hooks/useSubjects';
+import { useClassInstances } from '../../reference/hooks/useClassInstances';
 import type { CreateExamScheduleData } from '../types';
 
 
@@ -34,7 +34,7 @@ export default function ExamScheduleForm() {
     notes: '',
   });
 
-  const { data: scheduleData } = useExamSchedules({ page_size: 100 });
+  const { data: scheduleById, isLoading: isLoadingSchedule } = useExamSchedule(Number(id));
   const { data: examsData } = useExams({ page_size: 100 });
   const { data: subjectsData } = useSubjects({ page_size: 100 });
   const { data: classInstancesData } = useClassInstances({ page_size: 100 });
@@ -45,17 +45,22 @@ export default function ExamScheduleForm() {
   // Load existing schedule data if editing
   useEffect(() => {
     if (isEdit && id) {
-      const schedule = scheduleData?.results?.find((s) => s.id === parseInt(id));
+      const schedule = scheduleById;
       if (schedule) {
         setFormData({
-          ...schedule,
-          // room: schedule.room || 0,
+          exam: Number(schedule.exam),
+          subject: Number(schedule.subject),
+          class_instance: Number(schedule.class_instance),
+          exam_date: schedule.exam_date,
+          start_time: schedule.start_time,
+          end_time: schedule.end_time,
+          room: schedule.room || undefined,
           invigilators: schedule.invigilators || [],
           notes: schedule.notes || '',
         });
       }
     }
-  }, [isEdit, id, scheduleData]);
+  }, [isEdit, id, scheduleById]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,19 +68,39 @@ export default function ExamScheduleForm() {
     if (isEdit && id) {
       updateExamSchedule.mutate({
         id: parseInt(id),
-        data: formData,
+        data: {
+          ...formData,
+          exam: Number(formData.exam),
+          subject: Number(formData.subject),
+          class_instance: Number(formData.class_instance),
+        },
       });
     } else {
-      createExamSchedule.mutate(formData);
+      createExamSchedule.mutate({
+        ...formData,
+        exam: Number(formData.exam),
+        subject: Number(formData.subject),
+        class_instance: Number(formData.class_instance),
+      });
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const numericFields = new Set(['exam', 'subject', 'class_instance']);
+    const value = numericFields.has(e.target.name) ? Number(e.target.value) : e.target.value;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     }));
   };
+
+  if (isEdit && isLoadingSchedule) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <Spinner size="lg" label="Loading exam schedule..." />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

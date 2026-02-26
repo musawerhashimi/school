@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, Loader2, User, Globe, Plus, X } from "lucide-react";
-import { Button, Spinner, Switch } from "@mis-components/ui";
+import { Button, Spinner } from "@mis-components/ui";
 import { Card, CardContent, CardHeader } from "@mis-components/ui/Card";
 import Input from "@mis-components/ui/Input";
 import Textarea from "@mis-components/ui/Textarea";
@@ -72,7 +72,7 @@ export default function TeamMemberForm() {
     if (memberDetail) {
       setFormData({
         name: memberDetail.name,
-        type: memberDetail.member_type,
+        type: memberDetail.type ?? memberDetail.member_type ?? "teacher",
         role: { ...memberDetail.role },
         department_id: memberDetail.department_id,
         email: memberDetail.email,
@@ -80,7 +80,7 @@ export default function TeamMemberForm() {
         experience: { ...memberDetail.experience },
         bio: { ...memberDetail.bio },
         education: memberDetail.education.map((e) => ({ ...e })),
-        joinedDate: memberDetail.joined_date,
+        joinedDate: memberDetail.joinedDate ?? memberDetail.joined_date ?? "",
         subjects: memberDetail.subjects
           ? memberDetail.subjects.map((s) => (typeof s === "string" ? s : s.en))
           : [],

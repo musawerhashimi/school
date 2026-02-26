@@ -15,8 +15,8 @@ import {
   type Column,
 } from '@mis-components/ui';
 import { useExamClasses } from '../hooks/useClassExams';
-import { useAcademicYears } from '../../academic/hooks/useAcademicYears';
-import { useClassLevels } from '../../academic/hooks/useClassLevels';
+import { useAcademicYears } from '../../reference/hooks/useAcademicYears';
+import { useClassLevels } from '../../reference/hooks/useClassLevels';
 import type { ClassExamInfo } from '../types';
 import type { ClassExamFilters } from '../services/classExamService';
 

@@ -747,6 +747,12 @@
       "title": "Charity Events",
       "subtitle": "Making a difference together through compassion and community action"
     },
+    "filter": {
+      "all": "All Events",
+      "upcoming": "Upcoming Events",
+      "past": "Past Events"
+
+    },
     "hero": {
       "badge": "Making Impact",
       "title": "Giving Back to Our Community",
@@ -1306,6 +1312,8 @@
 "studentProjects.detail.notFound":"Project not found",
 "studentProjects.detail.projectInfo":"Project Information",
 "No books found":"No books found matching your search criteria.",
+
+
 
 
 

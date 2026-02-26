@@ -17,11 +17,15 @@ export const studentKeys = {
   detail: (id: number) => [...studentKeys.details(), id] as const,
   stats: () => [...studentKeys.all, 'stats'] as const,
   guardians: () => [...studentKeys.all, 'guardians'] as const,
+  guardiansList: (params?: { search?: string; page?: number; page_size?: number }) =>
+    [...studentKeys.guardians(), params] as const,
   guardian: (id: number) => [...studentKeys.guardians(), id] as const,
   documents: (studentId: number) =>
     [...studentKeys.all, 'documents', studentId] as const,
   enrollments: (studentId: number) =>
     [...studentKeys.all, 'enrollments', studentId] as const,
+  academicPerformance: (studentId: number) =>
+    [...studentKeys.all, 'academic-performance', studentId] as const,
 };
 
 // ============================================================================
@@ -64,6 +68,18 @@ export function useStudentStats() {
 }
 
 /**
+ * Hook to fetch guardians (for selecting existing guardian in student form)
+ */
+export function useGuardians(params?: { search?: string; page?: number; page_size?: number }) {
+  return useQuery({
+    queryKey: studentKeys.guardiansList(params),
+    queryFn: () => studentService.getGuardians(params),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+}
+
+/**
  * Hook to fetch student documents
  */
 export function useStudentDocuments(studentId: number) {
@@ -82,6 +98,18 @@ export function useStudentEnrollments(studentId: number) {
   return useQuery({
     queryKey: studentKeys.enrollments(studentId),
     queryFn: () => studentService.getEnrollments(studentId),
+    enabled: !!studentId && studentId > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * Hook to fetch student academic performance (grades, GPA, history)
+ */
+export function useStudentAcademicPerformance(studentId: number) {
+  return useQuery({
+    queryKey: studentKeys.academicPerformance(studentId),
+    queryFn: () => studentService.getAcademicPerformance(studentId),
     enabled: !!studentId && studentId > 0,
     staleTime: 5 * 60 * 1000,
   });

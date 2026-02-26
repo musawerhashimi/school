@@ -80,7 +80,6 @@ export interface AssignmentApiResponse {
   class_instance_name: string;
   subject: number;
   subject_name: string;
-  subject_code: string;
   teacher: number;
   teacher_name: string;
 
@@ -92,12 +91,16 @@ export interface AssignmentApiResponse {
   // Scoring
   max_score: number;
   pass_percentage: number;
+  pass_score: number | null;
   weight_percentage: number;
 
   // Status
   status: AssignmentStatus;
   status_display: string;
   is_active: boolean;
+  is_past_due: boolean;
+  is_upcoming: boolean;
+  days_until_due: number;
   allow_late_submission: boolean;
   late_penalty_percentage: number;
 
@@ -113,13 +116,12 @@ export interface AssignmentApiResponse {
   submission_rate: number;
 
   // Attachments
-  attachments: AssignmentAttachment[];
+  attachment: string | null;
+  notes: string | null;
 
   // Metadata
   created_at: string;
   updated_at: string;
-  created_by: number | null;
-  created_by_name: string | null;
 }
 
 /**
@@ -128,22 +130,30 @@ export interface AssignmentApiResponse {
 export interface AssignmentListItem {
   id: number;
   title: string;
+  display_name: string;
   assignment_type: AssignmentType;
   assignment_type_display: string;
   class_instance: number;
   class_instance_name: string;
+  subject: number;
   subject_name: string;
-  subject_code: string;
+  teacher: number;
   teacher_name: string;
   assigned_date: string;
   due_date: string;
   max_score: number;
+  pass_percentage: number;
   status: AssignmentStatus;
   status_display: string;
+  is_past_due: boolean;
+  is_upcoming: boolean;
+  days_until_due: number;
   submitted_count: number;
   graded_count: number;
+  pending_count: number;
   total_students: number;
   submission_rate: number;
+  average_score: number | null;
 }
 
 /**
@@ -178,18 +188,13 @@ export interface AssignmentSubmissionApiResponse {
   is_pass: boolean | null;
 
   // Late penalty applied
-  late_penalty: number | null;
-  final_score: number | null;
-
-  // Feedback
+  late_penalty_applied: number | null;
   feedback: string | null;
-  private_notes: string | null;
+
+  // Grading info
   graded_by: number | null;
   graded_by_name: string | null;
   graded_at: string | null;
-
-  // Files
-  submission_files: SubmissionFile[];
 
   // Metadata
   created_at: string;

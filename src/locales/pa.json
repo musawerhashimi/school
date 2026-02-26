@@ -748,6 +748,12 @@
       "title": "خیراتي پیښې",
       "subtitle": "په ګډه د مهربانۍ او ټولنیزې عمل له لارې توپیر رامنځته کول"
     },
+    "filter": {
+      "all": "ټول پیښې",
+      "upcoming": "راتلونکې پیښې",
+      "past": "تېرې پیښې"
+
+    },
     "hero": {
       "badge": "اغیزه کول",
       "title": "زموږ ټولنې ته بیرته ورکول",
@@ -1300,6 +1306,7 @@
 "studentProjects.detail.notFound":"پروژه ونه موندل شوه",
 "studentProjects.detail.projectInfo":"د پروژې معلومات",
 "No books found":"هیڅ کتاب ونه موندل شو"
+
 
 
 }

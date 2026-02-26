@@ -14,9 +14,9 @@ import {
   Badge,
 } from '@mis-components/ui';
 import { useExam, useCreateExam, useUpdateExam } from '../hooks/useExams';
-import { useAcademicYears } from '../../academic/hooks/useAcademicYears';
-import { useClassLevels } from '../../academic/hooks/useClassLevels';
-import { useClassInstances } from '../../academic/hooks/useClassInstances';
+import { useAcademicYears } from '../../reference/hooks/useAcademicYears';
+import { useClassLevels } from '../../reference/hooks/useClassLevels';
+import { useClassInstances } from '../../reference/hooks/useClassInstances';
 import type { CreateExamData, UpdateExamData } from '../types';
 
 export default function ExamForm() {

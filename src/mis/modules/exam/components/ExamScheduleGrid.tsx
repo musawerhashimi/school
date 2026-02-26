@@ -25,8 +25,8 @@ const getSubjectColor = (subjectId: number) => {
   return SUBJECT_COLORS[subjectId % SUBJECT_COLORS.length];
 };
 
-// Check if a date is Friday (day_of_week: 5 in Python/JS where Monday=0)
-const isFriday = (dayOfWeek: number) => dayOfWeek === 4; // Friday is 4 in 0-indexed (Mon=0)
+// Backend sends Afghan weekday mapping where Friday is 6.
+const isFriday = (dayOfWeek: number) => dayOfWeek === 6;
 
 export default function ExamScheduleGrid({
   scheduleData,
@@ -36,7 +36,7 @@ export default function ExamScheduleGrid({
 }: ExamScheduleGridProps) {
   const { days, max_slots_per_day } = scheduleData;
 
-  // Filter out Fridays (holiday) - day_of_week 4 is Friday (0-indexed from Monday)
+  // Filter out Fridays (holiday) using backend Afghan weekday mapping.
   const filteredDays = days.filter(day => !isFriday(day.day_of_week));
 
   // Generate column indices (for subjects per day) - up to 6 subjects

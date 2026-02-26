@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface TabsContextType {
   activeTab: string;
@@ -20,12 +20,20 @@ export interface TabsProps {
   children: ReactNode;
   className?: string;
   onChange?: (value: string) => void;
+  // tabs: {
+  //   id: string;
+  //   label: string;
+  //   icon: IconType;
+  // }[];
+  // activeTab: string;
+  // variant: string;
 }
 
 export function Tabs({
   defaultValue,
   children,
   className = "",
+
   onChange,
 }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultValue);
@@ -36,7 +44,9 @@ export function Tabs({
   };
 
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab: handleSetActiveTab }}>
+    <TabsContext.Provider
+      value={{ activeTab, setActiveTab: handleSetActiveTab }}
+    >
       <div className={className}>{children}</div>
     </TabsContext.Provider>
   );
@@ -115,10 +125,7 @@ export function TabsContent({
   if (activeTab !== value) return null;
 
   return (
-    <div
-      role="tabpanel"
-      className={`mt-4 animate-fade-in ${className}`}
-    >
+    <div role="tabpanel" className={`mt-4 animate-fade-in ${className}`}>
       {children}
     </div>
   );

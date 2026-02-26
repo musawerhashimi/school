@@ -21,6 +21,7 @@ export { gradeService } from './services/gradeService';
 export { scoreService } from './services/scoreService';
 export { examScheduleService } from './services/examScheduleService';
 export { classExamService } from './services/classExamService';
+export { reportCardService } from './services/reportCardService';
 
 // Hooks
 export * from './hooks/useExams';
@@ -28,11 +29,11 @@ export * from './hooks/useGrades';
 export * from './hooks/useScores';
 export * from './hooks/useExamSchedules';
 export * from './hooks/useClassExams';
+export * from './hooks/useReportCards';
 
 // Components
 export { ExamCard } from './components/ExamCard';
 export { ScoreBreakdown } from './components/ScoreBreakdown';
-export { GradeEntryTable } from './components/GradeEntryTable';
 export { default as ExamScheduleGrid } from './components/ExamScheduleGrid';
 export { default as ExamScheduleSlotModal } from './components/ExamScheduleSlotModal';
 export { default as ScoreEntryTable } from './components/ScoreEntryTable';
@@ -49,11 +50,10 @@ export { default as ReportsTab } from './components/tabs/ReportsTab';
 export { default as ExamList } from './pages/ExamList';
 export { default as ExamForm } from './pages/ExamForm';
 export { default as ExamDetail } from './pages/ExamDetail';
-export { default as GradeEntry } from './pages/GradeEntry';
-export { default as GradeList } from './pages/GradeList';
-export { default as ScoreEntry } from './pages/ScoreEntry';
 export { default as ExamScheduleList } from './pages/ExamScheduleList';
 export { default as ExamScheduleForm } from './pages/ExamScheduleForm';
 export { default as ExamScheduleCalendarPage } from './pages/ExamScheduleCalendarPage';
 export { default as ClassExamList } from './pages/ClassExamList';
 export { default as ClassExamDetail } from './pages/ClassExamDetail';
+export { default as ReportCardList } from './pages/ReportCardList';
+export { default as ReportCardDetail } from './pages/ReportCardDetail';

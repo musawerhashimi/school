@@ -112,9 +112,14 @@ function AssignmentTab({ student }: AssignmentTabProps) {
     }
   };
 
-  // Can edit if not graded yet
+  // Can edit if not graded and assignment is published
   const canEdit = (assignment: StudentAssignment) => {
-    return assignment.submission_status !== "graded";
+    return assignment.submission_status !== "graded" && assignment.status === "published";
+  };
+
+  // Check if assignment is accepting submissions
+  const isAcceptingSubmissions = (assignment: StudentAssignment) => {
+    return assignment.status === "published";
   };
 
   const isLateSubmission = (assignment: StudentAssignment) => {
@@ -149,7 +154,7 @@ function AssignmentTab({ student }: AssignmentTabProps) {
             <ArrowLeft className="h-4 w-4" />
             Back to Assignments
           </button>
-          {allowEdit && !isEditing && (
+          {allowEdit && !isEditing && isAcceptingSubmissions(selectedAssignment) && (
             <Button
               variant="outline"
               size="sm"
@@ -336,6 +341,15 @@ function AssignmentTab({ student }: AssignmentTabProps) {
                       </Button>
                     </div>
                   </div>
+                ) : !isAcceptingSubmissions(selectedAssignment) ? (
+                  // Not accepting submissions
+                  <div className="text-center py-10">
+                    <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <AlertCircle className="h-8 w-8 text-red-500" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-text-primary mb-2">Submissions Closed</h4>
+                    <p className="text-text-secondary">This assignment is not accepting submissions.</p>
+                  </div>
                 ) : hasSubmission ? (
                   // View Submission
                   <div className="space-y-5">
@@ -387,7 +401,7 @@ function AssignmentTab({ student }: AssignmentTabProps) {
                       <p className="text-text-secondary italic py-4">Submission content not available.</p>
                     )}
 
-                    {allowEdit && (
+                    {allowEdit && isAcceptingSubmissions(selectedAssignment) && (
                       <div className="pt-4 border-t border-border">
                         <Button
                           variant="outline"
@@ -407,14 +421,18 @@ function AssignmentTab({ student }: AssignmentTabProps) {
                     </div>
                     <h4 className="text-lg font-semibold text-text-primary mb-2">No Submission Yet</h4>
                     <p className="text-text-secondary mb-6">You haven't submitted anything for this assignment.</p>
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      leftIcon={<Send className="h-4 w-4" />}
-                      onClick={handleStartEdit}
-                    >
-                      Submit Assignment
-                    </Button>
+                    {isAcceptingSubmissions(selectedAssignment) && (
+                      <>
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          leftIcon={<Send className="h-4 w-4" />}
+                          onClick={handleStartEdit}
+                        >
+                          Submit Assignment
+                        </Button>
+                      </>
+                    )}
                   </div>
                 )}
               </CardContent>

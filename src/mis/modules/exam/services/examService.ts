@@ -45,8 +45,8 @@ export const examService = {
     await api.delete(`${BASE_URL}${id}/`);
   },
 
-  async getCurrentYear(): Promise<{ academic_year: string; count: number; results: ExamApiResponse[] }> {
-    const response = await api.get(`${BASE_URL}current_year/`);
+  async getCurrentYear(): Promise<PaginatedExamsResponse> {
+    const response = await api.get<PaginatedExamsResponse>(`${BASE_URL}current_year/`);
     return response.data;
   },
 

@@ -1,4 +1,4 @@
-import type { SubjectApiResponse } from '@academic/index';
+import type { SubjectApiResponse } from '../../reference/types';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -23,6 +23,8 @@ const QUERY_KEYS = {
   scheduleGrid: (classId: number, examType: ExamType) =>
     [...CLASS_EXAMS_KEY, classId, 'schedule', examType] as const,
   subjects: (classId: number) => [...CLASS_EXAMS_KEY, classId, 'subjects'] as const,
+  availableSubjects: (classId: number, examId: number, scheduleId?: number) =>
+    [...CLASS_EXAMS_KEY, classId, 'subjects', 'available', examId, scheduleId ?? 'new'] as const,
   subjectScores: (classId: number, subjectId: number, examType: ExamType) =>
     [...CLASS_EXAMS_KEY, classId, 'subjects', subjectId, 'scores', examType] as const,
   students: (classId: number) => [...CLASS_EXAMS_KEY, classId, 'students'] as const,
@@ -110,6 +112,24 @@ export function useClassSubjects(
     queryFn: () => classExamService.getClassSubjects(classId),
     enabled: classId > 0,
     staleTime: 30 * 60 * 1000, // 30 minutes
+    ...options,
+  });
+}
+
+/**
+ * Get available subjects for schedule creation/edit in a specific exam
+ */
+export function useAvailableScheduleSubjects(
+  classId: number,
+  examId: number,
+  scheduleId?: number,
+  options?: Omit<UseQueryOptions<SubjectApiResponse[]>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: QUERY_KEYS.availableSubjects(classId, examId, scheduleId),
+    queryFn: () => classExamService.getAvailableScheduleSubjects(classId, examId, scheduleId),
+    enabled: classId > 0 && examId > 0,
+    staleTime: 60 * 1000, // 1 minute
     ...options,
   });
 }

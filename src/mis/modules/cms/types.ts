@@ -123,7 +123,8 @@ export interface TeamMemberInput {
 export interface TeamMemberDetails {
   id: number;
   name: string;
-  member_type: TeamMemberType;
+  type: TeamMemberType;
+  member_type?: TeamMemberType;
   role: MultiLangText;
   department_id: number;
   email: string;
@@ -132,8 +133,9 @@ export interface TeamMemberDetails {
   bio: MultiLangText;
   experience: MultiLangText;
   education: MultiLangText[];
-  joined_date: string;
-  subjects?: MultiLangText[];
+  joinedDate: string;
+  joined_date?: string;
+  subjects?: Array<MultiLangText | string>;
 }
 
 // ============================================================================

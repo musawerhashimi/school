@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, Badge, Button } from '@mis-components/ui';
 import type { ClassExamInfo, ExamApiResponse } from '../../types';
-import type { SubjectApiResponse } from '../../../academic/types';
+import type { SubjectApiResponse } from '../../../reference/types';
 
 interface OverviewTabProps {
   classInfo: ClassExamInfo;

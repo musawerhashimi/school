@@ -28,6 +28,10 @@ interface SubjectPerformanceTableProps {
 
 const SubjectPerformanceTable = ({ grades }: SubjectPerformanceTableProps) => {
   const { t } = useTranslation();
+  const formatScore = (value: number) => {
+    const rounded = Math.round((value + Number.EPSILON) * 100) / 100;
+    return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(2);
+  };
 
   return (
     <Card>
@@ -90,7 +94,7 @@ const SubjectPerformanceTable = ({ grades }: SubjectPerformanceTableProps) => {
                   {t("mis.student.profile.exam", { points: 36 })}
                 </th>
                 <th className="pb-2 text-center text-xs text-text-secondary">
-                  {t("mis.student.profile.total")}
+                  {t("mis.student.profile.total", { points: 40 })}
                 </th>
                 <th className="pb-2 text-center text-xs text-text-secondary">
                   {t("mis.student.profile.hw", { points: 3 })}
@@ -102,7 +106,7 @@ const SubjectPerformanceTable = ({ grades }: SubjectPerformanceTableProps) => {
                   {t("mis.student.profile.exam", { points: 54 })}
                 </th>
                 <th className="pb-2 text-center text-xs text-text-secondary">
-                  {t("mis.student.profile.total")}
+                  {t("mis.student.profile.total", { points: 60 })}
                 </th>
               </tr>
             </thead>
@@ -122,32 +126,32 @@ const SubjectPerformanceTable = ({ grades }: SubjectPerformanceTableProps) => {
                   </td>
                   {/* Midterm Breakdown */}
                   <td className="py-3 text-center text-xs text-text-secondary">
-                    {grade.midterm.homework}
+                    {formatScore(grade.midterm.homework)}
                   </td>
                   <td className="py-3 text-center text-xs text-text-secondary">
-                    {grade.midterm.classActivity}
+                    {formatScore(grade.midterm.classActivity)}
                   </td>
                   <td className="py-3 text-center text-xs text-text-secondary">
-                    {grade.midterm.exam}
+                    {formatScore(grade.midterm.exam)}
                   </td>
                   <td className="py-3 text-center">
                     <span className="text-sm font-semibold text-text-primary">
-                      {grade.midterm.total}
+                      {formatScore(grade.midterm.total)}
                     </span>
                   </td>
                   {/* Annual Breakdown */}
                   <td className="py-3 text-center text-xs text-text-secondary">
-                    {grade.annual.homework}
+                    {formatScore(grade.annual.homework)}
                   </td>
                   <td className="py-3 text-center text-xs text-text-secondary">
-                    {grade.annual.classActivity}
+                    {formatScore(grade.annual.classActivity)}
                   </td>
                   <td className="py-3 text-center text-xs text-text-secondary">
-                    {grade.annual.exam}
+                    {formatScore(grade.annual.exam)}
                   </td>
                   <td className="py-3 text-center">
                     <span className="text-sm font-semibold text-text-primary">
-                      {grade.annual.total}
+                      {formatScore(grade.annual.total)}
                     </span>
                   </td>
                   {/* Total */}
@@ -163,7 +167,7 @@ const SubjectPerformanceTable = ({ grades }: SubjectPerformanceTableProps) => {
                           : "text-error"
                       }`}
                     >
-                      {grade.total}
+                      {formatScore(grade.total)}
                     </span>
                   </td>
                   <td className="py-3 text-center">

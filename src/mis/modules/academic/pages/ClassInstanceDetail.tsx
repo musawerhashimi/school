@@ -16,6 +16,8 @@ import {
   CalendarDays,
   MapPin,
   Trash2,
+  ClipboardList,
+  Plus,
 } from 'lucide-react';
 import {
   Button,
@@ -34,15 +36,20 @@ import {
   useClassInstanceStudents,
 } from '../hooks/useClassInstances';
 import { useWeeklySchedule, useClearClassSchedule } from '../hooks/useSchedules';
+import { useClassAssignments, useCreateAssignment } from '@/mis/modules/assignment/hooks/useAssignments';
+import { ASSIGNMENT_STATUS } from '@/mis/modules/assignment/constants';
+import type { AssignmentListItem } from '@/mis/modules/assignment/types';
 import WeeklyScheduleTable from '../components/WeeklyScheduleTable';
 import ScheduleSlotModal from '../components/ScheduleSlotModal';
 import type { ClassInstanceStudent, ScheduleApiResponse, DayOfWeek } from '../types';
+import { format, isPast } from 'date-fns';
 
 export default function ClassInstanceDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const classId = id ? parseInt(id, 10) : 0;
-  const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'schedule' | 'subjects'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'schedule' | 'subjects' | 'assignments'>('overview');
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Schedule modal state
   const [selectedSlot, setSelectedSlot] = useState<ScheduleApiResponse | null>(null);
@@ -56,6 +63,8 @@ export default function ClassInstanceDetail() {
   const { data: studentsData, isLoading: isLoadingStudents } = useClassInstanceStudents(classId);
   const { data: scheduleData, isLoading: isLoadingSchedule, refetch: refetchSchedule } = useWeeklySchedule(classId);
   const clearSchedule = useClearClassSchedule();
+  const { data: assignments, isLoading: isLoadingAssignments } = useClassAssignments(classId);
+  const createAssignment = useCreateAssignment();
 
   // Schedule handlers
   const handleSlotClick = (slot: ScheduleApiResponse) => {
@@ -203,6 +212,7 @@ export default function ClassInstanceDetail() {
     { id: 'students', label: 'Students', icon: Users, count: classInstance.enrolled_count },
     { id: 'schedule', label: 'Schedule', icon: CalendarDays, count: totalPeriods },
     { id: 'subjects', label: 'Subjects', icon: BookOpen, count: classInstance.subjects?.length || 0 },
+    { id: 'assignments', label: 'Assignments', icon: ClipboardList, count: assignments?.length || 0 },
   ] as const;
 
   return (
@@ -731,6 +741,88 @@ export default function ClassInstanceDetail() {
             )}
           </CardContent>
         </Card>
+      )}
+
+      {activeTab === 'assignments' && (
+        <div className="space-y-6">
+          {/* Assignments Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <ClipboardList className="h-5 w-5 text-gray-600" />
+                Class Assignments
+                <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full text-xs">
+                  {assignments?.length || 0}
+                </span>
+              </h3>
+              <p className="text-sm text-gray-500 mt-1">
+                View and manage assignments for this class
+              </p>
+            </div>
+            <Button onClick={() => setShowCreateModal(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Assignment
+            </Button>
+          </div>
+
+          {/* Assignments List */}
+          <Card>
+            <CardContent className="p-6">
+              {isLoadingAssignments ? (
+                <div className="flex justify-center py-12">
+                  <Spinner size="lg" label="Loading assignments..." />
+                </div>
+              ) : assignments && assignments.length > 0 ? (
+                <div className="space-y-4">
+                  {assignments.map((assignment) => (
+                    <div
+                      key={assignment.id}
+                      className="flex items-center gap-4 p-4 border border-gray-200 hover:border-blue-300 hover:bg-blue-50/30 rounded-xl transition-colors cursor-pointer"
+                      onClick={() => navigate(`/mis/assignments/${assignment.id}`)}
+                    >
+                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <FileText className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-text-primary truncate">{assignment.title}</h4>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge className="text-xs">{assignment.subject_name}</Badge>
+                          <Badge variant={ASSIGNMENT_STATUS[assignment.status].variant}>
+                            {assignment.status_display}
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="text-right flex-shrink-0">
+                        <p className="text-sm font-medium">
+                          {isPast(new Date(assignment.due_date)) && assignment.status !== 'graded' ? (
+                            <span className="text-red-600">Overdue</span>
+                          ) : (
+                            format(new Date(assignment.due_date), 'MMM d, yyyy')
+                          )}
+                        </p>
+                        <p className="text-xs text-text-secondary">
+                          {assignment.submitted_count}/{assignment.total_students} submitted
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <ClipboardList className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <h4 className="text-lg font-medium text-gray-900 mb-2">No Assignments</h4>
+                  <p className="text-gray-500 mb-4">No assignments have been created for this class yet.</p>
+                  <Button onClick={() => setShowCreateModal(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create First Assignment
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       )}
 
       {/* Description & Notes */}

@@ -53,6 +53,8 @@ export interface TeacherClassAssignment {
 
 export interface TeacherScheduleSlot {
   id: number;
+  day_of_week?: number;
+  day_name?: string;
   period_number: number;
   start_time: string;
   end_time: string;
@@ -70,6 +72,11 @@ export interface TeacherScheduleApiResponse {
   total_slots: number;
   total_hours_per_week: number;
   schedule: Record<string, TeacherScheduleSlot[]>;
+  weekly_schedule?: Array<{
+    day_of_week: number;
+    day_name: string;
+    periods: TeacherScheduleSlot[];
+  }>;
 }
 
 export interface TeacherStudentApiResponse {

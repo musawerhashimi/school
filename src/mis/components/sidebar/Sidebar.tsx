@@ -1,41 +1,49 @@
-import { useTranslation } from "react-i18next";
-import {
-  LayoutDashboard,
-  GraduationCap,
-  Users,
-  CalendarCheck,
-  School,
-  UserCheck,
-  Wallet,
-  BookOpen,
-  FileText,
-  Settings,
-  LogOut,
-  BookMarked,
-  ClipboardList,
-  Calendar,
-  Building2,
-  Layers,
-  BookCopy,
-  Clock,
-  FileCheck,
-  Briefcase,
-  Home,
-  Globe,
-} from "lucide-react";
-import SidebarItem from "./SidebarItem";
-import SidebarToggle from "./SidebarToggle";
-import { useSidebarState, type SubNavItem } from "./useSidebarState";
+import { useTheme } from "@/hooks/useTheme";
 import { useUserStore } from "@/mis/modules/auth";
+import {
+  BookCopy,
+  BookMarked,
+  BookOpen,
+  Briefcase,
+  Building2,
+  Calendar,
+  CalendarCheck,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  Clock,
+  FileText,
+  Globe,
+  GraduationCap,
+  Home,
+  Layers,
+  LayoutDashboard,
+  LogOut,
+  School,
+  Settings,
+  Sparkles,
+  UserCheck,
+  Users,
+  Wallet,
+} from "lucide-react";
+import { useTranslation } from "react-i18next";
+import SidebarItem from "./SidebarItem";
+import { useSidebarState, type SubNavItem } from "./useSidebarState";
+import { sub } from "date-fns";
 
 /**
  * Enhanced Sidebar Component
- * Main navigation sidebar with multi-level support
+ * Modern glassmorphism design with light/dark mode support
  */
 export default function Sidebar() {
   const { t } = useTranslation();
-  const { isCollapsed, isMobileOpen, closeMobile } = useSidebarState();
+  const { isCollapsed, isMobileOpen, closeMobile, toggleCollapse } =
+    useSidebarState();
   const { logout } = useUserStore();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  // Sync theme changes
 
   // Define navigation items with sub-items
   const navItems = [
@@ -48,15 +56,8 @@ export default function Sidebar() {
       path: "/mis/students",
       label: "Students",
       icon: GraduationCap,
-      badge: undefined, // Could be dynamic count
+      badge: undefined,
       subItems: [
-        {
-          id: "students-dashboard",
-          path: "/mis/students/dashboard",
-          label: "Dashboard",
-          icon: LayoutDashboard,
-          description: "Student analytics & overview",
-        },
         {
           id: "students-all",
           path: "/mis/students",
@@ -86,11 +87,6 @@ export default function Sidebar() {
           label: "Add Student",
           icon: ClipboardList,
           quickAction: true,
-        },
-        {
-          id: "students-portal",
-          path: "/mis/students/portal",
-          label: "Student Portal",
         },
       ] as SubNavItem[],
     },
@@ -145,13 +141,6 @@ export default function Sidebar() {
           label: "All Teachers",
           icon: Users,
         },
-        {
-          id: "teachers-new",
-          path: "/mis/staff/new?position=teacher",
-          label: "Add Teacher",
-          icon: ClipboardList,
-          quickAction: true,
-        },
       ] as SubNavItem[],
     },
     {
@@ -159,12 +148,6 @@ export default function Sidebar() {
       label: "Academics",
       icon: BookOpen,
       subItems: [
-        {
-          id: "academics-years",
-          path: "/mis/academics/years",
-          label: "Academic Years",
-          icon: Calendar,
-        },
         {
           id: "academics-levels",
           path: "/mis/academics/levels",
@@ -240,29 +223,10 @@ export default function Sidebar() {
           ],
         },
         {
-          id: "exams-grades",
-          path: "/mis/exams/grades",
-          label: "Grade Entry",
-          icon: FileCheck,
-          quickAction: true,
-          children: [
-            {
-              id: "grades-entry",
-              path: "/mis/exams/grades",
-              label: "Enter Grades",
-            },
-            {
-              id: "grades-list",
-              path: "/mis/exams/grades/list",
-              label: "View Grades",
-            },
-          ],
-        },
-        {
-          id: "exams-scores",
-          path: "/mis/exams/scores",
-          label: "Score Entry",
-          icon: BookOpen,
+          id: "questions-bank",
+          path: "/mis/exams/questions-bank",
+          label: "Question Bank",
+          icon: BookMarked,
         },
       ] as SubNavItem[],
     },
@@ -295,49 +259,82 @@ export default function Sidebar() {
           id: "attendance-view",
           path: "/mis/attendance",
           label: "View Attendance",
+          icon: CalendarCheck,
         },
         {
           id: "attendance-mark",
           path: "/mis/attendance/mark",
           label: "Mark Attendance",
           quickAction: true,
+          icon: CalendarCheck,
         },
         {
           id: "attendance-reports",
           path: "/mis/attendance/reports",
           label: "Reports",
+          icon: FileText,
         },
       ] as SubNavItem[],
     },
+
     {
       path: "/mis/parents",
       label: "Parents",
       icon: UserCheck,
+      subItems: [
+        {
+          id: "parents-dashboard",
+          path: "/mis/parents/dashboard",
+          label: "Dashboard",
+          icon: LayoutDashboard,
+        },
+        {
+          id: "parents-profile",
+          path: "/mis/parents/profile",
+          label: "Profile",
+          icon: UserCheck,
+          quickAction: true,
+        },
+      ] as SubNavItem[],
     },
     {
-      path: "/mis/fees",
-      label: "Fees",
+      path: "",
+      label: "Finance",
       icon: Wallet,
-      badge: undefined, // Could show pending count
       subItems: [
         {
           id: "fees-records",
           path: "/mis/fees",
           label: "Fee Records",
+          icon: Wallet,
         },
         {
-          id: "fees-collect",
-          path: "/mis/fees/collect",
-          label: "Collect Fee",
-          quickAction: true,
+          id: "Salary",
+          path: "/mis/salary",
+          label: "Salary Management",
+          icon: Wallet,
         },
         {
-          id: "fees-pending",
-          path: "/mis/fees/pending",
-          label: "Pending Fees",
+          id: "Cash Drawer",
+          path: "/mis/cash-drawer",
+          label: "Cash Drawer",
+          icon: Wallet,
+        },
+        {
+          id: "Transactions",
+          path: "/mis/transactions",
+          label: "Transactions",
+          icon: Wallet,
+        },
+        {
+          id: "Expanses",
+          path: "/mis/expenses",
+          label: "Expenses",
+          icon: Wallet,
         },
       ] as SubNavItem[],
     },
+
     {
       path: "/mis/library",
       label: "Library",
@@ -478,6 +475,24 @@ export default function Sidebar() {
       path: "/mis/settings",
       label: "Settings",
       icon: Settings,
+      subItems: [
+        {
+          id: "settings-general",
+          path: "/mis/settings/general",
+          label: "General",
+        },
+        {
+          id: "settings-academic-year",
+          path: "/mis/settings/academic-year",
+          label: "Academic Years",
+          icon: Calendar,
+        },
+        {
+          id: "settings-users",
+          path: "/mis/settings/users",
+          label: "User Management",
+        },
+      ] as SubNavItem[],
     },
   ];
 
@@ -486,56 +501,138 @@ export default function Sidebar() {
       {/* Mobile Overlay */}
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden animate-fade-in"
           onClick={closeMobile}
         />
       )}
 
       <aside
         data-sidebar="main"
-        className={`fixed lg:relative inset-y-0 left-0 z-50 flex flex-col border-r border-border/40 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-sidebar-text shadow-2xl transition-all duration-300 ${
-          isCollapsed ? "w-20" : "w-72"
+        className={`fixed lg:relative inset-y-0 left-0 z-50 flex flex-col shadow-xl transition-all duration-300 ease-out ${
+          isCollapsed ? "w-[72px]" : "w-[280px]"
         } ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        } ${
+          isDark
+            ? "bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900"
+            : "bg-gradient-to-b from-slate-50 via-white to-slate-50"
         }`}
       >
-        {/* Decorative gradient overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Top gradient orb */}
+          <div
+            className={`absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-30 ${
+              isDark ? "bg-zinc-600" : "bg-slate-400"
+            }`}
+          />
+          {/* Bottom gradient orb */}
+          <div
+            className={`absolute -bottom-20 -left-20 w-40 h-40 rounded-full blur-3xl opacity-20 ${
+              isDark ? "bg-zinc-700" : "bg-slate-300"
+            }`}
+          />
+          {/* Grid pattern */}
+          <div
+            className={`absolute inset-0 opacity-[0.02] ${
+              isDark
+                ? "bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDQwTDQwIDBIMjBMMCAyME00MCA0MFYyMEwwIDQwIiBkPSJNMiAyaDZWM2gtNnYtSDJ6IiBmaWxsPSJjdXJyZW50Q29sb3IiLz48L2c+PC9zdmc+')]"
+                : "bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDQwTDQwIDBIMjBMMCAyME00MCA0MFYyMEwwIDQwIiBkPSJNMiAyaDZWM2gtNnYtSDJ6IiBmaWxsPSJjdXJyZW50Q29sb3IiLz48L2c+PC9zdmc+')]"
+            }`}
+          />
+        </div>
 
         {/* Logo & Toggle */}
         <div
-          className={`relative z-10 flex items-center border-b border-white/10 bg-slate-900/50 backdrop-blur-xl px-4 ${isCollapsed ? "h-auto py-4 flex-col gap-3" : "h-16 justify-between"}`}
+          className={`relative z-10 flex items-center justify-between border-b px-3 py-4 ${
+            isDark
+              ? "border-zinc-700/50 bg-zinc-800/50"
+              : "border-slate-200 bg-slate-100/50"
+          } ${isCollapsed ? "flex-col gap-3 px-2" : "px-4"}`}
         >
-          {!isCollapsed ? (
-            <>
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30">
-                  <School className="h-5 w-5 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-base font-bold text-white leading-none">
-                    School MIS
-                  </h1>
-                  <p className="text-[10px] text-slate-400 leading-none mt-0.5">
-                    Management System
-                  </p>
-                </div>
+          <div
+            className={`flex items-center gap-3 ${
+              isCollapsed ? "justify-center w-full" : ""
+            }`}
+          >
+            <div
+              className={`flex items-center justify-center rounded-xl shadow-lg ${
+                isCollapsed ? "h-10 w-10" : "h-11 w-11"
+              } bg-gradient-to-br from-slate-600 via-slate-700 to-zinc-800 shadow-slate-500/30`}
+            >
+              <School
+                className={`text-white ${isCollapsed ? "h-5 w-5" : "h-5 w-5"}`}
+              />
+            </div>
+            {!isCollapsed && (
+              <div className="animate-slide-in">
+                <h1
+                  className={`font-bold leading-tight ${
+                    isDark ? "text-white" : "text-slate-800"
+                  }`}
+                >
+                  School MIS
+                </h1>
+                <p
+                  className={`text-[11px] leading-tight mt-0.5 ${
+                    isDark ? "text-zinc-400" : "text-slate-500"
+                  }`}
+                >
+                  Management System
+                </p>
               </div>
-              <SidebarToggle />
-            </>
-          ) : (
-            <>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30">
-                <School className="h-5 w-5 text-white" />
-              </div>
-              <SidebarToggle />
-            </>
+            )}
+          </div>
+        </div>
+
+        {/* Theme Toggle & Collapse Button Row */}
+        <div
+          className={`relative z-10 flex items-center justify-${
+            isCollapsed ? "center" : "between"
+          } px-3 py-2 ${
+            isDark ? "border-b border-zinc-700/30" : "border-b border-slate-200"
+          }`}
+        >
+          {!isCollapsed && (
+            <div
+              className={`flex items-center gap-2 px-2 py-1 rounded-lg ${
+                isDark ? "bg-zinc-700/50" : "bg-slate-200"
+              }`}
+            >
+              <Sparkles
+                className={`h-3.5 w-3.5 ${
+                  isDark ? "text-zinc-400" : "text-slate-600"
+                }`}
+              />
+              <span
+                className={`text-xs font-medium ${
+                  isDark ? "text-zinc-400" : "text-slate-600"
+                }`}
+              >
+                Navigation
+              </span>
+            </div>
           )}
+
+          <button
+            onClick={toggleCollapse}
+            className={`hidden lg:flex items-center justify-center rounded-lg transition-all duration-200 ml-2 ${
+              isDark
+                ? "h-8 w-8 bg-zinc-700/50 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                : "h-8 w-8 bg-slate-200 text-slate-600 hover:bg-slate-300"
+            }`}
+            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
+          </button>
         </div>
 
         {/* Navigation */}
-        <nav className="relative z-10 flex-1 overflow-y-auto px-3 py-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent hover:scrollbar-thumb-white/20">
-          <ul className="space-y-1">
+        <nav className="relative z-10 flex-1 overflow-y-auto py-3 scrollbar-thin">
+          <ul className="space-y-1 px-2">
             {navItems.map((item) => (
               <SidebarItem
                 key={item.path}
@@ -551,18 +648,98 @@ export default function Sidebar() {
         </nav>
 
         {/* Logout */}
-        <div className="relative z-10 border-t border-white/10 bg-slate-900/30 backdrop-blur-xl p-3">
+        <div
+          className={`relative z-10 border-t p-3 ${
+            isDark
+              ? "border-zinc-700/50 bg-zinc-800/30"
+              : "border-slate-200 bg-slate-100/50"
+          }`}
+        >
           <button
             onClick={logout}
-            className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 hover:bg-error/20 hover:text-error active:scale-95 ${
+            className={`group flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
               isCollapsed ? "justify-center" : ""
-            }`}
+            } ${
+              isDark
+                ? "text-rose-400 hover:bg-rose-500/20 hover:text-rose-300"
+                : "text-rose-600 hover:bg-rose-100 hover:text-rose-700"
+            } active:scale-[0.98]`}
           >
-            <LogOut className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-            {!isCollapsed && <span>{t("mis.nav.logout", "Logout")}</span>}
+            <LogOut
+              className={`h-5 w-5 transition-transform group-hover:translate-x-0.5 ${
+                isDark ? "text-rose-400" : "text-rose-500"
+              }`}
+            />
+            {!isCollapsed && (
+              <span className={isDark ? "text-rose-400" : "text-rose-600"}>
+                {t("mis.nav.logout", "Logout")}
+              </span>
+            )}
           </button>
         </div>
       </aside>
+
+      {/* Mobile Toggle Button (visible only on mobile) */}
+      <button
+        onClick={() => useSidebarState.getState().toggleMobile()}
+        className={`fixed bottom-4 right-4 z-50 lg:hidden flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-all duration-300 ${
+          isDark
+            ? "bg-zinc-700 text-white hover:bg-zinc-600"
+            : "bg-slate-800 text-white hover:bg-slate-700"
+        } ${isMobileOpen ? "rotate-90 opacity-0" : "rotate-0 opacity-100"}`}
+        aria-label="Toggle menu"
+      >
+        <span className="sr-only">Toggle menu</span>
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slide-in {
+          from { 
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.2s ease-out;
+        }
+        .animate-slide-in {
+          animation: slide-in 0.3s ease-out;
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background: rgba(148, 163, 184, 0.3);
+          border-radius: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background: rgba(148, 163, 184, 0.5);
+        }
+      `}</style>
     </>
   );
 }

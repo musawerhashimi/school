@@ -19,7 +19,20 @@ import {
   useTeacherClasses,
   useTeacherStudents,
 } from "../hooks/useTeachers";
+import type { TeacherScheduleSlot } from "../types";
 import { useUserStore } from "@auth/index";
+import {
+  TEACHING_DAYS,
+  getSlotTimeRange,
+  getTodayTeachingDay,
+} from "../utils/schedule";
+
+type TeacherClassSummary = {
+  id: number;
+  display_name: string;
+  enrolled_count: number;
+  is_homeroom: boolean;
+};
 
 /**
  * TeacherDashboard - Personal dashboard for logged-in teachers
@@ -31,14 +44,23 @@ export default function TeacherDashboard() {
   const { userProfile } = useUserStore();
 
   // Get teacher ID from user's staff profile
-  // Assuming user has staff_profile.teacher_profile.id
-  const teacherId = userProfile?.staff_profile?.teacher_profile?.id || 1;
+  const teacherId = userProfile?.teacherProfile?.id || 1;
 
   // Fetch data
-  const { data: teacher, isLoading, error } = useTeacherDetail(teacherId);
-  const { data: schedule } = useTeacherSchedule(teacherId);
-  const { data: classes } = useTeacherClasses(teacherId);
-  const { data: students } = useTeacherStudents(teacherId);
+  const { data: teacher, isLoading, error } = useTeacherDetail(teacherId ?? 0);
+  const { data: schedule } = useTeacherSchedule(teacherId ?? 0);
+  const { data: classes } = useTeacherClasses(teacherId ?? 0);
+  const { data: students } = useTeacherStudents(teacherId ?? 0);
+
+  if (!teacherId) {
+    return (
+      <div className="p-6">
+        <Alert variant="warning">
+          {t("mis.teachers.messages.teacherProfileMissing")}
+        </Alert>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -52,17 +74,37 @@ export default function TeacherDashboard() {
     return (
       <div className="p-6">
         <Alert variant="error">
-          {t("mis.teachers.messages.errorLoadingDashboard")}
+          {t("mis.teachers.dashboard.errorLoadingDashboard")}
         </Alert>
       </div>
     );
   }
 
   // Get today's schedule
-  const today = new Date();
-  const dayNames = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const todayName = dayNames[today.getDay() === 6 ? 0 : today.getDay() + 1]; // Adjust for Saturday=0
-  const todaySchedule = schedule?.schedule[todayName] || [];
+  const todayName = getTodayTeachingDay();
+  const todaySchedule: TeacherScheduleSlot[] = todayName
+    ? schedule?.schedule?.[todayName] || []
+    : [];
+  const classList = (classes || []) as TeacherClassSummary[];
+
+  const upcomingDays = todayName
+    ? [
+        ...TEACHING_DAYS.slice(TEACHING_DAYS.indexOf(todayName)),
+        ...TEACHING_DAYS.slice(0, TEACHING_DAYS.indexOf(todayName)),
+      ]
+    : TEACHING_DAYS;
+
+  const nextClass =
+    upcomingDays
+      .map((day) => {
+        const daySlots = [...(schedule?.schedule?.[day] || [])].sort(
+          (a: TeacherScheduleSlot, b: TeacherScheduleSlot) =>
+            a.period_number - b.period_number
+        );
+        if (daySlots.length === 0) return null;
+        return { day, slot: daySlots[0] };
+      })
+      .find(Boolean) ?? null;
 
   return (
     <div className="p-6 space-y-6">
@@ -72,7 +114,6 @@ export default function TeacherDashboard() {
           name: teacher.staff_detail.full_name,
         })}
         subtitle={t("mis.teachers.dashboard.subtitle")}
-        icon={Users}
       />
 
       {/* Quick Stats */}
@@ -152,16 +193,22 @@ export default function TeacherDashboard() {
 
           {todaySchedule.length > 0 ? (
             <div className="space-y-3">
-              {todaySchedule.map((slot: any) => (
+              {todaySchedule.map((slot) => (
                 <div
                   key={slot.id}
-                  onClick={() => navigate(`/mis/teachers/classes/${slot.class_id}`)}
+                  onClick={() =>
+                    navigate(`/mis/teachers/classes/${slot.class_id}`)
+                  }
                   className="flex items-center justify-between p-4 bg-bg-secondary rounded-lg hover:shadow-md transition-all cursor-pointer hover:bg-primary/5"
                 >
                   <div className="flex items-center gap-4">
                     <div className="bg-primary text-white rounded-lg px-3 py-2 text-center min-w-[52px]">
-                      <div className="text-xs font-medium">P{slot.period_number}</div>
-                      <div className="text-xs">{slot.start_time}</div>
+                      <div className="text-xs font-medium">
+                        P{slot.period_number}
+                      </div>
+                      <div className="text-xs">
+                        {getSlotTimeRange(slot).start || "--:--"}
+                      </div>
                     </div>
                     <div>
                       <div className="font-medium">{slot.subject}</div>
@@ -200,9 +247,9 @@ export default function TeacherDashboard() {
             {t("mis.teachers.dashboard.myClasses")}
           </h3>
 
-          {classes && classes.length > 0 ? (
+          {classList.length > 0 ? (
             <div className="space-y-2">
-              {classes.slice(0, 5).map((cls: any) => (
+              {classList.slice(0, 5).map((cls) => (
                 <div
                   key={cls.id}
                   onClick={() => navigate(`/mis/teachers/classes/${cls.id}`)}
@@ -229,9 +276,9 @@ export default function TeacherDashboard() {
                   </div>
                 </div>
               ))}
-              {classes.length > 5 && (
+              {classList.length > 5 && (
                 <div className="text-sm text-text-secondary text-center pt-2">
-                  +{classes.length - 5} {t("mis.common.more")}
+                  +{classList.length - 5} {t("mis.common.more")}
                 </div>
               )}
             </div>
@@ -272,9 +319,27 @@ export default function TeacherDashboard() {
             <TrendingUp className="h-5 w-5 text-primary" />
             {t("mis.teachers.dashboard.recentActivity")}
           </h3>
-          <Alert variant="info">
-            {t("mis.teachers.dashboard.comingSoon")}
-          </Alert>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-secondary">
+              <ClipboardList className="h-4 w-4 mt-0.5 text-primary" />
+              <div>
+                <div className="font-medium">Schedule synced</div>
+                <div className="text-sm text-text-secondary">
+                  {schedule?.total_slots || 0} periods loaded this week
+                </div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-secondary">
+              <Users className="h-4 w-4 mt-0.5 text-success" />
+              <div>
+                <div className="font-medium">Class roster updated</div>
+                <div className="text-sm text-text-secondary">
+                  {students?.length || 0} students across {classes?.length || 0}{" "}
+                  classes
+                </div>
+              </div>
+            </div>
+          </div>
         </Card>
 
         <Card className="p-6">
@@ -282,9 +347,33 @@ export default function TeacherDashboard() {
             <Calendar className="h-5 w-5 text-primary" />
             {t("mis.teachers.dashboard.upcomingEvents")}
           </h3>
-          <Alert variant="info">
-            {t("mis.teachers.dashboard.comingSoon")}
-          </Alert>
+          <div className="space-y-3">
+            {nextClass ? (
+              <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
+                <div className="font-medium">{nextClass.slot.subject}</div>
+                <div className="text-sm text-text-secondary">
+                  {nextClass.day} • Period {nextClass.slot.period_number} •{" "}
+                  {getSlotTimeRange(nextClass.slot).start || "--:--"}
+                </div>
+                <div className="text-sm text-text-secondary">
+                  {nextClass.slot.class}
+                </div>
+              </div>
+            ) : (
+              <Alert variant="info">
+                {t("mis.teachers.dashboard.noClassesToday")}
+              </Alert>
+            )}
+
+            <div className="p-3 rounded-lg bg-bg-secondary">
+              <div className="font-medium">
+                {t("mis.teachers.dashboard.comingSoon")}
+              </div>
+              <div className="text-sm text-text-secondary">
+                Gradebook and upcoming exam reminders will appear here.
+              </div>
+            </div>
+          </div>
         </Card>
       </div>
     </div>

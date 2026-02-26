@@ -16,7 +16,7 @@ import type {
   GradeApiResponse,
   ExamMaxMarks,
 } from '../types';
-import type { SubjectApiResponse } from '../../academic/types';
+import type { SubjectApiResponse } from '../../reference/types';
 
 const BASE_URL = '/exam/classes/';
 const GRADES_URL = '/exam/grades/';
@@ -120,6 +120,25 @@ export const classExamService = {
   },
 
   /**
+   * Get available subjects for scheduling in a specific exam/class.
+   * Backend endpoint: GET /exam/classes/{id}/available-subjects/?exam={exam_id}[&schedule_id={id}]
+   */
+  async getAvailableScheduleSubjects(
+    classId: number,
+    examId: number,
+    scheduleId?: number
+  ): Promise<SubjectApiResponse[]> {
+    const params = new URLSearchParams({ exam: String(examId) });
+    if (typeof scheduleId === 'number' && scheduleId > 0) {
+      params.append('schedule_id', String(scheduleId));
+    }
+    const response = await api.get<SubjectApiResponse[]>(
+      `${BASE_URL}${classId}/available-subjects/?${params.toString()}`
+    );
+    return response.data;
+  },
+
+  /**
    * Get scores for a specific subject in a class
    * Uses /exam/grades/ endpoint with filters
    */
@@ -168,12 +187,14 @@ export const classExamService = {
     // Build scores array with all students
     const scores = students.map(student => {
       const grade = gradesMap.get(student.id);
+      const defaultActivity = examType === 'final' ? 3 : 2;
+      const defaultAssignment = examType === 'final' ? 3 : 2;
       return {
         student_id: student.id,
         student_name: student.full_name,
         student_id_number: student.student_id,
-        activity_marks: grade?.activity_marks ?? 2,
-        assignment_marks: grade?.assignment_marks ?? 2,
+        activity_marks: grade?.activity_marks ?? defaultActivity,
+        assignment_marks: grade?.assignment_marks ?? defaultAssignment,
         exam_marks: grade?.exam_marks ?? 0,
         total: grade?.marks_obtained ?? 0,
         percentage: grade?.percentage ?? null,

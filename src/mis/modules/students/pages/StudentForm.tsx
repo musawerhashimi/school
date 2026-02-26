@@ -1,53 +1,47 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import {
-  User,
-  School,
-  Users,
-  Heart,
-  FileText,
   ArrowLeft,
   ArrowRight,
-  Save,
   CheckCircle2,
-  MapPin,
-  FileCheck,
+  Heart,
+  Save,
+  School,
+  User,
+  Users,
 } from "lucide-react";
 import { PageHeader } from "@mis-components/index";
 import {
+  Alert,
+  Badge,
   Button,
-  Input,
-  Select,
-  Textarea,
   Card,
   CardContent,
-  Alert,
+  Input,
+  Select,
   Spinner,
-  Badge,
+  Textarea,
 } from "@mis-components/ui";
 import {
-  useStudent,
   useCreateStudent,
+  useGuardians,
+  useStudent,
   useUpdateStudent,
 } from "../hooks/useStudents";
 import { studentSchema, type StudentFormData } from "../schemas/studentSchema";
-import { useAcademicYears, useCurrentAcademicYear } from "@academic/hooks/useAcademicYears";
-import { useClassLevels } from "@academic/hooks/useClassLevels";
+import type { CreateStudentData, GuardianApiResponse, UpdateStudentData } from "../types";
+import { useCurrentAcademicYear } from "@academic/hooks/useAcademicYears";
 import { useClassInstances } from "@academic/hooks/useClassInstances";
 
-type StudentFormValues = StudentFormData;
-
 const STEPS = [
-  { id: 1, title: "Personal Info", translationKey: "personalInformation", icon: User },
-  { id: 2, title: "Tazkira & Location", translationKey: "tazkiraAndLocation", icon: MapPin },
-  { id: 3, title: "Contact & Address", translationKey: "contactInformation", icon: FileText },
-  { id: 4, title: "Academic Info", translationKey: "academicInformation", icon: School },
-  { id: 5, title: "Parent/Guardian", translationKey: "parentGuardian", icon: Users },
-  { id: 6, title: "Health Examination", translationKey: "healthExamination", icon: Heart },
-  { id: 7, title: "Commitment & Review", translationKey: "commitmentAndReview", icon: FileCheck },
+  { id: 1, title: "Personal Info", icon: User },
+  { id: 2, title: "Contact", icon: User },
+  { id: 3, title: "Academic", icon: School },
+  { id: 4, title: "Guardian", icon: Users },
+  { id: 5, title: "Health & Previous", icon: Heart },
 ];
 
 const PROVINCES = [
@@ -89,197 +83,284 @@ const PROVINCES = [
 
 const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
+const RELATION_OPTIONS = [
+  { label: "Father", value: "father" },
+  { label: "Mother", value: "mother" },
+  { label: "Guardian", value: "guardian" },
+  { label: "Uncle", value: "uncle" },
+  { label: "Aunt", value: "aunt" },
+  { label: "Grandfather", value: "grandfather" },
+  { label: "Grandmother", value: "grandmother" },
+  { label: "Brother", value: "brother" },
+  { label: "Sister", value: "sister" },
+  { label: "Other", value: "other" },
+];
+
+const EDUCATION_LEVEL_RANGES: Record<"primary" | "lower_secondary" | "upper_secondary", [number, number]> = {
+  primary: [1, 6],
+  lower_secondary: [7, 9],
+  upper_secondary: [10, 12],
+};
+
+type GuardianMode = "existing" | "new";
+type SecondaryGuardianMode = "none" | "existing" | "new";
+
 export default function StudentForm() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const isEdit = id && id !== "new";
-  const studentId = isEdit ? parseInt(id, 10) : 0;
+  const isEdit = !!id && id !== "new";
+  const studentId = isEdit ? parseInt(id || "0", 10) : 0;
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [selectedEducationLevel, setSelectedEducationLevel] = useState<string>("");
-  const [selectedAcademicYear, setSelectedAcademicYear] = useState<number | null>(null);
-  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(null);
+  const [primaryGuardianMode, setPrimaryGuardianMode] = useState<GuardianMode>("new");
+  const [secondaryGuardianMode, setSecondaryGuardianMode] = useState<SecondaryGuardianMode>("none");
+  const [guardianSearch, setGuardianSearch] = useState("");
 
-  // React Query hooks
   const { data: student, isLoading: isLoadingStudent } = useStudent(studentId);
   const createStudent = useCreateStudent();
   const updateStudent = useUpdateStudent();
+  const { data: guardiansData, isLoading: isLoadingGuardians } = useGuardians({
+    search: guardianSearch || undefined,
+    page_size: 100,
+  });
 
-  // Academic module hooks
   const { data: currentAcademicYear } = useCurrentAcademicYear();
-  const { data: academicYears } = useAcademicYears({ is_active: true });
-  const { data: classLevels } = useClassLevels(
-    selectedEducationLevel ? { category: selectedEducationLevel } : {}
-  );
-  const { data: classInstances } = useClassInstances(
-    selectedAcademicYear && selectedClassLevel
-      ? {
-          academic_year: selectedAcademicYear,
-          class_level: selectedClassLevel,
-          is_active: true,
-        }
-      : {}
-  );
+  const { data: classInstances } = useClassInstances({
+    academic_year: currentAcademicYear?.id,
+    is_active: true,
+    page_size: 100,
+  });
 
-  // Form setup
   const {
     register,
     handleSubmit,
-    formState: { errors },
     setValue,
-    trigger,
     watch,
-  } = useForm<StudentFormValues>({
+    trigger,
+    getValues,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<StudentFormData>({
     resolver: zodResolver(studentSchema),
     defaultValues: {
       nationality: "Afghan",
       education_level: "upper_secondary",
-      primary_guardian: {
-        relation_type: "father",
-      },
-      commitment_accepted: false,
+      status: "active",
     },
   });
 
-  // Watch form values for dynamic behavior
-  const educationLevel = watch("education_level");
-  const classInstanceId = watch("class_instance");
+  const selectedEducationLevel = watch("education_level");
 
-  // Update education level state when form value changes
+  const guardianOptions = useMemo(() => {
+    return (guardiansData?.results || []).map((guardian: GuardianApiResponse) => ({
+      value: guardian.id.toString(),
+      label: `${guardian.full_name} - ${guardian.phone} (${guardian.relation_type})`,
+    }));
+  }, [guardiansData]);
+
+  const filteredClasses = useMemo(() => {
+    const allClasses = classInstances?.results || [];
+    if (!selectedEducationLevel) return allClasses;
+
+    const range = EDUCATION_LEVEL_RANGES[selectedEducationLevel];
+    if (!range) return allClasses;
+
+    return allClasses.filter(
+      (classItem) =>
+        classItem.class_level_number >= range[0] && classItem.class_level_number <= range[1]
+    );
+  }, [classInstances, selectedEducationLevel]);
+
   useEffect(() => {
-    if (educationLevel) {
-      setSelectedEducationLevel(educationLevel);
+    if (primaryGuardianMode === "new") {
+      setValue("primary_guardian_id", undefined);
+      if (!getValues("primary_guardian")) {
+        setValue("primary_guardian", {
+          first_name: "",
+          last_name: "",
+          relation_type: "father",
+          phone: "",
+          phone_secondary: "",
+          email: "",
+          occupation: "",
+          address: "",
+          national_id: "",
+        });
+      }
+    } else {
+      setValue("primary_guardian", undefined);
+      clearErrors("primary_guardian");
     }
-  }, [educationLevel]);
+  }, [primaryGuardianMode, setValue, getValues, clearErrors]);
 
-  // Set default academic year to current year
   useEffect(() => {
-    if (currentAcademicYear && !selectedAcademicYear) {
-      setSelectedAcademicYear(currentAcademicYear.id);
-      setValue("academic_year", currentAcademicYear.id);
+    if (secondaryGuardianMode === "none") {
+      setValue("secondary_guardian_id", null);
+      setValue("secondary_guardian", undefined);
+      clearErrors("secondary_guardian");
+      return;
     }
-  }, [currentAcademicYear, selectedAcademicYear, setValue]);
 
-  // Auto-populate section and shift when class instance is selected
-  useEffect(() => {
-    if (classInstanceId && classInstances) {
-      const selectedInstance = classInstances.results?.find(
-        (ci) => ci.id === classInstanceId
-      );
-      if (selectedInstance) {
-        setValue("section", selectedInstance.section || "");
-        if (selectedInstance.shift) {
-          setValue("shift", selectedInstance.shift);
-        }
-      }
+    if (secondaryGuardianMode === "existing") {
+      setValue("secondary_guardian", undefined);
+      clearErrors("secondary_guardian");
+      return;
     }
-  }, [classInstanceId, classInstances, setValue]);
 
-  // Load student data for edit mode
+    setValue("secondary_guardian_id", undefined);
+    if (!getValues("secondary_guardian")) {
+      setValue("secondary_guardian", {
+        first_name: "",
+        last_name: "",
+        relation_type: "guardian",
+        phone: "",
+        phone_secondary: "",
+        email: "",
+        occupation: "",
+        address: "",
+        national_id: "",
+      });
+    }
+  }, [secondaryGuardianMode, setValue, getValues, clearErrors]);
+
   useEffect(() => {
-    if (isEdit && student) {
-      // Personal Information
-      setValue("first_name", student.first_name);
-      setValue("last_name", student.last_name);
-      setValue("nickname", student.nickname);
-      setValue("father_name", student.father_name);
-      setValue("grandfather_name", student.grandfather_name);
-      setValue("date_of_birth", student.date_of_birth);
-      setValue("current_age", student.current_age);
-      setValue("gender", student.gender);
-      setValue("nationality", student.nationality);
-      setValue("religion", student.religion);
-      setValue("blood_group", student.blood_group);
-      setValue("national_id", student.national_id);
+    if (!isEdit || !student) return;
 
-      // Tazkira Details
-      setValue("tazkira_page_number", student.tazkira_page_number);
-      setValue("tazkira_volume_number", student.tazkira_volume_number);
-      setValue("tazkira_registration_number", student.tazkira_registration_number);
-      setValue("birth_date_on_tazkira", student.birth_date_on_tazkira);
-      setValue("age_on_tazkira", student.age_on_tazkira);
+    setValue("first_name", student.first_name);
+    setValue("last_name", student.last_name);
+    setValue("father_name", student.father_name);
+    setValue("grandfather_name", student.grandfather_name || "");
+    setValue("date_of_birth", student.date_of_birth);
+    setValue("gender", student.gender);
+    setValue("nationality", student.nationality || "Afghan");
+    setValue("religion", student.religion || "");
+    setValue("blood_group", student.blood_group as StudentFormData["blood_group"]);
+    setValue("national_id", student.national_id || "");
 
-      // Location
-      setValue("original_province", student.original_province);
-      setValue("original_district", student.original_district);
-      setValue("original_area", student.original_area);
-      setValue("current_province", student.current_province);
-      setValue("current_district", student.current_district);
-      setValue("current_area", student.current_area);
+    setValue("address", student.address);
+    setValue("city", student.city);
+    setValue("province", student.province as StudentFormData["province"]);
+    setValue("phone", student.phone || "");
+    setValue("email", student.email || "");
 
-      // Contact Information
-      setValue("address", student.address);
-      setValue("city", student.city);
-      setValue("province", student.province);
-      setValue("phone", student.phone);
-      setValue("email", student.email);
+    setValue("education_level", student.education_level);
+    setValue("current_class", student.current_class);
+    setValue("roll_number", student.roll_number || "");
+    setValue("admission_date", student.admission_date);
+    setValue("admission_number", student.admission_number || "");
+    setValue("status", student.status);
 
-      // Academic Information
-      setValue("academic_year", student.academic_year);
-      setValue("education_level", student.education_level);
-      setValue("class_instance", student.class_instance);
-      setValue("section", student.section);
-      setValue("shift", student.shift);
-      setValue("roll_number", student.roll_number);
-      setValue("admission_date", student.admission_date);
-      setValue("enrollment_type", student.enrollment_type);
+    setValue("emergency_contact_name", student.emergency_contact_name || "");
+    setValue("emergency_contact_phone", student.emergency_contact_phone || "");
+    setValue("emergency_contact_relation", student.emergency_contact_relation || "");
 
-      // Parent/Guardian
-      setValue("parent_occupation", student.parent_occupation);
-      setValue("family_contact_number_1", student.family_contact_number_1);
-      setValue("family_contact_number_2", student.family_contact_number_2);
-      setValue("family_contact_number_3", student.family_contact_number_3);
-      setValue("telegram_contact", student.telegram_contact);
-      setValue("relationship_to_student", student.relationship_to_student);
+    setValue("medical_conditions", student.medical_conditions || "");
+    setValue("allergies", student.allergies || "");
+    setValue("medications", student.medications || "");
 
-      // Emergency Contact
-      setValue("emergency_contact_name", student.emergency_contact_name);
-      setValue("emergency_contact_phone", student.emergency_contact_phone);
-      setValue("emergency_contact_relation", student.emergency_contact_relation);
+    setValue("previous_school", student.previous_school || "");
+    setValue("previous_class", student.previous_class || "");
+    setValue("transfer_certificate_number", student.transfer_certificate_number || "");
 
-      // Health Information
-      setValue("hiv_test", student.hiv_test);
-      setValue("hcv_test", student.hcv_test);
-      setValue("hbs_test", student.hbs_test);
-      setValue("health_test_date", student.health_test_date);
-      setValue("medical_conditions", student.medical_conditions);
-      setValue("allergies", student.allergies);
-      setValue("medications", student.medications);
+    if (student.primary_guardian?.id) {
+      setPrimaryGuardianMode("existing");
+      setValue("primary_guardian_id", student.primary_guardian.id);
+    } else {
+      setPrimaryGuardianMode("new");
+    }
 
-      // Previous Education
-      setValue("previous_school", student.previous_school);
-      setValue("previous_class", student.previous_class);
-      setValue("transfer_certificate_number", student.transfer_certificate_number);
-
-      // Load guardian data if available
-      if (student.primary_guardian) {
-        setValue("primary_guardian.first_name", student.primary_guardian.first_name);
-        setValue("primary_guardian.last_name", student.primary_guardian.last_name);
-        setValue("primary_guardian.relation_type", student.primary_guardian.relation_type);
-        setValue("primary_guardian.phone", student.primary_guardian.phone);
-        setValue("primary_guardian.phone_secondary", student.primary_guardian.phone_secondary);
-        setValue("primary_guardian.email", student.primary_guardian.email);
-        setValue("primary_guardian.occupation", student.primary_guardian.occupation);
-        setValue("primary_guardian.address", student.primary_guardian.address);
-        setValue("primary_guardian.national_id", student.primary_guardian.national_id);
-      }
-
-      // Set selected states for dynamic dropdowns
-      if (student.education_level) {
-        setSelectedEducationLevel(student.education_level);
-      }
-      if (student.academic_year) {
-        setSelectedAcademicYear(student.academic_year);
-      }
+    if (student.secondary_guardian?.id) {
+      setSecondaryGuardianMode("existing");
+      setValue("secondary_guardian_id", student.secondary_guardian.id);
+    } else {
+      setSecondaryGuardianMode("none");
     }
   }, [isEdit, student, setValue]);
 
-  // Step navigation with validation
-  const handleNext = async () => {
-    const fieldsToValidate = getFieldsForStep(currentStep);
-    const isValid = await trigger(fieldsToValidate);
+  const getFieldsForStep = (step: number): string[] => {
+    if (step === 1) {
+      return ["first_name", "last_name", "father_name", "date_of_birth", "gender"];
+    }
+    if (step === 2) {
+      return ["address", "city", "province"];
+    }
+    if (step === 3) {
+      return ["education_level", "current_class", "admission_date"];
+    }
+    if (step === 5) {
+      return [];
+    }
+    return [];
+  };
 
+  const validateGuardianStep = async () => {
+    let isValid = true;
+
+    if (primaryGuardianMode === "existing") {
+      const guardianId = getValues("primary_guardian_id");
+      if (!guardianId) {
+        setError("primary_guardian_id", {
+          type: "manual",
+          message: "Please select a guardian.",
+        });
+        isValid = false;
+      } else {
+        clearErrors("primary_guardian_id");
+      }
+    } else {
+      const primaryValid = await trigger([
+        "primary_guardian.first_name",
+        "primary_guardian.last_name",
+        "primary_guardian.relation_type",
+        "primary_guardian.phone",
+      ]);
+      isValid = isValid && primaryValid;
+    }
+
+    if (secondaryGuardianMode === "existing") {
+      const guardianId = getValues("secondary_guardian_id");
+      if (!guardianId) {
+        setError("secondary_guardian_id", {
+          type: "manual",
+          message: "Please select a secondary guardian or set mode to None.",
+        });
+        isValid = false;
+      } else {
+        clearErrors("secondary_guardian_id");
+      }
+    } else if (secondaryGuardianMode === "new") {
+      const secondaryValid = await trigger([
+        "secondary_guardian.first_name",
+        "secondary_guardian.last_name",
+        "secondary_guardian.relation_type",
+        "secondary_guardian.phone",
+      ]);
+      isValid = isValid && secondaryValid;
+    }
+
+    return isValid;
+  };
+
+  const handleNext = async () => {
+    if (currentStep === 4) {
+      const guardianOk = await validateGuardianStep();
+      if (guardianOk) {
+        setCurrentStep((prev) => Math.min(prev + 1, STEPS.length));
+      }
+      return;
+    }
+
+    const fields = getFieldsForStep(currentStep);
+    const isValid = await trigger(fields as never[]);
+    if (currentStep === 3 && !getValues("current_class")) {
+      setError("current_class", {
+        type: "manual",
+        message: "Please select a class.",
+      });
+      return;
+    }
     if (isValid) {
       setCurrentStep((prev) => Math.min(prev + 1, STEPS.length));
     }
@@ -289,67 +370,105 @@ export default function StudentForm() {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const getFieldsForStep = (step: number): (keyof StudentFormValues)[] => {
-    switch (step) {
-      case 1: // Personal Information
-        return [
-          "first_name",
-          "last_name",
-          "father_name",
-          "date_of_birth",
-          "gender",
-          "nationality",
-        ];
-      case 2: // Tazkira & Location
-        return [
-          "original_province",
-          "current_province",
-        ];
-      case 3: // Contact & Address
-        return ["address", "city", "province"];
-      case 4: // Academic Information
-        return ["admission_date", "education_level"];
-      case 5: // Parent/Guardian
-        return ["primary_guardian" as any];
-      case 6: // Health Examination
-        return [];
-      case 7: // Commitment & Review
-        return ["commitment_accepted"];
-      default:
-        return [];
-    }
+  const normalizeOptional = (value?: string) => {
+    if (!value) return undefined;
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : undefined;
   };
 
-  // Form submission
-  const onSubmit = (data: StudentFormValues) => {
+  const cleanGuardian = (guardian?: StudentFormData["primary_guardian"]) => {
+    if (!guardian) return undefined;
+
+    return {
+      first_name: guardian.first_name,
+      last_name: guardian.last_name,
+      relation_type: guardian.relation_type,
+      phone: guardian.phone,
+      phone_secondary: normalizeOptional(guardian.phone_secondary),
+      email: normalizeOptional(guardian.email),
+      occupation: normalizeOptional(guardian.occupation),
+      address: normalizeOptional(guardian.address),
+      national_id: normalizeOptional(guardian.national_id),
+    };
+  };
+
+  const onSubmit = (data: StudentFormData) => {
+    if (currentStep < STEPS.length) {
+      return;
+    }
+
+    const payload: CreateStudentData | UpdateStudentData = {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      father_name: data.father_name,
+      grandfather_name: normalizeOptional(data.grandfather_name),
+      date_of_birth: data.date_of_birth,
+      gender: data.gender,
+      nationality: data.nationality,
+      religion: normalizeOptional(data.religion),
+      blood_group: data.blood_group,
+      national_id: normalizeOptional(data.national_id),
+      address: data.address,
+      city: data.city,
+      province: data.province,
+      phone: normalizeOptional(data.phone),
+      email: normalizeOptional(data.email),
+      current_class: data.current_class,
+      roll_number: normalizeOptional(data.roll_number),
+      admission_date: data.admission_date,
+      admission_number: normalizeOptional(data.admission_number),
+      education_level: data.education_level,
+      status: data.status,
+      emergency_contact_name: normalizeOptional(data.emergency_contact_name),
+      emergency_contact_phone: normalizeOptional(data.emergency_contact_phone),
+      emergency_contact_relation: normalizeOptional(data.emergency_contact_relation),
+      medical_conditions: normalizeOptional(data.medical_conditions),
+      allergies: normalizeOptional(data.allergies),
+      medications: normalizeOptional(data.medications),
+      previous_school: normalizeOptional(data.previous_school),
+      previous_class: normalizeOptional(data.previous_class),
+      transfer_certificate_number: normalizeOptional(data.transfer_certificate_number),
+    };
+
+    if (primaryGuardianMode === "existing") {
+      payload.primary_guardian_id = data.primary_guardian_id;
+      payload.primary_guardian = undefined;
+    } else {
+      payload.primary_guardian = cleanGuardian(data.primary_guardian);
+      payload.primary_guardian_id = undefined;
+    }
+
+    if (secondaryGuardianMode === "none") {
+      payload.secondary_guardian = undefined;
+      payload.secondary_guardian_id = null;
+    } else if (secondaryGuardianMode === "existing") {
+      payload.secondary_guardian_id = data.secondary_guardian_id ?? null;
+      payload.secondary_guardian = undefined;
+    } else {
+      payload.secondary_guardian = cleanGuardian(data.secondary_guardian);
+      payload.secondary_guardian_id = undefined;
+    }
+
     if (isEdit) {
-      // For update, omit guardian data
-      const {
-        primary_guardian,
-        secondary_guardian,
-        ...updateData
-      } = data;
       updateStudent.mutate(
-        { id: studentId, data: updateData },
         {
-          onSuccess: () => {
-            navigate("/mis/students");
-          },
+          id: studentId,
+          data: payload as UpdateStudentData,
+        },
+        {
+          onSuccess: () => navigate("/mis/students"),
         }
       );
     } else {
-      // For create, send full data including guardians
-      createStudent.mutate(data, {
-        onSuccess: () => {
-          navigate("/mis/students");
-        },
+      createStudent.mutate(payload as CreateStudentData, {
+        onSuccess: () => navigate("/mis/students"),
       });
     }
   };
 
   if (isLoadingStudent) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex min-h-screen items-center justify-center">
         <Spinner size="lg" label={t("mis.common.loading")} />
       </div>
     );
@@ -358,15 +477,11 @@ export default function StudentForm() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title={isEdit ? t("mis.student.form.editStudent") : t("mis.nav.addStudent")}
-        subtitle={
-          isEdit
-            ? t("mis.student.form.updateSubtitle")
-            : t("mis.student.form.createSubtitle")
-        }
+        title={isEdit ? "Edit Student" : "Add Student"}
+        subtitle={isEdit ? "Update student details" : "Create a new student profile"}
         actions={[
           {
-            label: t("mis.student.form.backToList"),
+            label: "Back to List",
             icon: <ArrowLeft className="h-4 w-4" />,
             onClick: () => navigate("/mis/students"),
             variant: "outline",
@@ -374,59 +489,42 @@ export default function StudentForm() {
         ]}
       />
 
-      {/* Step Indicator */}
       <Card>
         <CardContent className="p-6">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             {STEPS.map((step, index) => {
               const Icon = step.icon;
               const isActive = currentStep === step.id;
               const isCompleted = currentStep > step.id;
 
               return (
-                <div key={step.id} className="flex items-center flex-1">
-                  <div className="flex flex-col items-center flex-1">
+                <div key={step.id} className="flex flex-1 items-center">
+                  <div className="flex flex-1 flex-col items-center">
                     <div
-                      className={`
-                        w-12 h-12 rounded-full flex items-center justify-center
-                        ${
-                          isCompleted
-                            ? "bg-success text-white"
-                            : isActive
-                            ? "bg-primary text-white"
-                            : "bg-gray-200 text-text-secondary"
-                        }
-                      `}
+                      className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                        isCompleted
+                          ? "bg-success text-white"
+                          : isActive
+                          ? "bg-primary text-white"
+                          : "bg-gray-200 text-text-secondary"
+                      }`}
                     >
-                      {isCompleted ? (
-                        <CheckCircle2 className="h-6 w-6" />
-                      ) : (
-                        <Icon className="h-6 w-6" />
-                      )}
+                      {isCompleted ? <CheckCircle2 className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                     </div>
                     <p
-                      className={`
-                        mt-2 text-sm font-medium
-                        ${
-                          isActive
-                            ? "text-primary"
-                            : isCompleted
-                            ? "text-success"
-                            : "text-text-secondary"
-                        }
-                      `}
+                      className={`mt-2 text-xs font-medium md:text-sm ${
+                        isActive
+                          ? "text-primary"
+                          : isCompleted
+                          ? "text-success"
+                          : "text-text-secondary"
+                      }`}
                     >
-                      {t(`mis.student.${step.translationKey}`)}
+                      {step.title}
                     </p>
                   </div>
-
                   {index < STEPS.length - 1 && (
-                    <div
-                      className={`
-                        h-1 flex-1 mx-4
-                        ${isCompleted ? "bg-success" : "bg-gray-200"}
-                      `}
-                    />
+                    <div className={`mx-3 h-1 flex-1 ${isCompleted ? "bg-success" : "bg-gray-200"}`} />
                   )}
                 </div>
               );
@@ -435,849 +533,396 @@ export default function StudentForm() {
         </CardContent>
       </Card>
 
-      {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card>
           <CardContent className="p-6">
-            {/* Step 1: Personal Information */}
             {currentStep === 1 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <User className="h-5 w-5 text-primary" />
-                  {t("mis.student.personalInformation")}
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <h3 className="text-lg font-semibold">Personal Information</h3>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <Input label="First Name" required {...register("first_name")} error={errors.first_name?.message} />
+                  <Input label="Last Name" required {...register("last_name")} error={errors.last_name?.message} />
+                  <Input label="Father Name" required {...register("father_name")} error={errors.father_name?.message} />
+                  <Input label="Grandfather Name" {...register("grandfather_name")} error={errors.grandfather_name?.message} />
                   <Input
-                    label={t("mis.student.firstName")}
-                    required
-                    {...register("first_name")}
-                    error={errors.first_name?.message}
-                    placeholder={t("mis.student.form.firstNamePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.lastName")}
-                    required
-                    {...register("last_name")}
-                    error={errors.last_name?.message}
-                    placeholder={t("mis.student.form.lastNamePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.nickname")}
-                    {...register("nickname")}
-                    error={errors.nickname?.message}
-                    placeholder={t("mis.student.nicknamePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.fatherName")}
-                    required
-                    {...register("father_name")}
-                    error={errors.father_name?.message}
-                    placeholder={t("mis.student.form.fatherNamePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.grandfatherName")}
-                    {...register("grandfather_name")}
-                    error={errors.grandfather_name?.message}
-                    placeholder={t("mis.student.form.grandfatherNamePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.dateOfBirth")}
+                    label="Date of Birth"
                     type="date"
                     required
                     {...register("date_of_birth")}
                     error={errors.date_of_birth?.message}
                   />
-
-                  <Input
-                    label={t("mis.student.currentAge")}
-                    type="number"
-                    {...register("current_age", { valueAsNumber: true })}
-                    error={errors.current_age?.message}
-                    placeholder={t("mis.student.form.agePlaceholder")}
-                  />
-
                   <Select
-                    label={t("mis.student.gender")}
+                    label="Gender"
                     required
                     {...register("gender")}
                     error={errors.gender?.message}
                     options={[
-                      { label: t("mis.student.form.selectGender"), value: "" },
-                      { label: t("mis.student.male"), value: "male" },
-                      { label: t("mis.student.female"), value: "female" },
+                      { value: "", label: "Select Gender" },
+                      { value: "male", label: "Male" },
+                      { value: "female", label: "Female" },
                     ]}
                   />
-
-                  <Input
-                    label={t("mis.student.nationality")}
-                    {...register("nationality")}
-                    error={errors.nationality?.message}
-                    placeholder={t("mis.student.form.nationalityPlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.religion")}
-                    {...register("religion")}
-                    error={errors.religion?.message}
-                    placeholder={t("mis.student.form.religionPlaceholder")}
-                  />
-
+                  <Input label="Nationality" {...register("nationality")} error={errors.nationality?.message} />
+                  <Input label="Religion" {...register("religion")} error={errors.religion?.message} />
                   <Select
-                    label={t("mis.student.bloodGroup")}
+                    label="Blood Group"
                     {...register("blood_group")}
                     error={errors.blood_group?.message}
                     options={[
-                      { label: t("mis.student.form.selectBloodGroup"), value: "" },
-                      ...BLOOD_GROUPS.map((bg) => ({ label: bg, value: bg })),
+                      { value: "", label: "Select Blood Group" },
+                      ...BLOOD_GROUPS.map((group) => ({ value: group, label: group })),
                     ]}
                   />
-
-                  <Input
-                    label={t("mis.student.nationalId")}
-                    {...register("national_id")}
-                    error={errors.national_id?.message}
-                    placeholder={t("mis.student.form.phoneOptional")}
-                  />
+                  <Input label="National ID (Tazkira)" {...register("national_id")} error={errors.national_id?.message} />
                 </div>
               </div>
             )}
 
-            {/* Step 2: Tazkira & Location */}
             {currentStep === 2 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-primary" />
-                  {t("mis.student.tazkiraAndLocation")}
-                </h3>
-
-                {/* Tazkira Details */}
-                <div>
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.tazkiraDetails")}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Input
-                      label={t("mis.student.tazkiraPage")}
-                      {...register("tazkira_page_number")}
-                      error={errors.tazkira_page_number?.message}
-                      placeholder={t("mis.student.form.tazkiraPagePlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.tazkiraVolume")}
-                      {...register("tazkira_volume_number")}
-                      error={errors.tazkira_volume_number?.message}
-                      placeholder={t("mis.student.form.tazkiraVolumePlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.tazkiraRegistrationNumber")}
-                      {...register("tazkira_registration_number")}
-                      error={errors.tazkira_registration_number?.message}
-                      placeholder={t("mis.student.form.tazkiraRegPlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.birthDateOnTazkira")}
-                      type="date"
-                      {...register("birth_date_on_tazkira")}
-                      error={errors.birth_date_on_tazkira?.message}
-                    />
-
-                    <Input
-                      label={t("mis.student.ageOnTazkira")}
-                      type="number"
-                      {...register("age_on_tazkira", { valueAsNumber: true })}
-                      error={errors.age_on_tazkira?.message}
-                      placeholder={t("mis.student.form.agePlaceholder")}
-                    />
-                  </div>
-                </div>
-
-                {/* Original Residence */}
-                <div className="border-t pt-6">
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.originalResidence")}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Select
-                      label={t("mis.student.province")}
-                      required
-                      {...register("original_province")}
-                      error={errors.original_province?.message}
-                      options={[
-                        { label: t("mis.student.selectProvince"), value: "" },
-                        ...PROVINCES,
-                      ]}
-                    />
-
-                    <Input
-                      label={t("mis.student.district")}
-                      {...register("original_district")}
-                      error={errors.original_district?.message}
-                      placeholder={t("mis.student.form.districtPlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.area")}
-                      {...register("original_area")}
-                      error={errors.original_area?.message}
-                      placeholder={t("mis.student.form.areaPlaceholder")}
-                    />
-                  </div>
-                </div>
-
-                {/* Current Residence */}
-                <div className="border-t pt-6">
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.currentResidence")}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Select
-                      label={t("mis.student.province")}
-                      {...register("current_province")}
-                      error={errors.current_province?.message}
-                      options={[
-                        { label: t("mis.student.selectProvince"), value: "" },
-                        ...PROVINCES,
-                      ]}
-                    />
-
-                    <Input
-                      label={t("mis.student.district")}
-                      {...register("current_district")}
-                      error={errors.current_district?.message}
-                      placeholder={t("mis.student.form.districtPlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.area")}
-                      {...register("current_area")}
-                      error={errors.current_area?.message}
-                      placeholder={t("mis.student.form.areaPlaceholder")}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 3: Contact & Address */}
-            {currentStep === 3 && (
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" />
-                  {t("mis.student.contactInformation")}
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <h3 className="text-lg font-semibold">Contact Information</h3>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="md:col-span-2">
                     <Textarea
-                      label={t("mis.student.address")}
+                      label="Address"
                       required
                       {...register("address")}
                       error={errors.address?.message}
-                      placeholder={t("mis.student.form.addressPlaceholder")}
                       rows={3}
                     />
                   </div>
-
-                  <Input
-                    label={t("mis.student.city")}
-                    required
-                    {...register("city")}
-                    error={errors.city?.message}
-                    placeholder={t("mis.student.form.cityPlaceholder")}
-                  />
-
+                  <Input label="City" required {...register("city")} error={errors.city?.message} />
                   <Select
-                    label={t("mis.student.province")}
+                    label="Province"
                     required
                     {...register("province")}
                     error={errors.province?.message}
-                    options={[
-                      { label: t("mis.student.selectProvince"), value: "" },
-                      ...PROVINCES,
-                    ]}
+                    options={[{ value: "", label: "Select Province" }, ...PROVINCES]}
                   />
-
-                  <Input
-                    label={t("mis.student.phone")}
-                    {...register("phone")}
-                    error={errors.phone?.message}
-                    placeholder={t("mis.student.form.phoneOptional")}
-                  />
-
-                  <Input
-                    label={t("mis.student.email")}
-                    type="email"
-                    {...register("email")}
-                    error={errors.email?.message}
-                    placeholder={t("mis.student.form.emailOptional")}
-                  />
-
-                  <div className="md:col-span-2">
-                    <Alert variant="info" title={t("mis.student.recentPhoto")}>
-                      {t("mis.student.uploadPhoto")}
-                    </Alert>
-                  </div>
+                  <Input label="Phone" {...register("phone")} error={errors.phone?.message} />
+                  <Input label="Email" type="email" {...register("email")} error={errors.email?.message} />
                 </div>
               </div>
             )}
 
-            {/* Step 4: Academic Information */}
-            {currentStep === 4 && (
+            {currentStep === 3 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <School className="h-5 w-5 text-primary" />
-                  {t("mis.student.academicInformation")}
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Academic Year */}
+                <h3 className="text-lg font-semibold">Academic Information</h3>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <Select
-                    label={t("mis.student.academicYear")}
-                    {...register("academic_year", { valueAsNumber: true })}
-                    error={errors.academic_year?.message}
-                    onChange={(e) => {
-                      const value = e.target.value ? parseInt(e.target.value) : null;
-                      setSelectedAcademicYear(value);
-                      setValue("academic_year", value || undefined);
+                    label="Educational Level"
+                    required
+                    {...register("education_level")}
+                    error={errors.education_level?.message}
+                    onChange={(event) => {
+                      const level = event.target.value as "primary" | "lower_secondary" | "upper_secondary";
+                      setValue("education_level", level);
+                      setValue("current_class", undefined);
                     }}
                     options={[
-                      { label: t("mis.student.selectAcademicYear"), value: "" },
-                      ...(academicYears?.results || []).map((year) => ({
-                        label: year.year,
-                        value: year.id.toString(),
+                      { value: "", label: "Select Education Level" },
+                      { value: "primary", label: "Primary (1-6)" },
+                      { value: "lower_secondary", label: "Lower Secondary (7-9)" },
+                      { value: "upper_secondary", label: "Upper Secondary (10-12)" },
+                    ]}
+                  />
+
+                  <Select
+                    label="Class"
+                    required
+                    {...register("current_class")}
+                    error={errors.current_class?.message}
+                    onChange={(event) => {
+                      const classId = event.target.value ? parseInt(event.target.value, 10) : undefined;
+                      setValue("current_class", classId);
+                    }}
+                    options={[
+                      { value: "", label: "Select Class" },
+                      ...filteredClasses.map((classItem) => ({
+                        value: classItem.id.toString(),
+                        label: `${classItem.class_level_number}-${classItem.section} (${classItem.name})`,
                       })),
                     ]}
                   />
 
-                  {/* Education Level */}
-                  <Select
-                    label={t("mis.student.educationLevel")}
-                    required
-                    {...register("education_level")}
-                    error={errors.education_level?.message}
-                    onChange={(e) => {
-                      const value = e.target.value as "primary" | "lower_secondary" | "upper_secondary";
-                      setSelectedEducationLevel(value);
-                      setValue("education_level", value);
-                      setSelectedClassLevel(null);
-                      setValue("class_instance", undefined);
-                    }}
-                    options={[
-                      { label: t("mis.student.selectEducationLevel"), value: "" },
-                      { label: t("mis.student.primary"), value: "primary" },
-                      { label: t("mis.student.lowerSecondary"), value: "lower_secondary" },
-                      { label: t("mis.student.upperSecondary"), value: "upper_secondary" },
-                    ]}
-                  />
-
-                  {/* Class Level */}
-                  {selectedEducationLevel && (
-                    <Select
-                      label={t("mis.student.classLevel")}
-                      {...register("current_class", { valueAsNumber: true })}
-                      error={errors.current_class?.message}
-                      onChange={(e) => {
-                        const value = e.target.value ? parseInt(e.target.value) : null;
-                        setSelectedClassLevel(value);
-                        setValue("current_class", value || undefined);
-                        setValue("class_instance", undefined);
-                      }}
-                      options={[
-                        { label: t("mis.student.selectClassLevel"), value: "" },
-                        ...(classLevels?.results || []).map((level) => ({
-                          label: `${level.name} (${level.name_local})`,
-                          value: level.id.toString(),
-                        })),
-                      ]}
-                    />
-                  )}
-
-                  {/* Class Instance */}
-                  {selectedClassLevel && selectedAcademicYear && (
-                    <Select
-                      label={t("mis.student.classInstance")}
-                      {...register("class_instance", { valueAsNumber: true })}
-                      error={errors.class_instance?.message}
-                      onChange={(e) => {
-                        const value = e.target.value ? parseInt(e.target.value) : undefined;
-                        setValue("class_instance", value);
-                      }}
-                      options={[
-                        { label: t("mis.student.selectClass"), value: "" },
-                        ...(classInstances?.results || []).map((instance) => ({
-                          label: `${instance.class_level_name} - ${instance.section} (${instance.shift}) - ${instance.current_enrollment}/${instance.max_capacity}`,
-                          value: instance.id.toString(),
-                        })),
-                      ]}
-                    />
-                  )}
-
-                  {/* Section */}
                   <Input
-                    label={t("mis.student.section")}
-                    {...register("section")}
-                    error={errors.section?.message}
-                    placeholder={t("mis.student.section")}
-                    disabled={!!classInstanceId}
-                  />
-
-                  {/* Shift */}
-                  <Select
-                    label={t("mis.student.shift")}
-                    {...register("shift")}
-                    error={errors.shift?.message}
-                    disabled={!!classInstanceId}
-                    options={[
-                      { label: t("mis.student.selectShift"), value: "" },
-                      { label: t("mis.student.morning"), value: "morning" },
-                      { label: t("mis.student.afternoon"), value: "afternoon" },
-                      { label: t("mis.student.evening"), value: "evening" },
-                    ]}
-                  />
-
-                  {/* Admission Date */}
-                  <Input
-                    label={t("mis.student.admissionDate")}
+                    label="Admission Date"
                     type="date"
                     required
                     {...register("admission_date")}
                     error={errors.admission_date?.message}
                   />
-
-                  {/* Roll Number */}
-                  <Input
-                    label={t("mis.student.rollNumber")}
-                    {...register("roll_number")}
-                    error={errors.roll_number?.message}
-                    placeholder={t("mis.student.rollNumberPlaceholder")}
-                  />
-
-                  {/* Enrollment Type */}
+                  <Input label="Admission Number" {...register("admission_number")} error={errors.admission_number?.message} />
+                  <Input label="Roll Number" {...register("roll_number")} error={errors.roll_number?.message} />
                   <Select
-                    label={t("mis.student.enrollmentType")}
-                    {...register("enrollment_type")}
-                    error={errors.enrollment_type?.message}
+                    label="Status"
+                    {...register("status")}
+                    error={errors.status?.message}
                     options={[
-                      { label: t("mis.student.selectEnrollmentType"), value: "" },
-                      { label: t("mis.student.fresh"), value: "fresh" },
-                      { label: t("mis.student.transfer"), value: "transfer" },
-                      { label: t("mis.student.readmission"), value: "readmission" },
+                      { value: "active", label: "Active" },
+                      { value: "inactive", label: "Inactive" },
+                      { value: "graduated", label: "Graduated" },
+                      { value: "transferred", label: "Transferred" },
+                      { value: "suspended", label: "Suspended" },
+                      { value: "expelled", label: "Expelled" },
+                      { value: "withdrawn", label: "Withdrawn" },
                     ]}
                   />
                 </div>
 
-                {classInstanceId && classInstances && (
-                  <Alert variant="success" title={t("mis.student.form.classInstanceSelected")}>
-                    {t("mis.student.form.classInstanceNote")}
+                {currentAcademicYear && (
+                  <Alert variant="info" title="Academic Year">
+                    Classes are loaded from current academic year: {currentAcademicYear.year}
                   </Alert>
                 )}
               </div>
             )}
 
-            {/* Step 5: Parent/Guardian Information */}
-            {currentStep === 5 && (
+            {currentStep === 4 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  {t("mis.student.parentGuardian")}
-                </h3>
+                <h3 className="text-lg font-semibold">Parent / Guardian Information</h3>
 
-                {/* Primary Guardian */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Input
-                    label={t("mis.student.guardianFirstName")}
-                    required
-                    {...register("primary_guardian.first_name")}
-                    error={errors.primary_guardian?.first_name?.message}
-                    placeholder={t("mis.student.form.fatherNamePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.guardianLastName")}
-                    required
-                    {...register("primary_guardian.last_name")}
-                    error={errors.primary_guardian?.last_name?.message}
-                    placeholder={t("mis.student.form.lastNamePlaceholder")}
-                  />
-
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <Select
-                    label={t("mis.student.relation")}
-                    required
-                    {...register("primary_guardian.relation_type")}
-                    error={errors.primary_guardian?.relation_type?.message}
+                    label="Primary Guardian Source"
+                    value={primaryGuardianMode}
+                    onChange={(event) => setPrimaryGuardianMode(event.target.value as GuardianMode)}
                     options={[
-                      { label: t("mis.student.form.selectRelation"), value: "" },
-                      { label: t("mis.student.form.father"), value: "father" },
-                      { label: t("mis.student.form.mother"), value: "mother" },
-                      { label: t("mis.student.form.guardian"), value: "guardian" },
-                      { label: t("mis.student.form.uncle"), value: "uncle" },
-                      { label: t("mis.student.form.aunt"), value: "aunt" },
-                      { label: t("mis.student.form.grandfather"), value: "grandfather" },
-                      { label: t("mis.student.form.grandmother"), value: "grandmother" },
-                      { label: t("mis.student.brother"), value: "brother" },
-                      { label: t("mis.student.form.sister"), value: "sister" },
-                      { label: t("mis.student.form.other"), value: "other" },
+                      { value: "existing", label: "Choose Existing Guardian" },
+                      { value: "new", label: "Create New Guardian" },
                     ]}
                   />
 
                   <Input
-                    label={t("mis.student.guardianPhone")}
+                    label="Search Existing Guardians"
+                    value={guardianSearch}
+                    onChange={(event) => setGuardianSearch(event.target.value)}
+                    placeholder="Search by name or phone"
+                  />
+                </div>
+
+                {primaryGuardianMode === "existing" ? (
+                  <Select
+                    label="Primary Guardian"
                     required
-                    {...register("primary_guardian.phone")}
-                    error={errors.primary_guardian?.phone?.message}
-                    placeholder={t("mis.student.form.emergencyPhonePlaceholder")}
+                    {...register("primary_guardian_id")}
+                    error={errors.primary_guardian_id?.message}
+                    onChange={(event) => {
+                      const guardianId = event.target.value ? parseInt(event.target.value, 10) : undefined;
+                      setValue("primary_guardian_id", guardianId);
+                    }}
+                    options={[
+                      {
+                        value: "",
+                        label: isLoadingGuardians ? "Loading guardians..." : "Select Guardian",
+                      },
+                      ...guardianOptions,
+                    ]}
                   />
-
-                  <Input
-                    label={t("mis.student.guardianSecondaryPhone")}
-                    {...register("primary_guardian.phone_secondary")}
-                    error={errors.primary_guardian?.phone_secondary?.message}
-                    placeholder={t("mis.student.form.guardianSecondaryPhonePlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.guardianEmail")}
-                    type="email"
-                    {...register("primary_guardian.email")}
-                    error={errors.primary_guardian?.email?.message}
-                    placeholder={t("mis.student.form.guardianEmailPlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.guardianOccupation")}
-                    {...register("primary_guardian.occupation")}
-                    error={errors.primary_guardian?.occupation?.message}
-                    placeholder={t("mis.student.form.occupationPlaceholder")}
-                  />
-
-                  <Input
-                    label={t("mis.student.guardianNationalId")}
-                    {...register("primary_guardian.national_id")}
-                    error={errors.primary_guardian?.national_id?.message}
-                    placeholder={t("mis.student.form.phoneOptional")}
-                  />
-
-                  <div className="md:col-span-2">
-                    <Textarea
-                      label={t("mis.student.guardianAddress")}
-                      {...register("primary_guardian.address")}
-                      error={errors.primary_guardian?.address?.message}
-                      placeholder={t("mis.student.form.sameAsStudentAddress")}
-                      rows={2}
-                    />
-                  </div>
-                </div>
-
-                {/* Extended Parent/Guardian Information */}
-                <div className="border-t pt-6">
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.form.additionalInformation")}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                ) : (
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <Input
-                      label={t("mis.student.parentOccupation")}
-                      {...register("parent_occupation")}
-                      error={errors.parent_occupation?.message}
-                      placeholder={t("mis.student.form.occupationPlaceholder")}
+                      label="First Name"
+                      required
+                      {...register("primary_guardian.first_name")}
+                      error={errors.primary_guardian?.first_name?.message}
                     />
-
+                    <Input
+                      label="Last Name"
+                      required
+                      {...register("primary_guardian.last_name")}
+                      error={errors.primary_guardian?.last_name?.message}
+                    />
                     <Select
-                      label={t("mis.student.relationshipToStudent")}
-                      {...register("relationship_to_student")}
-                      error={errors.relationship_to_student?.message}
-                      options={[
-                        { label: t("mis.student.form.selectRelationship"), value: "" },
-                        { label: t("mis.student.brother"), value: "brother" },
-                        { label: t("mis.student.paternalUncle"), value: "paternal_uncle" },
-                        { label: t("mis.student.maternalUncle"), value: "maternal_uncle" },
-                        { label: t("mis.student.cousin"), value: "cousin" },
-                        { label: t("mis.student.otherRelative"), value: "other_relative" },
-                      ]}
+                      label="Relation"
+                      required
+                      {...register("primary_guardian.relation_type")}
+                      error={errors.primary_guardian?.relation_type?.message}
+                      options={[{ value: "", label: "Select Relation" }, ...RELATION_OPTIONS]}
                     />
+                    <Input
+                      label="Phone"
+                      required
+                      {...register("primary_guardian.phone")}
+                      error={errors.primary_guardian?.phone?.message}
+                    />
+                    <Input
+                      label="Secondary Phone"
+                      {...register("primary_guardian.phone_secondary")}
+                      error={errors.primary_guardian?.phone_secondary?.message}
+                    />
+                    <Input
+                      label="Email"
+                      type="email"
+                      {...register("primary_guardian.email")}
+                      error={errors.primary_guardian?.email?.message}
+                    />
+                    <Input
+                      label="Occupation"
+                      {...register("primary_guardian.occupation")}
+                      error={errors.primary_guardian?.occupation?.message}
+                    />
+                    <Input
+                      label="National ID"
+                      {...register("primary_guardian.national_id")}
+                      error={errors.primary_guardian?.national_id?.message}
+                    />
+                    <div className="md:col-span-2">
+                      <Textarea
+                        label="Address"
+                        rows={2}
+                        {...register("primary_guardian.address")}
+                        error={errors.primary_guardian?.address?.message}
+                      />
+                    </div>
                   </div>
+                )}
+
+                <div className="border-t pt-6">
+                  <Select
+                    label="Secondary Guardian (Optional)"
+                    value={secondaryGuardianMode}
+                    onChange={(event) => setSecondaryGuardianMode(event.target.value as SecondaryGuardianMode)}
+                    options={[
+                      { value: "none", label: "None" },
+                      { value: "existing", label: "Choose Existing Guardian" },
+                      { value: "new", label: "Create New Guardian" },
+                    ]}
+                  />
+
+                  {secondaryGuardianMode === "existing" && (
+                    <div className="mt-4">
+                      <Select
+                        label="Secondary Guardian"
+                        {...register("secondary_guardian_id")}
+                        error={errors.secondary_guardian_id?.message}
+                        onChange={(event) => {
+                          const guardianId = event.target.value ? parseInt(event.target.value, 10) : undefined;
+                          setValue("secondary_guardian_id", guardianId);
+                        }}
+                        options={[{ value: "", label: "Select Secondary Guardian" }, ...guardianOptions]}
+                      />
+                    </div>
+                  )}
+
+                  {secondaryGuardianMode === "new" && (
+                    <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2">
+                      <Input
+                        label="First Name"
+                        required
+                        {...register("secondary_guardian.first_name")}
+                        error={errors.secondary_guardian?.first_name?.message}
+                      />
+                      <Input
+                        label="Last Name"
+                        required
+                        {...register("secondary_guardian.last_name")}
+                        error={errors.secondary_guardian?.last_name?.message}
+                      />
+                      <Select
+                        label="Relation"
+                        required
+                        {...register("secondary_guardian.relation_type")}
+                        error={errors.secondary_guardian?.relation_type?.message}
+                        options={[{ value: "", label: "Select Relation" }, ...RELATION_OPTIONS]}
+                      />
+                      <Input
+                        label="Phone"
+                        required
+                        {...register("secondary_guardian.phone")}
+                        error={errors.secondary_guardian?.phone?.message}
+                      />
+                    </div>
+                  )}
                 </div>
 
-                {/* Family Contact Numbers */}
                 <div className="border-t pt-6">
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.familyContactNumbers")}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <h4 className="mb-4 text-md font-medium">Emergency Contact</h4>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                    <Input label="Name" {...register("emergency_contact_name")} error={errors.emergency_contact_name?.message} />
+                    <Input label="Phone" {...register("emergency_contact_phone")} error={errors.emergency_contact_phone?.message} />
                     <Input
-                      label={t("mis.student.familyContactNumber1")}
-                      {...register("family_contact_number_1")}
-                      error={errors.family_contact_number_1?.message}
-                      placeholder={t("mis.student.form.emergencyPhonePlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.familyContactNumber2")}
-                      {...register("family_contact_number_2")}
-                      error={errors.family_contact_number_2?.message}
-                      placeholder={t("mis.student.form.familyPhonePlaceholder2")}
-                    />
-
-                    <Input
-                      label={t("mis.student.familyContactNumber3")}
-                      {...register("family_contact_number_3")}
-                      error={errors.family_contact_number_3?.message}
-                      placeholder={t("mis.student.form.familyPhonePlaceholder3")}
-                    />
-
-                    <Input
-                      label={t("mis.student.telegramContact")}
-                      {...register("telegram_contact")}
-                      error={errors.telegram_contact?.message}
-                      placeholder={t("mis.student.form.telegramPlaceholder")}
-                    />
-                  </div>
-                </div>
-
-                {/* Emergency Contact */}
-                <div className="border-t pt-6">
-                  <Alert variant="info" title={t("mis.student.form.emergencyContact")}>
-                    {t("mis.student.form.emergencyContactNote")}
-                  </Alert>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-                    <Input
-                      label={t("mis.student.form.emergencyContactName")}
-                      {...register("emergency_contact_name")}
-                      error={errors.emergency_contact_name?.message}
-                      placeholder={t("mis.student.form.emergencyNamePlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.form.emergencyContactRelation")}
+                      label="Relation"
                       {...register("emergency_contact_relation")}
                       error={errors.emergency_contact_relation?.message}
-                      placeholder={t("mis.student.form.emergencyRelationPlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.form.emergencyContactPhone")}
-                      {...register("emergency_contact_phone")}
-                      error={errors.emergency_contact_phone?.message}
-                      placeholder={t("mis.student.form.emergencyPhonePlaceholder")}
                     />
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Step 6: Health Examination */}
-            {currentStep === 6 && (
+            {currentStep === 5 && (
               <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-primary" />
-                  {t("mis.student.healthExamination")}
-                </h3>
+                <h3 className="text-lg font-semibold">Health & Previous Education</h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* HIV Test */}
-                  <Select
-                    label={t("mis.student.hivTest")}
-                    {...register("hiv_test")}
-                    error={errors.hiv_test?.message}
-                    options={[
-                      { label: t("mis.student.form.selectRelation"), value: "" },
-                      { label: t("mis.student.positive"), value: "positive" },
-                      { label: t("mis.student.negative"), value: "negative" },
-                      { label: t("mis.student.notTested"), value: "not_tested" },
-                    ]}
+                <div className="grid grid-cols-1 gap-6">
+                  <Textarea
+                    label="Medical Conditions"
+                    rows={3}
+                    {...register("medical_conditions")}
+                    error={errors.medical_conditions?.message}
                   />
-
-                  {/* HCV Test */}
-                  <Select
-                    label={t("mis.student.hcvTest")}
-                    {...register("hcv_test")}
-                    error={errors.hcv_test?.message}
-                    options={[
-                      { label: t("mis.student.form.selectRelation"), value: "" },
-                      { label: t("mis.student.positive"), value: "positive" },
-                      { label: t("mis.student.negative"), value: "negative" },
-                      { label: t("mis.student.notTested"), value: "not_tested" },
-                    ]}
-                  />
-
-                  {/* HBS Test */}
-                  <Select
-                    label={t("mis.student.hbsTest")}
-                    {...register("hbs_test")}
-                    error={errors.hbs_test?.message}
-                    options={[
-                      { label: t("mis.student.form.selectRelation"), value: "" },
-                      { label: t("mis.student.positive"), value: "positive" },
-                      { label: t("mis.student.negative"), value: "negative" },
-                      { label: t("mis.student.notTested"), value: "not_tested" },
-                    ]}
-                  />
-
-                  {/* Test Date */}
-                  <Input
-                    label={t("mis.student.testDate")}
-                    type="date"
-                    {...register("health_test_date")}
-                    error={errors.health_test_date?.message}
-                  />
+                  <Textarea label="Allergies" rows={2} {...register("allergies")} error={errors.allergies?.message} />
+                  <Textarea label="Medications" rows={2} {...register("medications")} error={errors.medications?.message} />
                 </div>
 
-                {/* Other Health Information */}
                 <div className="border-t pt-6">
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.form.otherHealthInformation")}
-                  </h4>
-                  <div className="grid grid-cols-1 gap-6">
-                    <Textarea
-                      label={t("mis.student.form.medicalConditions")}
-                      {...register("medical_conditions")}
-                      error={errors.medical_conditions?.message}
-                      placeholder={t("mis.student.form.medicalConditionsPlaceholder")}
-                      rows={3}
-                    />
-
-                    <Textarea
-                      label={t("mis.student.form.allergies")}
-                      {...register("allergies")}
-                      error={errors.allergies?.message}
-                      placeholder={t("mis.student.form.allergiesPlaceholder")}
-                      rows={2}
-                    />
-
-                    <Textarea
-                      label={t("mis.student.form.regularMedications")}
-                      {...register("medications")}
-                      error={errors.medications?.message}
-                      placeholder={t("mis.student.form.medicationsPlaceholder")}
-                      rows={2}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Step 7: Commitment & Review */}
-            {currentStep === 7 && (
-              <div className="space-y-6">
-                <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-                  <FileCheck className="h-5 w-5 text-primary" />
-                  {t("mis.student.commitmentAndReview")}
-                </h3>
-
-                {/* Review Information Alert */}
-                <Alert variant="info" title={t("mis.student.reviewInformation")}>
-                  {t("mis.student.form.reviewInformationNote")}
-                </Alert>
-
-                {/* Previous Education */}
-                <div>
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.form.previousEducation")}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <h4 className="mb-4 text-md font-medium">Previous Education</h4>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <Input
-                      label={t("mis.student.previousSchool")}
+                      label="Previous School"
                       {...register("previous_school")}
                       error={errors.previous_school?.message}
-                      placeholder={t("mis.student.previousSchoolPlaceholder")}
                     />
-
+                    <Input label="Previous Class" {...register("previous_class")} error={errors.previous_class?.message} />
                     <Input
-                      label={t("mis.student.previousClass")}
-                      {...register("previous_class")}
-                      error={errors.previous_class?.message}
-                      placeholder={t("mis.student.previousClassPlaceholder")}
-                    />
-
-                    <Input
-                      label={t("mis.student.transferCertificateNumber")}
+                      label="Transfer Certificate Number"
                       {...register("transfer_certificate_number")}
                       error={errors.transfer_certificate_number?.message}
-                      placeholder={t("mis.student.transferCertificatePlaceholder")}
                     />
                   </div>
                 </div>
 
-                {/* School Policies & Commitment */}
-                <div className="border-t pt-6">
-                  <h4 className="text-md font-medium text-text-primary mb-4">
-                    {t("mis.student.schoolPolicies")}
-                  </h4>
-
-                  <Alert variant="warning" title={t("mis.student.commitmentAndReview")}>
-                    <p className="text-sm mb-4">
-                      {t("mis.student.commitmentText")}
-                    </p>
-                  </Alert>
-
-                  <div className="mt-4">
-                    <label className="flex items-start gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        {...register("commitment_accepted")}
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                      />
-                      <span className="text-sm font-medium text-text-primary">
-                        {t("mis.student.iAgreeToSchoolPolicies")}
-                      </span>
-                    </label>
-                    {errors.commitment_accepted && (
-                      <p className="mt-1 text-sm text-error">
-                        {errors.commitment_accepted.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <Alert variant="info" title="Review">
+                  Review all information before saving. This form is synced to backend student model fields.
+                </Alert>
               </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Navigation Buttons */}
-        <Card>
+        <Card className="mt-6">
           <CardContent className="p-6">
-            <div className="flex justify-between items-center">
-              <Button
-                type="button"
-                variant="outline"
-                leftIcon={<ArrowLeft className="h-4 w-4" />}
-                onClick={handlePrevious}
-                disabled={currentStep === 1}
-              >
-                {t("mis.student.form.previous")}
+            <div className="flex items-center justify-between">
+              <Button type="button" variant="outline" onClick={handlePrevious} disabled={currentStep === 1}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Previous
               </Button>
 
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary">
-                  {t("mis.student.form.stepOfTotal", { current: currentStep, total: STEPS.length })}
-                </Badge>
-              </div>
+              <Badge variant="secondary">
+                Step {currentStep} of {STEPS.length}
+              </Badge>
 
               {currentStep < STEPS.length ? (
                 <Button
                   type="button"
                   variant="primary"
-                  rightIcon={<ArrowRight className="h-4 w-4" />}
-                  onClick={handleNext}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    void handleNext();
+                  }}
                 >
-                  {t("mis.student.form.next")}
+                  Next
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               ) : (
                 <Button
                   type="submit"
                   variant="primary"
-                  leftIcon={<Save className="h-4 w-4" />}
                   loading={createStudent.isPending || updateStudent.isPending}
                 >
-                  {isEdit ? t("mis.student.form.updateStudent") : t("mis.student.form.createStudent")}
+                  <Save className="mr-2 h-4 w-4" />
+                  {isEdit ? "Update Student" : "Create Student"}
                 </Button>
               )}
             </div>

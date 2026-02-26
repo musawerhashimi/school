@@ -9,7 +9,7 @@ import type {
   SubjectApiResponse,
   PaginatedResponse,
   ClassInstanceStudent,
-} from "../academic/types";
+} from "../reference/types";
 
 // Re-export for convenience
 export type { ClassInstanceStudent };
@@ -336,6 +336,121 @@ export interface StudentTranscriptResponse {
 }
 
 // ============================================================================
+// REPORT CARD TYPES
+// ============================================================================
+
+export type ReportCardStatus = "draft" | "generated" | "approved" | "published";
+export type PromotionStatus = "pending" | "promoted" | "repeated" | "conditionally_promoted";
+
+export interface ReportCardApiResponse {
+  id: number;
+  student: number;
+  student_name: string;
+  student_id_number: string;
+  academic_year: number;
+  academic_year_display: string;
+  class_instance: number;
+  class_instance_name: string;
+  overall_percentage: number;
+  overall_grade: GradeLetter;
+  subjects_passed: number;
+  subjects_failed: number;
+  total_subjects: number;
+  is_overall_pass: boolean;
+  rank_in_class?: number;
+  total_students_in_class?: number;
+  promotion_status: PromotionStatus;
+  promotion_status_display: string;
+  status: ReportCardStatus;
+  status_display: string;
+}
+
+export interface SubjectExamScore {
+  exam_id: number;
+  exam_type: string;
+  marks_obtained: number;
+  total_marks: number;
+  percentage: number;
+  grade_letter: GradeLetter;
+  is_pass: boolean;
+  is_absent: boolean;
+}
+
+export interface SubjectResult {
+  subject_name: string;
+  subject_code: string;
+  weighted_marks: number;
+  weighted_total: number;
+  final_percentage: number;
+  final_grade: GradeLetter;
+  is_pass: boolean;
+  exam_scores: SubjectExamScore[];
+}
+
+export interface ReportCardDetailApiResponse extends ReportCardApiResponse {
+  student_photo?: string;
+  academic_year_detail?: AcademicYearApiResponse;
+  class_instance_detail?: ClassInstanceApiResponse;
+  total_marks_obtained: number;
+  total_marks_possible: number;
+  subject_results: Record<string, SubjectResult>;
+  approved_by?: number;
+  approved_by_name?: string;
+  approved_at?: string;
+  class_teacher_remarks?: string;
+  principal_remarks?: string;
+  display_name: string;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UpdateReportCardData {
+  promotion_status?: PromotionStatus;
+  status?: ReportCardStatus;
+  class_teacher_remarks?: string;
+  principal_remarks?: string;
+}
+
+export interface ReportCardFilters {
+  student?: number;
+  academic_year?: number;
+  class_instance?: number;
+  class_level?: number;
+  status?: ReportCardStatus;
+  promotion_status?: PromotionStatus;
+  is_overall_pass?: boolean;
+  overall_grade?: GradeLetter;
+  search?: string;
+  page?: number;
+  page_size?: number;
+  ordering?: string;
+}
+
+export type PaginatedReportCardsResponse = PaginatedResponse<ReportCardApiResponse>;
+
+export interface GenerateReportCardsData {
+  academic_year: number;
+  class_instance: number;
+}
+
+export interface GenerateReportCardsResponse {
+  message: string;
+  generated_count: number;
+  class_name: string;
+  academic_year: string;
+}
+
+export interface ClassResultsResponse {
+  class_instance_id: number;
+  total_students: number;
+  passed: number;
+  failed: number;
+  pass_rate: number;
+  results: ReportCardApiResponse[];
+}
+
+// ============================================================================
 // EXAM SCHEDULE TYPES
 // ============================================================================
 
@@ -415,17 +530,13 @@ export interface ExamScheduleCalendarDay {
 }
 
 export interface ExamScheduleCalendarResponse {
-  start_date: string;
-  end_date: string;
+  start_date: string | null;
+  end_date: string | null;
   days: ExamScheduleCalendarDay[];
 }
 
 // Conflict check
-export interface ExamScheduleConflict {
-  type: "room" | "class" | "teacher" | "student";
-  message: string;
-  conflicting_schedule_id?: number;
-}
+export type ExamScheduleConflict = string;
 
 export interface ExamScheduleConflictCheckResponse {
   has_conflicts: boolean;

@@ -976,6 +976,7 @@
         "noClasses": "No classes assigned",
         "noStudents": "No students found",
         "noSubjectsAssigned": "No subjects assigned yet",
+        "teacherProfileMissing": "No teacher profile is linked to your account yet.",
         "teacherCreated": "Teacher profile created successfully",
         "teacherUpdated": "Teacher profile updated successfully",
         "teacherDeleted": "Teacher profile deleted successfully"
@@ -1044,6 +1045,8 @@
       "today": "Today",
       "yesterday": "Yesterday",
       "daysAgo": "{{count}} days ago",
+      "minutes": "minutes",
+      "noRoom": "No room assigned",
       "filters": "Filters",
       "clearFilters": "Clear Filters",
       "search": "Search",
@@ -1052,7 +1055,10 @@
       "allShifts": "All Shifts",
       "morning": "Morning",
       "afternoon": "Afternoon",
-      "evening": "Evening"
+      "evening": "Evening",
+      "select": "Select",
+      "notSet": "Not Set",
+      "notRated": "Not Rated"
     }
   }
 }

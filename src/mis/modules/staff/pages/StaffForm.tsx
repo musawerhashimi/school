@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,9 +6,7 @@ import { useTranslation } from "react-i18next";
 import {
   User,
   Briefcase,
-  MapPin,
   Phone,
-  FileText,
   ArrowLeft,
   ArrowRight,
   Save,
@@ -25,13 +23,13 @@ import {
   CardContent,
   Alert,
   Spinner,
-  Badge,
 } from "@mis-components/ui";
 import {
   useStaffDetail,
   useCreateStaff,
   useUpdateStaff,
 } from "../hooks/useStaff";
+import { useShifts } from "../hooks/useShifts";
 import { staffSchema, type StaffFormData } from "../schemas/staffSchema";
 
 type StaffFormValues = StaffFormData;
@@ -106,11 +104,13 @@ export default function StaffForm() {
   const [currentStep, setCurrentStep] = useState(1);
 
   // React Query hooks
-  const { data: staff, isLoading: isLoadingStaff } = useStaffDetail(staffId, {
-    enabled: !!isEdit,
-  });
+  const { data: staff, isLoading: isLoadingStaff } = useStaffDetail(staffId);
   const createStaff = useCreateStaff();
   const updateStaff = useUpdateStaff();
+  const { data: shiftsData, isLoading: isLoadingShifts } = useShifts({
+    is_active: true,
+    page_size: 100,
+  });
 
   // Form setup
   const {
@@ -120,6 +120,8 @@ export default function StaffForm() {
     setValue,
     watch,
     trigger,
+    setError,
+    clearErrors,
   } = useForm<StaffFormValues>({
     resolver: zodResolver(staffSchema),
     defaultValues: {
@@ -127,8 +129,25 @@ export default function StaffForm() {
       employment_type: "full_time",
       work_hours_per_week: 40,
       years_of_experience: 0,
+      shift_effective_from: "",
     },
   });
+
+  const requiresShiftForEmploymentType = (
+    employmentType?: StaffFormValues["employment_type"]
+  ) => employmentType && employmentType !== "full_time";
+
+  const selectedEmploymentType = watch("employment_type");
+  const selectedShiftId = watch("initial_shift_id");
+  const requiresShift = requiresShiftForEmploymentType(selectedEmploymentType);
+
+  const shiftOptions = useMemo(() => {
+    const shifts = shiftsData?.results || [];
+    return shifts.map((shift) => ({
+      value: shift.id.toString(),
+      label: `${shift.name} (${shift.start_time} - ${shift.end_time})`,
+    }));
+  }, [shiftsData]);
 
   // Populate form with existing data in edit mode
   useEffect(() => {
@@ -152,7 +171,7 @@ export default function StaffForm() {
       );
       setValue("address", staff.address);
       setValue("city", staff.city);
-      setValue("province", staff.province as any);
+      setValue("province", staff.province as StaffFormValues["province"]);
       setValue("tazkira_number", staff.tazkira_number);
       setValue("tazkira_page_number", staff.tazkira_page_number || "");
       setValue("tazkira_volume_number", staff.tazkira_volume_number || "");
@@ -166,14 +185,64 @@ export default function StaffForm() {
       setValue("years_of_experience", staff.years_of_experience);
       setValue("work_hours_per_week", parseFloat(staff.work_hours_per_week));
       setValue("notes", staff.notes || "");
+
+      const activeShift = staff.shifts.find((shift) => shift.is_active);
+      setValue("initial_shift_id", activeShift?.shift);
+      setValue("shift_effective_from", activeShift?.effective_from || staff.join_date);
     }
   }, [staff, isEdit, setValue]);
 
+  useEffect(() => {
+    if (requiresShift) return;
+    setValue("initial_shift_id", undefined);
+    setValue("shift_effective_from", "");
+    clearErrors("initial_shift_id");
+  }, [requiresShift, setValue, clearErrors]);
+
+  const normalizeOptional = (value?: string) => {
+    if (!value) return undefined;
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : undefined;
+  };
+
   // Form submission
   const onSubmit = async (data: StaffFormValues) => {
+    const requiresShiftForPayload = requiresShiftForEmploymentType(
+      data.employment_type
+    );
+
+    if (requiresShiftForPayload && !data.initial_shift_id) {
+      setError("initial_shift_id", {
+        type: "manual",
+        message: t("mis.staff.validation.shiftRequired"),
+      });
+      return;
+    }
+
+    const payload: StaffFormValues = {
+      ...data,
+      grandfather_name: normalizeOptional(data.grandfather_name),
+      phone_secondary: normalizeOptional(data.phone_secondary),
+      email: normalizeOptional(data.email),
+      emergency_contact_name: normalizeOptional(data.emergency_contact_name),
+      emergency_contact_phone: normalizeOptional(data.emergency_contact_phone),
+      emergency_contact_relation: normalizeOptional(data.emergency_contact_relation),
+      tazkira_page_number: normalizeOptional(data.tazkira_page_number),
+      tazkira_volume_number: normalizeOptional(data.tazkira_volume_number),
+      end_date: normalizeOptional(data.end_date),
+      highest_qualification: normalizeOptional(data.highest_qualification),
+      specialization: normalizeOptional(data.specialization),
+      notes: normalizeOptional(data.notes),
+      initial_shift_id: requiresShiftForPayload ? data.initial_shift_id : undefined,
+      shift_effective_from:
+        requiresShiftForPayload && data.initial_shift_id
+          ? normalizeOptional(data.shift_effective_from) || data.join_date
+          : undefined,
+    };
+
     if (isEdit) {
       updateStaff.mutate(
-        { id: staffId, data },
+        { id: staffId, data: payload },
         {
           onSuccess: () => {
             navigate(`/mis/staff/${staffId}`);
@@ -181,7 +250,7 @@ export default function StaffForm() {
         }
       );
     } else {
-      createStaff.mutate(data, {
+      createStaff.mutate(payload, {
         onSuccess: (response) => {
           navigate(`/mis/staff/${response.id}`);
         },
@@ -192,7 +261,7 @@ export default function StaffForm() {
   // Step navigation
   const handleNext = async () => {
     const fieldsToValidate = getFieldsForStep(currentStep);
-    const isValid = await trigger(fieldsToValidate as any);
+    const isValid = await trigger(fieldsToValidate as Parameters<typeof trigger>[0]);
     if (isValid) {
       setCurrentStep((prev) => Math.min(prev + 1, STEPS.length));
     }
@@ -216,7 +285,13 @@ export default function StaffForm() {
       case 2:
         return ["phone", "address", "city", "province", "tazkira_number"];
       case 3:
-        return ["position", "department", "employment_type", "join_date"];
+        return [
+          "position",
+          "department",
+          "employment_type",
+          "join_date",
+          ...(requiresShift ? ["initial_shift_id" as const] : []),
+        ];
       case 4:
         return [];
       default:
@@ -552,7 +627,46 @@ export default function StaffForm() {
                     })}
                     error={errors.work_hours_per_week?.message}
                   />
+
+                  {requiresShift && (
+                    <>
+                      <Select
+                        label={t("mis.staff.filters.shift")}
+                        required
+                        value={selectedShiftId ? String(selectedShiftId) : ""}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setValue(
+                            "initial_shift_id",
+                            value ? Number(value) : undefined,
+                            { shouldValidate: true }
+                          );
+                          if (value) {
+                            clearErrors("initial_shift_id");
+                          }
+                        }}
+                        error={errors.initial_shift_id?.message}
+                        options={[
+                          { label: t("mis.common.select"), value: "" },
+                          ...shiftOptions,
+                        ]}
+                      />
+
+                      <Input
+                        label={t("mis.staff.salary.effectiveFrom")}
+                        type="date"
+                        {...register("shift_effective_from")}
+                        error={errors.shift_effective_from?.message}
+                      />
+                    </>
+                  )}
                 </div>
+
+                {requiresShift && !isLoadingShifts && shiftOptions.length === 0 && (
+                  <Alert variant="warning">
+                    {t("mis.staff.shifts.noShifts")}
+                  </Alert>
+                )}
               </div>
             )}
 
@@ -658,7 +772,7 @@ export default function StaffForm() {
               ) : (
                 <Button
                   type="submit"
-                  isLoading={
+                  loading={
                     isSubmitting ||
                     createStaff.isPending ||
                     updateStaff.isPending

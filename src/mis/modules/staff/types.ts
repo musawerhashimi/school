@@ -230,6 +230,8 @@ export interface CreateStaffData {
   employment_type: EmploymentType;
   join_date: string;
   end_date?: string;
+  initial_shift_id?: number;
+  shift_effective_from?: string;
 
   // Qualifications
   highest_qualification?: string;

@@ -12,7 +12,7 @@ import type {
 } from "../types";
 
 // Base URLs
-const SLIDERS_URL = "/cms/home/sliders/";
+const SLIDERS_URL = "/cms/sliders/";
 const STATS_URL = "/cms/home/stats/";
 
 /**
@@ -21,10 +21,16 @@ const STATS_URL = "/cms/home/stats/";
 function buildSliderFormData(input: HeroSliderInput): FormData {
   const formData = new FormData();
 
-  // Multi-lang fields as JSON
-  formData.append("title", JSON.stringify(input.title));
-  formData.append("subtitle", JSON.stringify(input.subtitle));
-  formData.append("description", JSON.stringify(input.description));
+  // DRF nested serializers over multipart expect dotted keys (e.g. title.en)
+  formData.append("title.en", input.title.en);
+  formData.append("title.da", input.title.da);
+  formData.append("title.pa", input.title.pa);
+  formData.append("subtitle.en", input.subtitle.en);
+  formData.append("subtitle.da", input.subtitle.da);
+  formData.append("subtitle.pa", input.subtitle.pa);
+  formData.append("description.en", input.description.en);
+  formData.append("description.da", input.description.da);
+  formData.append("description.pa", input.description.pa);
 
   // Image file
   if (input.image instanceof File) {
@@ -80,13 +86,14 @@ export const cmsHomeService = {
      */
     async update(id: number, input: HeroSliderInput): Promise<HeroSlider> {
       const formData = buildSliderFormData(input);
-      const response = await api.put<HeroSlider>(
-        `${SLIDERS_URL}${id}/`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        },
-      );
+      const url = `${SLIDERS_URL}${id}/`;
+      const config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      };
+      const response =
+        input.image instanceof File
+          ? await api.put<HeroSlider>(url, formData, config)
+          : await api.patch<HeroSlider>(url, formData, config);
       return response.data;
     },
 

@@ -53,7 +53,7 @@ export function useExamStatistics(examId: number, options?: UseQueryOptions<Exam
   });
 }
 
-export function useCurrentYearExams(options?: UseQueryOptions<{ academic_year: string; count: number; results: ExamApiResponse[] }>) {
+export function useCurrentYearExams(options?: UseQueryOptions<PaginatedExamsResponse>) {
   return useQuery({
     queryKey: QUERY_KEYS.currentYear,
     queryFn: () => examService.getCurrentYear(),

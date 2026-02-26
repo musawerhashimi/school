@@ -16,7 +16,7 @@ import {
   type Column,
 } from '@mis-components/ui';
 import { useExams, useDeleteExam } from '../hooks/useExams';
-import { useAcademicYears } from '../../academic/hooks/useAcademicYears';
+import { useAcademicYears } from '../../reference/hooks/useAcademicYears';
 import type { ExamApiResponse, ExamFilters } from '../types';
 
 

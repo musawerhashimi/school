@@ -233,26 +233,6 @@ export interface CreateStudentData {
   blood_group?: string;
   national_id?: string;
 
-  // Personal Information - Extended
-  nickname?: string;
-  current_age?: number;
-  recent_photo?: File;
-
-  // Tazkira Details
-  tazkira_page_number?: string;
-  tazkira_volume_number?: string;
-  tazkira_registration_number?: string;
-  birth_date_on_tazkira?: string;
-  age_on_tazkira?: number;
-
-  // Location Information
-  original_province?: string;
-  original_district?: string;
-  original_area?: string;
-  current_province?: string;
-  current_district?: string;
-  current_area?: string;
-
   // Contact Information
   address: string;
   city: string;
@@ -262,28 +242,17 @@ export interface CreateStudentData {
 
   // Academic Information
   current_class?: number;
-  section?: string;
   roll_number?: string;
   admission_date: string;
+  admission_number?: string;
   education_level: string;
-
-  // Academic Information - Enhanced
-  academic_year?: number;
-  class_instance?: number;
-  shift?: ShiftType;
-  enrollment_type?: EnrollmentType;
+  status?: StudentStatus;
 
   // Guardian Information
-  primary_guardian: CreateGuardianData;
+  primary_guardian?: CreateGuardianData;
+  primary_guardian_id?: number;
   secondary_guardian?: CreateGuardianData;
-
-  // Parent/Guardian - Extended
-  parent_occupation?: string;
-  family_contact_number_1?: string;
-  family_contact_number_2?: string;
-  family_contact_number_3?: string;
-  telegram_contact?: string;
-  relationship_to_student?: RelationshipType;
+  secondary_guardian_id?: number | null;
 
   // Emergency Contact
   emergency_contact_name?: string;
@@ -305,9 +274,6 @@ export interface CreateStudentData {
   previous_school?: string;
   previous_class?: string;
   transfer_certificate_number?: string;
-
-  // Commitment
-  commitment_accepted: boolean;
 }
 
 export interface UpdateStudentData {
@@ -323,26 +289,6 @@ export interface UpdateStudentData {
   blood_group?: string;
   national_id?: string;
 
-  // Personal Information - Extended
-  nickname?: string;
-  current_age?: number;
-  recent_photo?: File;
-
-  // Tazkira Details
-  tazkira_page_number?: string;
-  tazkira_volume_number?: string;
-  tazkira_registration_number?: string;
-  birth_date_on_tazkira?: string;
-  age_on_tazkira?: number;
-
-  // Location Information
-  original_province?: string;
-  original_district?: string;
-  original_area?: string;
-  current_province?: string;
-  current_district?: string;
-  current_area?: string;
-
   // Contact Information
   address?: string;
   city?: string;
@@ -352,25 +298,17 @@ export interface UpdateStudentData {
 
   // Academic Information
   current_class?: number;
-  section?: string;
   roll_number?: string;
   admission_date?: string;
+  admission_number?: string;
   education_level?: string;
   status?: StudentStatus;
 
-  // Academic Information - Enhanced
-  academic_year?: number;
-  class_instance?: number;
-  shift?: ShiftType;
-  enrollment_type?: EnrollmentType;
-
-  // Parent/Guardian - Extended
-  parent_occupation?: string;
-  family_contact_number_1?: string;
-  family_contact_number_2?: string;
-  family_contact_number_3?: string;
-  telegram_contact?: string;
-  relationship_to_student?: RelationshipType;
+  // Guardian Information
+  primary_guardian?: CreateGuardianData;
+  primary_guardian_id?: number;
+  secondary_guardian?: CreateGuardianData;
+  secondary_guardian_id?: number | null;
 
   // Emergency Contact
   emergency_contact_name?: string;
@@ -601,4 +539,76 @@ export interface StudentGradesSummary {
   overallPercentage: number;
   overallGrade: string;
   rank?: number;
+}
+
+// ============================================================================
+// Academic Performance Types
+// ============================================================================
+
+export interface SubjectGrade {
+  subject_id: number;
+  subject_name: string;
+  subject_code: string;
+  teacher: string | null;
+  activity_marks: number;
+  assignment_marks: number;
+  exam_marks: number;
+  marks_obtained: number;
+  total_marks: number;
+  percentage: number;
+  grade_letter: string;
+  is_pass: boolean;
+}
+
+export interface ExamGrades {
+  exam_id: number | null;
+  exam_name: string | null;
+  exam_type: string;
+  subjects: SubjectGrade[];
+  overall_percentage: number;
+  overall_grade: string;
+}
+
+export interface AcademicHistory {
+  academic_year: string;
+  class_name: string;
+  report_card_id: number | null;
+  overall_percentage: number;
+  overall_grade: string;
+  rank_in_class: number | null;
+  total_students: number | null;
+  subjects_passed: number;
+  subjects_failed: number;
+  total_subjects: number;
+  promotion_status: string | null;
+}
+
+export interface PerformanceMetrics {
+  gpa: number;
+  cumulative_average: number;
+  years_completed: number;
+  total_subjects_taken: number;
+  all_time_pass_rate: number;
+}
+
+export interface CurrentGrades {
+  academic_year_id: number;
+  academic_year: string;
+  midterm: ExamGrades | null;
+  annual: ExamGrades | null;
+  combined_average: number;
+}
+
+export interface StudentAcademicPerformanceResponse {
+  student_id: string;
+  student_name: string;
+  student_photo: string | null;
+  current_class: {
+    id: number | null;
+    name: string;
+    academic_year: string | null;
+  };
+  current_grades: CurrentGrades;
+  academic_history: AcademicHistory[];
+  performance_metrics: PerformanceMetrics;
 }

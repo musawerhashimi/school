@@ -9,8 +9,8 @@ const afghanProvinces = [
   'uruzgan', 'zabul', 'kunar', 'laghman', 'nuristan', 'badghis'
 ] as const;
 
-// Main staff creation/update schema
-export const staffSchema = z.object({
+// Base staff schema without refinement (for partial operations)
+const staffBaseSchema = z.object({
   // Personal Information
   first_name: z.string().min(2, 'First name must be at least 2 characters').max(100),
   last_name: z.string().min(2, 'Last name must be at least 2 characters').max(100),
@@ -51,6 +51,8 @@ export const staffSchema = z.object({
   employment_type: z.enum(['full_time', 'part_time', 'contract', 'temporary']).default('full_time'),
   join_date: z.string().min(1, 'Join date is required'),
   end_date: z.string().optional(),
+  initial_shift_id: z.number().int().positive().optional(),
+  shift_effective_from: z.string().optional(),
 
   // Qualifications
   highest_qualification: z.string().max(200).optional(),
@@ -64,8 +66,19 @@ export const staffSchema = z.object({
   notes: z.string().optional(),
 });
 
+// Main staff creation/update schema with validation
+export const staffSchema = staffBaseSchema.superRefine((data, ctx) => {
+  if (data.employment_type !== 'full_time' && !data.initial_shift_id) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['initial_shift_id'],
+      message: 'Shift is required for non-full-time employment.',
+    });
+  }
+});
+
 // Update schema (all fields optional except status can be added)
-export const staffUpdateSchema = staffSchema.partial().extend({
+export const staffUpdateSchema = staffBaseSchema.partial().extend({
   status: z.enum(['active', 'inactive', 'on_leave', 'suspended', 'terminated', 'resigned']).optional(),
 });
 
@@ -80,8 +93,12 @@ export const shiftSchema = z.object({
   start_time: z.string().min(1, 'Start time is required'),
   end_time: z.string().min(1, 'End time is required'),
   working_days: z.string().optional(),
-  is_active: z.boolean().default(true),
+  is_active: z.boolean(),
   description: z.string().optional(),
+}).strict();
+
+export const shiftSchemaWithDefaults = shiftSchema.extend({
+  is_active: z.boolean().default(true),
 });
 
 // Salary schema

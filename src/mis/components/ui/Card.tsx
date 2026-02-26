@@ -44,7 +44,7 @@ export function Card({
 }
 
 export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  title?: string;
+  title?: ReactNode;
   subtitle?: string;
   action?: ReactNode;
 }

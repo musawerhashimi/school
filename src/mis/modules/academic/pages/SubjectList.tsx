@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit, Trash2, Filter, X, BookOpen, Award } from 'lucide-react';
+import { Plus, Edit, Trash2, Filter, X, BookOpen, Clock } from 'lucide-react';
 import { PageHeader } from '@mis-components/index';
 import {
   DataTable,
@@ -30,9 +30,7 @@ export default function SubjectList() {
     page_size: 10,
     search: '',
     subject_type: undefined,
-    class_level_id: undefined,
     is_active: undefined,
-    ordering: 'name',
   });
 
   const [showFilters, setShowFilters] = useState(false);
@@ -58,9 +56,7 @@ export default function SubjectList() {
       page_size: 10,
       search: '',
       subject_type: undefined,
-      class_level_id: undefined,
       is_active: undefined,
-      ordering: 'name',
     });
     setShowFilters(false);
   };
@@ -68,7 +64,6 @@ export default function SubjectList() {
   const hasActiveFilters = !!(
     filters.search ||
     filters.subject_type ||
-    filters.class_level_id ||
     filters.is_active !== undefined
   );
 
@@ -141,6 +136,7 @@ export default function SubjectList() {
       key: 'subject_type',
       label: 'Type',
       header: 'Type',
+      sortable: true,
       render: (row) => (
         <Badge variant={getSubjectTypeVariant(row.subject_type)}>
           {getSubjectTypeLabel(row.subject_type)}
@@ -148,40 +144,15 @@ export default function SubjectList() {
       ),
     },
     {
-      key: 'class_levels',
-      label: 'Class Levels',
-      header: 'Class Levels',
-      render: (row) => (
-        <div className="flex flex-wrap gap-1">
-          {row.class_level_names && row.class_level_names.length > 0 ? (
-            row.class_level_names.map((level, index) => (
-              <Badge key={index} variant="secondary" className="text-xs">
-                {level}
-              </Badge>
-            ))
-          ) : (
-            <span className="text-sm text-text-secondary">N/A</span>
-          )}
-        </div>
-      ),
-    },
-    {
-      key: 'total_marks',
-      label: 'Total Marks',
-      header: 'Total Marks',
+      key: 'total_credit_hours',
+      label: 'Total Credits',
+      header: 'Total Credits',
+      sortable: true,
       render: (row) => (
         <div className="flex items-center gap-2">
-          <Award className="h-4 w-4 text-text-secondary" />
-          <span className="font-medium text-text-primary">{row.total_marks}</span>
+          <Clock className="h-4 w-4 text-text-secondary" />
+          <span className="font-medium text-text-primary">{row.total_credit_hours || 0}</span>
         </div>
-      ),
-    },
-    {
-      key: 'pass_marks',
-      label: 'Pass Marks',
-      header: 'Pass Marks',
-      render: (row) => (
-        <span className="text-sm text-text-secondary">{row.pass_marks}</span>
       ),
     },
     {

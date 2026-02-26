@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Calendar,
@@ -9,20 +10,32 @@ import {
   Link2,
   MessageCircle,
 } from "lucide-react";
-import { charityEvents } from "../../data/charity";
+import {
+  useCharityEvents,
+  useCharityEventsData,
+  type CharityEventFilter,
+} from "./Api/useCommunity";
 import PageHeader from "../../components/layout/PageHeader";
+import Loader from "../../components/Loader";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 export default function CharityEvents() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
+  const [filter, setFilter] = useState<CharityEventFilter>("all");
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(lang === "en" ? "en-US" : "fa-AF", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  // Fetch charity events data with filter
+  const { data: events, isLoading, error } = useCharityEvents(filter);
+
+  // Fetch all charity events data for counts
+  const { data: allEventsData } = useCharityEventsData();
+
+  const upcomingCount = allEventsData?.upcoming?.length || 0;
+  const pastCount = allEventsData?.past?.length || 0;
+  const allCount = allEventsData?.events?.length || 0;
+
+  const handleFilterChange = (newFilter: CharityEventFilter) => {
+    setFilter(newFilter);
   };
 
   return (
@@ -61,7 +74,7 @@ export default function CharityEvents() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl transform rotate-6"></div>
               <div className="absolute inset-0 bg-gradient-to-tl from-accent/20 to-primary/20 rounded-3xl transform -rotate-3"></div>
               <img
-                src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&h=600&fit=crop"
+                src="images/charity.jpeg"
                 alt="Charity Events"
                 className="relative rounded-3xl shadow-2xl w-full h-[450px] object-cover"
               />
@@ -75,8 +88,61 @@ export default function CharityEvents() {
         <h1 className="text-5xl text-center font-bold text-text-primary mb-10 ">
           {t("charity.header.title")}
         </h1>
+
+        {/* Filter Buttons */}
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              onClick={() => handleFilterChange("all")}
+              className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
+                filter === "all"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-card text-text-secondary hover:bg-surface hover:text-text-primary border border-border"
+              }`}
+            >
+              {t("charity.filter.all") || "All"} ({allCount})
+            </button>
+            <button
+              onClick={() => handleFilterChange("upcoming")}
+              className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
+                filter === "upcoming"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-card text-text-secondary hover:bg-surface hover:text-text-primary border border-border"
+              }`}
+            >
+              {t("charity.filter.upcoming") || "Upcoming"} ({upcomingCount})
+            </button>
+            <button
+              onClick={() => handleFilterChange("past")}
+              className={`px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
+                filter === "past"
+                  ? "bg-primary text-white shadow-lg"
+                  : "bg-card text-text-secondary hover:bg-surface hover:text-text-primary border border-border"
+              }`}
+            >
+              {t("charity.filter.past") || "Past"} ({pastCount})
+            </button>
+          </div>
+        </div>
+
         <div className="max-w-7xl mx-auto">
-          {charityEvents.length === 0 ? (
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader />
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
+                <Calendar className="w-12 h-12 text-muted" />
+              </div>
+              <h3 className="text-2xl font-bold text-text-primary mb-2">
+                {t("charity.error.title") || "Error loading events"}
+              </h3>
+              <p className="text-text-secondary">
+                {t("charity.error.description") || "Please try again later"}
+              </p>
+            </div>
+          ) : !events || events.length === 0 ? (
             <div className="text-center py-20">
               <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-surface flex items-center justify-center">
                 <Calendar className="w-12 h-12 text-muted" />
@@ -90,10 +156,10 @@ export default function CharityEvents() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {charityEvents.map((event, index) => {
+              {events.map((event) => {
                 return (
                   <div
-                    key={index}
+                    key={event.id}
                     className="group bg-card rounded-2xl overflow-hidden border border-border hover:border-primary transition-all duration-500 hover:shadow-2xl hover:-translate-y-2"
                   >
                     {/* Event Image */}
@@ -127,7 +193,7 @@ export default function CharityEvents() {
                               {t("charity.event.date")}
                             </div>
                             <div className="text-sm font-medium text-text-primary">
-                              {formatDate(event.date)}
+                              {formatLocalDateTime(event.date)}
                             </div>
                           </div>
                         </div>

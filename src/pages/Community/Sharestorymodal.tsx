@@ -6,6 +6,7 @@ import type {
   FormErrors,
   TestimonialType,
 } from "../../entities/Testimonial";
+import CommunityService from "./Api/TestmonialService";
 
 interface ShareStoryModalProps {
   isOpen: boolean;
@@ -43,8 +44,6 @@ export default function ShareStoryModal({
 
     if (!formData.image.trim()) {
       newErrors.image = t("testimonials.modal.errors.imageRequired");
-    } else if (!isValidUrl(formData.image)) {
-      newErrors.image = t("testimonials.modal.errors.imageInvalid");
     }
 
     if (!formData.content.trim()) {
@@ -59,16 +58,6 @@ export default function ShareStoryModal({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  // URL validation helper
-  const isValidUrl = (url: string): boolean => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
   };
 
   // Handle input change
@@ -114,10 +103,7 @@ export default function ShareStoryModal({
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Here you would typically send the data to your backend
+      // Prepare testimonial data
       const testimonialData: Omit<TestimonialType, "id"> = {
         name: formData.name,
         role: formData.role,
@@ -125,6 +111,9 @@ export default function ShareStoryModal({
         content: formData.content,
         rating: formData.rating,
       };
+
+      // Send data to backend (public endpoint - no auth required)
+      await CommunityService.submitTestimonial(testimonialData);
 
       console.log("Testimonial submitted:", testimonialData);
 
@@ -142,9 +131,30 @@ export default function ShareStoryModal({
 
       // Close modal
       onClose();
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error submitting testimonial:", error);
-      alert(t("testimonials.modal.errorMessage"));
+
+      // Detailed error logging for debugging
+      const err = error as {
+        response?: { status?: number; data?: unknown };
+        message?: string;
+      };
+      if (err.response) {
+        console.log(
+          "Server responded with:",
+          err.response.status,
+          err.response.data,
+        );
+        alert(`Server error: ${err.response.status}`);
+      } else if (err.message) {
+        console.log("Error message:", err.message);
+        alert(`Error: ${err.message}`);
+      } else {
+        alert(
+          t("testimonials.modal.errorMessage") ||
+            "Sorry, there was an error. Check console for details.",
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -226,24 +236,32 @@ export default function ShareStoryModal({
             )}
           </div>
 
-          {/* Image URL Field */}
+          {/* Image Field */}
           <div>
             <label
               htmlFor="image"
               className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
-              {t("testimonials.modal.fields.image")} *
+              {t("testimonials.modal.fields.image") || "Image"} *
             </label>
             <input
               type="file"
               id="image"
               name="image"
-              value={formData.image}
-              onChange={handleChange}
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const imageUrl = URL.createObjectURL(file);
+                  setFormData((prev) => ({ ...prev, image: imageUrl }));
+                }
+                if (errors.image) {
+                  setErrors((prev) => ({ ...prev, image: undefined }));
+                }
+              }}
               className={`w-full px-4 py-3 rounded-lg bg-[var(--color-surface)] border ${
                 errors.image ? "border-red-500" : "border-[var(--color-border)]"
-              } text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all`}
-              placeholder={t("testimonials.modal.placeholders.image")}
+              } text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[var(--color-primary)] file:text-white file:cursor-pointer`}
             />
             {errors.image && (
               <p className="mt-1 text-sm text-red-500">{errors.image}</p>

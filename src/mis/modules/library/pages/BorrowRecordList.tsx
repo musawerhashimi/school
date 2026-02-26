@@ -3,8 +3,8 @@
  * Display and manage borrow records
  */
 
-import { useState, useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useState, useMemo } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Search,
   Filter,
@@ -14,66 +14,88 @@ import {
   RotateCcw,
   AlertTriangle,
   Loader2,
-} from 'lucide-react';
-import Button from '@mis-components/ui/Button';
-import Input from '@mis-components/ui/Input';
-import Select from '@mis-components/ui/Select';
-import Modal, { ModalFooter } from '@mis-components/ui/Modal';
-import Badge from '@mis-components/ui/Badge';
-import { useBorrowRecords, useRenewBorrow, useMarkLost } from '../hooks/useLibrary';
+} from "lucide-react";
+import Button from "@mis-components/ui/Button";
+import Input from "@mis-components/ui/Input";
+import Select from "@mis-components/ui/Select";
+import Modal, { ModalFooter } from "@mis-components/ui/Modal";
+import Badge from "@mis-components/ui/Badge";
+import {
+  useBorrowRecords,
+  useRenewBorrow,
+  useMarkLost,
+} from "../hooks/useLibrary";
 import {
   BORROW_STATUS_OPTIONS,
   BORROW_ORDERING_OPTIONS,
   BORROW_STATUS_CONFIG,
   LIBRARY_DEFAULTS,
-} from '../constants';
-import type { BorrowRecordFilters, BorrowStatus, BorrowRecordListResponse } from '../types';
-import { format, addDays } from 'date-fns';
+} from "../constants";
+import type {
+  BorrowRecordFilters,
+  BorrowStatus,
+  BorrowRecordListResponse,
+} from "../types";
+import { format, addDays } from "date-fns";
 
 export function BorrowRecordList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [renewDialogOpen, setRenewDialogOpen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<BorrowRecordListResponse | null>(null);
+  const [selectedRecord, setSelectedRecord] =
+    useState<BorrowRecordListResponse | null>(null);
 
   // Get filters from URL
   const filters: BorrowRecordFilters = {
-    search: searchParams.get('search') || undefined,
-    status: (searchParams.get('status') as BorrowStatus) || undefined,
-    is_overdue: searchParams.get('is_overdue') === 'true' ? true : undefined,
-    has_fine: searchParams.get('has_fine') === 'true' ? true : undefined,
-    ordering: searchParams.get('ordering') || '-issue_date',
-    page: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
+    search: searchParams.get("search") || undefined,
+    status: (searchParams.get("status") as BorrowStatus) || undefined,
+    is_overdue: searchParams.get("is_overdue") === "true" ? true : undefined,
+    has_fine: searchParams.get("has_fine") === "true" ? true : undefined,
+    ordering: searchParams.get("ordering") || "-issue_date",
+    page: searchParams.get("page") ? Number(searchParams.get("page")) : 1,
     page_size: 20,
   };
 
   // Query
   const { data, isLoading } = useBorrowRecords(filters);
-
   // Mutations
   const renewMutation = useRenewBorrow();
   const markLostMutation = useMarkLost();
 
   // Convert options for Select component
-  const statusOptions = useMemo(() => [
-    { value: '', label: 'All Status' },
-    ...BORROW_STATUS_OPTIONS.map((opt) => ({ value: opt.value, label: opt.label })),
-  ], []);
+  const statusOptions = useMemo(
+    () => [
+      { value: "", label: "All Status" },
+      ...BORROW_STATUS_OPTIONS.map((opt) => ({
+        value: opt.value,
+        label: opt.label,
+      })),
+    ],
+    []
+  );
 
-  const orderingOptions = useMemo(() =>
-    BORROW_ORDERING_OPTIONS.map((opt) => ({ value: opt.value, label: opt.label })),
-  []);
+  const orderingOptions = useMemo(
+    () =>
+      BORROW_ORDERING_OPTIONS.map((opt) => ({
+        value: opt.value,
+        label: opt.label,
+      })),
+    []
+  );
 
   // Update filters
-  const updateFilter = (key: string, value: string | number | boolean | undefined) => {
+  const updateFilter = (
+    key: string,
+    value: string | number | boolean | undefined
+  ) => {
     const newParams = new URLSearchParams(searchParams);
-    if (value === undefined || value === '' || value === false) {
+    if (value === undefined || value === "" || value === false) {
       newParams.delete(key);
     } else {
       newParams.set(key, String(value));
     }
-    if (key !== 'page') {
-      newParams.delete('page');
+    if (key !== "page") {
+      newParams.delete("page");
     }
     setSearchParams(newParams);
   };
@@ -101,7 +123,7 @@ export function BorrowRecordList() {
         data: {
           new_due_date: format(
             addDays(new Date(), LIBRARY_DEFAULTS.loanPeriodDays),
-            'yyyy-MM-dd'
+            "yyyy-MM-dd"
           ),
         },
       });
@@ -147,8 +169,8 @@ export function BorrowRecordList() {
         <div className="flex-1">
           <Input
             placeholder="Search by book, student, barcode..."
-            value={filters.search || ''}
-            onChange={(e) => updateFilter('search', e.target.value)}
+            value={filters.search || ""}
+            onChange={(e) => updateFilter("search", e.target.value)}
             leftIcon={<Search className="h-4 w-4" />}
           />
         </div>
@@ -157,16 +179,18 @@ export function BorrowRecordList() {
           <div className="w-[140px]">
             <Select
               options={statusOptions}
-              value={filters.status || ''}
-              onChange={(e) => updateFilter('status', e.target.value || undefined)}
+              value={filters.status || ""}
+              onChange={(e) =>
+                updateFilter("status", e.target.value || undefined)
+              }
             />
           </div>
 
           <div className="w-[160px]">
             <Select
               options={orderingOptions}
-              value={filters.ordering || '-issue_date'}
-              onChange={(e) => updateFilter('ordering', e.target.value)}
+              value={filters.ordering || "-issue_date"}
+              onChange={(e) => updateFilter("ordering", e.target.value)}
             />
           </div>
 
@@ -194,27 +218,29 @@ export function BorrowRecordList() {
           <Select
             label="Status"
             options={statusOptions}
-            value={filters.status || ''}
-            onChange={(e) => updateFilter('status', e.target.value || undefined)}
+            value={filters.status || ""}
+            onChange={(e) =>
+              updateFilter("status", e.target.value || undefined)
+            }
           />
 
           <div className="space-y-2">
             <p className="text-sm font-medium">Quick Filters</p>
             <div className="flex flex-wrap gap-2">
               <Button
-                variant={filters.is_overdue ? 'primary' : 'outline'}
+                variant={filters.is_overdue ? "primary" : "outline"}
                 size="sm"
                 onClick={() =>
-                  updateFilter('is_overdue', !filters.is_overdue || undefined)
+                  updateFilter("is_overdue", !filters.is_overdue || undefined)
                 }
               >
                 Overdue Only
               </Button>
               <Button
-                variant={filters.has_fine ? 'primary' : 'outline'}
+                variant={filters.has_fine ? "primary" : "outline"}
                 size="sm"
                 onClick={() =>
-                  updateFilter('has_fine', !filters.has_fine || undefined)
+                  updateFilter("has_fine", !filters.has_fine || undefined)
                 }
               >
                 With Fines
@@ -241,7 +267,7 @@ export function BorrowRecordList() {
       {/* Results Count */}
       {data && (
         <p className="text-sm text-text-secondary">
-          Showing {((currentPage - 1) * 20) + 1} -{' '}
+          Showing {(currentPage - 1) * 20 + 1} -{" "}
           {Math.min(currentPage * 20, data.count)} of {data.count} records
         </p>
       )}
@@ -310,12 +336,12 @@ export function BorrowRecordList() {
                     <td className="px-4 py-3">
                       {record.return_date
                         ? new Date(record.return_date).toLocaleDateString()
-                        : '-'}
+                        : "-"}
                     </td>
                     <td className="px-4 py-3">
                       <Badge variant={statusConfig.variant}>
                         {statusConfig.label}
-                        {record.is_overdue && record.status === 'active' && (
+                        {record.is_overdue && record.status === "active" && (
                           <span className="ml-1">({record.days_overdue}d)</span>
                         )}
                       </Badge>
@@ -324,22 +350,20 @@ export function BorrowRecordList() {
                       {record.fine_amount > 0 ? (
                         <span
                           className={`font-medium ${
-                            record.fine_paid
-                              ? 'text-green-600'
-                              : 'text-red-500'
+                            record.fine_paid ? "text-green-600" : "text-red-500"
                           }`}
                         >
                           ${record.fine_amount.toFixed(2)}
-                          {record.fine_paid && ' (Paid)'}
-                          {record.fine_waived && ' (Waived)'}
+                          {record.fine_paid && " (Paid)"}
+                          {record.fine_waived && " (Waived)"}
                         </span>
                       ) : (
-                        '-'
+                        "-"
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-1">
-                        {record.status === 'active' && (
+                        {record.status === "active" && (
                           <>
                             <Button
                               variant="ghost"
@@ -378,7 +402,7 @@ export function BorrowRecordList() {
           <Button
             variant="outline"
             disabled={currentPage <= 1}
-            onClick={() => updateFilter('page', currentPage - 1)}
+            onClick={() => updateFilter("page", currentPage - 1)}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -388,7 +412,7 @@ export function BorrowRecordList() {
           <Button
             variant="outline"
             disabled={currentPage >= totalPages}
-            onClick={() => updateFilter('page', currentPage + 1)}
+            onClick={() => updateFilter("page", currentPage + 1)}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -401,6 +425,15 @@ export function BorrowRecordList() {
         onClose={() => setRenewDialogOpen(false)}
         title="Renew Borrow"
         description={`Extend the due date for this borrow by ${LIBRARY_DEFAULTS.loanPeriodDays} days.`}
+        footer={
+          <ModalFooter
+            cancelText="Cancel"
+            onCancel={() => setRenewDialogOpen(false)}
+            confirmText="Confirm Renewal"
+            onConfirm={handleRenew}
+            loading={renewMutation.isPending}
+          />
+        }
       >
         {selectedRecord && (
           <div className="space-y-2 py-4">
@@ -411,32 +444,18 @@ export function BorrowRecordList() {
               <strong>Student:</strong> {selectedRecord.student_name}
             </p>
             <p>
-              <strong>Current Due Date:</strong>{' '}
+              <strong>Current Due Date:</strong>{" "}
               {new Date(selectedRecord.due_date).toLocaleDateString()}
             </p>
             <p>
-              <strong>New Due Date:</strong>{' '}
+              <strong>New Due Date:</strong>{" "}
               {format(
                 addDays(new Date(), LIBRARY_DEFAULTS.loanPeriodDays),
-                'MMM dd, yyyy'
+                "MMM dd, yyyy"
               )}
             </p>
           </div>
         )}
-        <ModalFooter>
-          <Button
-            variant="outline"
-            onClick={() => setRenewDialogOpen(false)}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleRenew}
-            loading={renewMutation.isPending}
-          >
-            Confirm Renewal
-          </Button>
-        </ModalFooter>
       </Modal>
     </div>
   );

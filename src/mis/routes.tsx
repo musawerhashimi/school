@@ -8,96 +8,105 @@ import { Dashboard } from "@mis-dashboard/index";
 
 // Students
 import {
+  StudentForm,
   StudentList,
   StudentProfile,
-  StudentForm,
-  StudentDashboard,
 } from "@students/index";
 
 // Staff
-import { StaffList, StaffProfile, StaffForm, ShiftList } from "@staff/index";
+import {
+  ShiftList,
+  StaffForm,
+  StaffList,
+  StaffProfile,
+} from "@staff/index";
 
 // Teachers
 import {
+  TeacherClassDetail,
+  TeacherDashboard,
   TeacherList,
   TeacherProfile,
-  TeacherDashboard,
   TeacherWeeklySchedule,
-  TeacherClassDetail,
 } from "@teachers/index";
 
 // Assignments
 import {
-  AssignmentList,
   AssignmentDetail,
   AssignmentFormPage,
-  ClassAssignmentList,
+  AssignmentList,
   ClassAssignmentDetail,
+  ClassAssignmentList,
 } from "@/mis/modules/assignment";
 
 // Academic
 import {
-  AcademicYearList,
-  AcademicYearForm,
-  ClassLevelList,
-  ClassLevelForm,
-  ClassroomList,
-  ClassroomForm,
-  SubjectList,
-  SubjectForm,
-  ClassInstanceList,
-  ClassInstanceForm,
   ClassInstanceDetail,
-  ScheduleView,
+  ClassInstanceForm,
+  ClassInstanceList,
+  ClassLevelForm,
+  ClassLevelList,
+  ClassroomForm,
+  ClassroomList,
   ScheduleForm,
   ScheduleList,
-  ReportCardList,
-  ReportCardDetail,
+  ScheduleView,
+  SubjectForm,
+  SubjectList
 } from "@/mis/modules/academic";
 
 // Exam
 import {
-  ExamList,
-  ExamForm,
-  ExamDetail,
-  GradeEntry,
-  GradeList,
-  ScoreEntry,
-  ExamScheduleList,
-  ExamScheduleForm,
-  ExamScheduleCalendarPage,
-  ClassExamList,
   ClassExamDetail,
+  ClassExamList,
+  ExamDetail,
+  ExamForm,
+  ExamList,
+  ExamScheduleCalendarPage,
+  ExamScheduleForm,
+  ExamScheduleList,
+  ReportCardDetail,
+  ReportCardList,
 } from "@/mis/modules/exam";
 
 // Library
 import {
-  LibrarianDashboard,
   BookCatalog,
-  BookForm,
   BookDetail,
-  IssueBookPage,
-  ReturnBookPage,
+  BookForm,
   BorrowRecordList,
+  IssueBookPage,
+  LibrarianDashboard,
+  ReturnBookPage,
 } from "@/mis/modules/library/pages";
+
+// Parents
+import {
+  ParentDashboard,
+  ParentProfile,
+  StudentDetail as ParentStudentDetail,
+} from "@/mis/modules/parents";
 
 // Settings
 import {
-  SettingsOverview,
+  AcademicYear,
   GeneralSettings,
+  SettingsOverview,
   UserManagement,
-  // AcademicYear,
 } from "@mis-settings/index";
+
+
+
 
 // CMS
 import {
-  HomeDashboard,
-  SliderList,
-  SliderForm,
   AboutDashboard,
-  TeamMemberList,
-  TeamMemberForm,
   DepartmentList,
+  HomeDashboard,
+  SliderForm,
+  SliderList,
+  TeamMemberForm,
+  TeamMemberList,
 } from "@/mis/modules/cms";
 
 // Profile
@@ -112,7 +121,6 @@ export const misRoutes: RouteObject = {
 
     // Students
     { path: "students", element: <StudentList /> },
-    { path: "students/dashboard", element: <StudentDashboard /> },
     { path: "students/new", element: <StudentForm /> },
     { path: "students/:id", element: <StudentProfile /> },
     { path: "students/:id/edit", element: <StudentForm /> },
@@ -132,11 +140,6 @@ export const misRoutes: RouteObject = {
     { path: "teachers/:id", element: <TeacherProfile /> },
 
     // Academic Module
-    // Academic Years
-    { path: "academics/years", element: <AcademicYearList /> },
-    { path: "academics/years/new", element: <AcademicYearForm /> },
-    { path: "academics/years/:id/edit", element: <AcademicYearForm /> },
-
     // Class Levels
     { path: "academics/levels", element: <ClassLevelList /> },
     { path: "academics/levels/new", element: <ClassLevelForm /> },
@@ -163,34 +166,24 @@ export const misRoutes: RouteObject = {
     { path: "academics/schedules/:classId", element: <ScheduleView /> },
     { path: "academics/schedules/:classId/new", element: <ScheduleForm /> },
     { path: "academics/schedules/:classId/edit", element: <ScheduleForm /> },
-    {
-      path: "academics/schedules/:classId/edit/:slotId",
-      element: <ScheduleForm />,
-    },
+    { path: "academics/schedules/:classId/edit/:slotId", element: <ScheduleForm /> },
 
-    // Exams
-    { path: "exams", element: <ExamList /> },
-    { path: "exams/new", element: <ExamForm /> },
-    { path: "exams/:id", element: <ExamDetail /> },
-    { path: "exams/:id/edit", element: <ExamForm /> },
+     // Exams
+     { path: "exams", element: <ExamList /> },
+     { path: "exams/new", element: <ExamForm /> },
+     { path: "exams/:id", element: <ExamDetail /> },
+     { path: "exams/:id/edit", element: <ExamForm /> },
 
-    // Class Exams
-    { path: "exams/classes", element: <ClassExamList /> },
-    { path: "exams/classes/:id", element: <ClassExamDetail /> },
+     // Class Exams
+     { path: "exams/classes", element: <ClassExamList /> },
+     { path: "exams/classes/:id", element: <ClassExamDetail /> },
 
-    // Exam Schedules
-    { path: "exams/schedules", element: <ExamScheduleList /> },
-    { path: "exams/schedules/new", element: <ExamScheduleForm /> },
-    { path: "exams/schedules/:id", element: <ExamScheduleForm /> },
-    { path: "exams/schedules/:id/edit", element: <ExamScheduleForm /> },
-    { path: "exams/schedules/calendar", element: <ExamScheduleCalendarPage /> },
-
-    // Grades
-    { path: "exams/grades", element: <GradeEntry /> },
-    { path: "exams/grades/list", element: <GradeList /> },
-
-    // Scores
-    { path: "exams/scores", element: <ScoreEntry /> },
+     // Exam Schedules
+     { path: "exams/schedules", element: <ExamScheduleList /> },
+     { path: "exams/schedules/new", element: <ExamScheduleForm /> },
+     { path: "exams/schedules/:id", element: <ExamScheduleForm /> },
+     { path: "exams/schedules/:id/edit", element: <ExamScheduleForm /> },
+     { path: "exams/schedules/calendar", element: <ExamScheduleCalendarPage /> },
 
     // Assignments
     { path: "assignments", element: <AssignmentList /> },
@@ -201,8 +194,8 @@ export const misRoutes: RouteObject = {
     { path: "assignments/:id/edit", element: <AssignmentFormPage /> },
 
     // Report Cards
-    { path: "academics/report-cards", element: <ReportCardList /> },
-    { path: "academics/report-cards/:id", element: <ReportCardDetail /> },
+    { path: "exams/report-cards", element: <ReportCardList /> },
+    { path: "exams/report-cards/:id", element: <ReportCardDetail /> },
 
     // Library
     { path: "library", element: <LibrarianDashboard /> },
@@ -214,6 +207,13 @@ export const misRoutes: RouteObject = {
     { path: "library/return", element: <ReturnBookPage /> },
     { path: "library/borrows", element: <BorrowRecordList /> },
 
+    // Parents
+    { path: "parents/dashboard", element: <ParentDashboard /> },
+    { path: "parents/profile", element: <ParentProfile /> },
+    { path: "parents/children/:studentId", element: <ParentStudentDetail /> },
+    
+    
+    
     // CMS - Home Page
     { path: "cms/home", element: <HomeDashboard /> },
     { path: "cms/home/sliders", element: <SliderList /> },
@@ -227,11 +227,12 @@ export const misRoutes: RouteObject = {
     { path: "cms/about/team/:id/edit", element: <TeamMemberForm /> },
     { path: "cms/about/departments", element: <DepartmentList /> },
 
+
     // Settings
     { path: "settings", element: <SettingsOverview /> },
     { path: "settings/general", element: <GeneralSettings /> },
+    { path: "settings/academic-year", element: <AcademicYear /> },
     { path: "settings/users", element: <UserManagement /> },
-    // { path: "settings/academic-year", element: <AcademicYear /> },
 
     // Profile
     { path: "profile", element: <UserProfile /> },

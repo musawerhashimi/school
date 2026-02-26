@@ -9,49 +9,44 @@ import type {
   BulkScoreCreateResponse
 } from '../types';
 
-const BASE_URL = '/academic/scores/';
+const SCORE_API_UNAVAILABLE =
+  'Score API endpoints are not implemented on backend. Use /exam/grades/ bulk_entry instead.';
 
 export const scoreService = {
   async getAll(filters?: ScoreFilters): Promise<PaginatedScoresResponse> {
-    const params = new URLSearchParams();
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          params.append(key, String(value));
-        }
-      });
-    }
-    const response = await api.get<PaginatedScoresResponse>(`${BASE_URL}?${params.toString()}`);
-    return response.data;
+    void filters;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 
   async getById(id: number): Promise<ScoreApiResponse> {
-    const response = await api.get<ScoreApiResponse>(`${BASE_URL}${id}/`);
-    return response.data;
+    void id;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 
   async create(data: CreateScoreData): Promise<ScoreApiResponse> {
-    const response = await api.post<ScoreApiResponse>(BASE_URL, data);
-    return response.data;
+    void data;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 
   async update(id: number, data: UpdateScoreData): Promise<ScoreApiResponse> {
-    const response = await api.patch<ScoreApiResponse>(`${BASE_URL}${id}/`, data);
-    return response.data;
+    void id;
+    void data;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 
   async delete(id: number): Promise<void> {
-    await api.delete(`${BASE_URL}${id}/`);
+    void id;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 
   async bulkEntry(data: BulkScoreCreateData): Promise<BulkScoreCreateResponse> {
-    const response = await api.post<BulkScoreCreateResponse>(`${BASE_URL}bulk_entry/`, data);
-    return response.data;
+    void data;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 
   async getByGrade(gradeId: number): Promise<ScoreApiResponse> {
-    const response = await api.get<ScoreApiResponse>(`${BASE_URL}by_grade/?grade=${gradeId}`);
-    return response.data;
+    void gradeId;
+    throw new Error(SCORE_API_UNAVAILABLE);
   },
 };
 

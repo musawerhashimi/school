@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, Save, BookOpen } from 'lucide-react';
+import { ArrowLeft, Save, BookOpen, Trash2, Clock } from 'lucide-react';
 import { PageHeader } from '@mis-components/index';
 import {
   Button,
@@ -14,7 +14,6 @@ import {
   Alert,
   Spinner,
   Switch,
-  Badge,
 } from '@mis-components/ui';
 import {
   useSubject,
@@ -50,11 +49,15 @@ export default function SubjectForm() {
     resolver: zodResolver(subjectSchema),
     defaultValues: {
       subject_type: 'core',
-      total_marks: 100,
-      pass_marks: 40,
       is_active: true,
       class_levels: [],
     },
+  });
+
+  // Use field array for class levels with credit hours
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'class_levels',
   });
 
   // Load subject data for edit mode
@@ -63,12 +66,18 @@ export default function SubjectForm() {
       setValue('name', subject.name);
       setValue('code', subject.code);
       setValue('subject_type', subject.subject_type);
-      setValue('class_levels', subject.class_levels || []);
-      setValue('total_marks', subject.total_marks);
-      setValue('pass_marks', subject.pass_marks);
       setValue('moe_code', subject.moe_code || '');
       setValue('description', subject.description || '');
       setValue('is_active', subject.is_active);
+      
+      // Load class levels with credit hours
+      if (subject.class_levels && subject.class_levels.length > 0) {
+        const levels = subject.class_levels.map((cl: any) => ({
+          class_level: cl.class_level,
+          credit_hours: cl.credit_hours || 1,
+        }));
+        setValue('class_levels', levels);
+      }
     }
   }, [isEdit, subject, setValue]);
 
@@ -102,14 +111,13 @@ export default function SubjectForm() {
 
   const isActive = watch('is_active');
   const subjectType = watch('subject_type');
-  const selectedLevels = watch('class_levels');
-  const totalMarks = watch('total_marks');
-  const passMarks = watch('pass_marks');
-
   const classLevels = classLevelsData?.results || [];
 
+  // Get list of already selected class level IDs
+  const selectedLevelIds = fields.map(f => f.class_level);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:bg-gray-900">
       <PageHeader
         title={isEdit ? 'Edit Subject' : 'Add New Subject'}
         subtitle={
@@ -126,12 +134,13 @@ export default function SubjectForm() {
       />
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card>
+        {/* Subject Information Card */}
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-6">
             <div className="space-y-6">
-              <div className="flex items-center gap-2 border-b pb-4">
+              <div className="flex items-center gap-2 border-b dark:border-gray-600 pb-4">
                 <BookOpen className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-semibold text-text-primary">
+                <h3 className="text-lg font-semibold text-text-primary dark:text-white">
                   Subject Information
                 </h3>
               </div>
@@ -143,6 +152,7 @@ export default function SubjectForm() {
                   {...register('code')}
                   error={errors.code?.message}
                   placeholder="MATH-11"
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
 
                 <Input
@@ -151,6 +161,7 @@ export default function SubjectForm() {
                   {...register('name')}
                   error={errors.name?.message}
                   placeholder="Mathematics"
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
 
                 <Select
@@ -167,6 +178,7 @@ export default function SubjectForm() {
                     { label: 'Arts', value: 'arts' },
                     { label: 'Practical', value: 'practical' },
                   ]}
+                  className="dark:bg-gray-700 dark:border-gray-600"
                 />
 
                 <Input
@@ -174,104 +186,8 @@ export default function SubjectForm() {
                   {...register('moe_code')}
                   error={errors.moe_code?.message}
                   placeholder="Ministry of Education code"
+                  className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
-
-                <Input
-                  label="Total Marks"
-                  type="number"
-                  required
-                  {...register('total_marks', { valueAsNumber: true })}
-                  error={errors.total_marks?.message}
-                  placeholder="100"
-                  min={1}
-                  max={1000}
-                />
-
-                <Input
-                  label="Pass Marks"
-                  type="number"
-                  required
-                  {...register('pass_marks', { valueAsNumber: true })}
-                  error={errors.pass_marks?.message}
-                  placeholder="40"
-                  min={1}
-                  max={1000}
-                />
-
-                {passMarks > totalMarks && (
-                  <div className="md:col-span-2">
-                    <Alert variant="error" title="Invalid Marks">
-                      Pass marks cannot exceed total marks.
-                    </Alert>
-                  </div>
-                )}
-
-                {passMarks <= totalMarks && totalMarks > 0 && (
-                  <div className="md:col-span-2">
-                    <Alert variant="info" title="Pass Percentage">
-                      Pass percentage: {((passMarks / totalMarks) * 100).toFixed(2)}%
-                    </Alert>
-                  </div>
-                )}
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Applicable Class Levels <span className="text-error">*</span>
-                  </label>
-                  <Controller
-                    name="class_levels"
-                    control={control}
-                    render={({ field }) => (
-                      <div className="space-y-3">
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                          {classLevels.map((level) => (
-                            <label
-                              key={level.id}
-                              className="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
-                            >
-                              <input
-                                type="checkbox"
-                                checked={field.value.includes(level.id)}
-                                onChange={(e) => {
-                                  const newValue = e.target.checked
-                                    ? [...field.value, level.id]
-                                    : field.value.filter((id) => id !== level.id);
-                                  field.onChange(newValue);
-                                }}
-                                className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                              />
-                              <span className="text-sm font-medium text-text-primary">
-                                {level.name}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-
-                        {selectedLevels.length > 0 && (
-                          <div className="flex flex-wrap gap-2 p-3 bg-gray-50 rounded-lg">
-                            <span className="text-sm text-text-secondary">
-                              Selected:
-                            </span>
-                            {selectedLevels.map((levelId) => {
-                              const level = classLevels.find((l) => l.id === levelId);
-                              return level ? (
-                                <Badge key={levelId} variant="primary">
-                                  {level.name}
-                                </Badge>
-                              ) : null;
-                            })}
-                          </div>
-                        )}
-
-                        {errors.class_levels && (
-                          <p className="text-sm text-error">
-                            {errors.class_levels.message}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  />
-                </div>
 
                 <div className="md:col-span-2">
                   <Textarea
@@ -280,6 +196,7 @@ export default function SubjectForm() {
                     error={errors.description?.message}
                     placeholder="Additional information about this subject..."
                     rows={3}
+                    className="dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   />
                 </div>
 
@@ -303,35 +220,137 @@ export default function SubjectForm() {
                     </Alert>
                   </div>
                 )}
-
-                <div className="md:col-span-2">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium text-text-primary">Active Status</p>
-                      <p className="text-sm text-text-secondary">
-                        Enable or disable this subject
-                      </p>
-                    </div>
-                    <Switch
-                      checked={isActive}
-                      onCheckedChange={(checked) => setValue('is_active', checked)}
-                    />
-                  </div>
-
-                  {!isActive && (
-                    <Alert variant="warning" title="Note" className="mt-4">
-                      Inactive subjects will not be available for schedule creation
-                      and exam management.
-                    </Alert>
-                  )}
-                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Class Levels Card */}
+        <Card className="mt-6 dark:bg-gray-800 dark:border-gray-700">
+          <CardContent className="p-6">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b dark:border-gray-600 pb-4">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold text-text-primary dark:text-white">
+                    Class Levels & Credit Hours
+                  </h3>
+                </div>
+                <Select
+                  className="w-48 dark:bg-gray-700 dark:border-gray-600"
+                  options={[
+                    { label: 'Select Class Level...', value: '' },
+                    ...classLevels
+                      .filter((level) => !selectedLevelIds.includes(level.id))
+                      .map((level) => ({
+                        label: level.name,
+                        value: String(level.id),
+                      })),
+                  ]}
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      append({
+                        class_level: parseInt(e.target.value, 10),
+                        credit_hours: 1,
+                      });
+                      e.target.value = '';
+                    }
+                  }}
+              
+                />
+              </div>
+
+              {/* Selected Class Levels with Credit Hours */}
+              {fields.length > 0 ? (
+                <div className="space-y-3">
+                  {fields.map((field, index) => {
+                    const level = classLevels.find((l) => l.id === field.class_level);
+                    return (
+                      <div
+                        key={field.id}
+                        className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border dark:border-gray-600"
+                      >
+                        <div className="flex-1">
+                          <span className="font-medium text-text-primary dark:text-white">
+                            {level?.name || `Class Level ${field.class_level}`}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <label className="text-sm text-text-secondary dark:text-gray-300">
+                            Credit Hours:
+                          </label>
+                          <Input
+                            type="number"
+                            {...register(`class_levels.${index}.credit_hours` as const, {
+                              valueAsNumber: true,
+                            })}
+                            className="w-20 text-center dark:bg-gray-600 dark:border-gray-500 dark:text-white"
+                            min={0.5}
+                            max={20}
+                            step={0.5}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => remove(index)}
+                          className="text-error hover:text-red-400"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-text-secondary dark:text-gray-400">
+                  <Clock className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                  <p>No class levels selected</p>
+                  <p className="text-sm mt-1">
+                    Use the dropdown above to add class levels and specify credit hours
+                  </p>
+                </div>
+              )}
+
+              {errors.class_levels && (
+                <p className="text-sm text-error">
+                  {typeof errors.class_levels.message === 'string' 
+                    ? errors.class_levels.message 
+                    : 'At least one class level is required'}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Status Card */}
+        <Card className="mt-6 dark:bg-gray-800 dark:border-gray-700">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between p-4 border dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700">
+              <div>
+                <p className="font-medium text-text-primary dark:text-white">Active Status</p>
+                <p className="text-sm text-text-secondary dark:text-gray-400">
+                  Enable or disable this subject
+                </p>
+              </div>
+              <Switch
+                checked={isActive}
+                onChange={(checked) => setValue('is_active', checked)}
+              />
+            </div>
+
+            {!isActive && (
+              <Alert variant="warning" title="Note" className="mt-4">
+                Inactive subjects will not be available for schedule creation
+                and exam management.
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Submit Button */}
-        <Card>
+        <Card className="mt-6 dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-6">
             <div className="flex justify-end gap-3">
               <Button
@@ -346,7 +365,6 @@ export default function SubjectForm() {
                 variant="primary"
                 leftIcon={<Save className="h-4 w-4" />}
                 loading={createSubject.isPending || updateSubject.isPending}
-                disabled={passMarks > totalMarks}
               >
                 {isEdit ? 'Update Subject' : 'Create Subject'}
               </Button>

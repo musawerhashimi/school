@@ -28,6 +28,7 @@ export interface Internship {
   title: MultiLangText;
   organization: MultiLangText;
   categoryId: number;
+  category?: InternshipCategory; // Full category object from detail endpoint
   duration: number;
   location: MultiLangText;
   image?: string;

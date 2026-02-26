@@ -1,9 +1,8 @@
-
 import { Quote, Star } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import PageHeader from "../../components/layout/PageHeader";
-import { TESTIMONIALS_DATA } from "../../data/testmonial";
+import { useTestimonials } from "./Api/useTestmonial";
 import ShareStoryModal from "./Sharestorymodal";
 
 // 1. Star Rating Component
@@ -26,7 +25,18 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 // 2. Testimonial Card Component
-const TestimonialCard = ({ data }: { data: (typeof TESTIMONIALS_DATA)[0] }) => {
+const TestimonialCard = ({
+  data,
+}: {
+  data: {
+    id: number;
+    name: string;
+    role: string;
+    image: string;
+    content: string;
+    rating: number;
+  };
+}) => {
   return (
     <div
       className="group relative p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 h-full flex flex-col
@@ -79,6 +89,12 @@ export default function Testimonials() {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fetch testimonials from API
+  const { data: testimonials, isLoading, error } = useTestimonials();
+
+  // Fallback to static data if API fails
+  const displayData = testimonials || [];
+
   return (
     <>
       <PageHeader
@@ -108,9 +124,37 @@ export default function Testimonials() {
 
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {TESTIMONIALS_DATA.map((item) => (
-              <TestimonialCard key={item.id} data={item} />
-            ))}
+            {isLoading ? (
+              // Loading skeleton
+              [...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="p-8 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] animate-pulse"
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 rounded-full bg-[var(--color-border)]" />
+                    <div>
+                      <div className="h-4 w-24 bg-[var(--color-border)] rounded mb-2" />
+                      <div className="h-3 w-16 bg-[var(--color-border)] rounded" />
+                    </div>
+                  </div>
+                  <div className="h-4 w-full bg-[var(--color-border)] rounded mb-2" />
+                  <div className="h-4 w-3/4 bg-[var(--color-border)] rounded mb-4" />
+                  <div className="h-4 w-full bg-[var(--color-border)] rounded" />
+                </div>
+              ))
+            ) : error ? (
+              // Error state - show message
+              <div className="col-span-full text-center py-12">
+                <p className="text-[var(--color-text-secondary)]">
+                  {t("testimonials.error") || "Failed to load testimonials"}
+                </p>
+              </div>
+            ) : (
+              displayData.map((item) => (
+                <TestimonialCard key={item.id} data={item} />
+              ))
+            )}
           </div>
 
           {/* Bottom CTA */}
