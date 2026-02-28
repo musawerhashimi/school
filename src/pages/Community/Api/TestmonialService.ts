@@ -3,26 +3,29 @@ import apiClient from "@/lib/api";
 
 const CMS_BASE_URL = "/cms";
 
-// Testimonials API endpoints
+// ✅ Both point to /cms/testimonials/ (plural — matches backend)
 const TESTIMONIALS_ENDPOINT = `${CMS_BASE_URL}/testimonials/`;
-const PUBLIC_TESTIMONIALS_ENDPOINT = `${CMS_BASE_URL}/testimonial/`;
 
 export const CommunityService = {
-  // Get all testimonials (public endpoint - no auth required)
+  // Get all testimonials (public endpoint)
   getTestimonials: async (): Promise<TestimonialType[]> => {
     const response = await apiClient.get<TestimonialType[]>(
-      PUBLIC_TESTIMONIALS_ENDPOINT,
+      TESTIMONIALS_ENDPOINT,
     );
     return response.data;
   },
 
-  // Submit testimonial (public endpoint - no auth required)
+  // ✅ Submit testimonial via FormData (supports image file upload)
   submitTestimonial: async (
-    data: Omit<TestimonialType, "id">,
+    data: FormData | Omit<TestimonialType, "id">,
   ): Promise<TestimonialType> => {
+    const isFormData = data instanceof FormData;
     const response = await apiClient.post<TestimonialType>(
-      PUBLIC_TESTIMONIALS_ENDPOINT,
+      TESTIMONIALS_ENDPOINT,
       data,
+      isFormData
+        ? { headers: { "Content-Type": "multipart/form-data" } }
+        : undefined,
     );
     return response.data;
   },
@@ -35,15 +38,15 @@ export const CommunityService = {
     return response.data;
   },
 
-  // Get single testimonial by ID (public endpoint)
+  // Get single testimonial by ID
   getTestimonialById: async (id: number): Promise<TestimonialType> => {
     const response = await apiClient.get<TestimonialType>(
-      `${PUBLIC_TESTIMONIALS_ENDPOINT}${id}/`,
+      `${TESTIMONIALS_ENDPOINT}${id}/`,
     );
     return response.data;
   },
 
-  // Create testimonial (admin endpoint - with auth)
+  // Create testimonial (admin - with auth)
   createTestimonial: async (
     data: Omit<TestimonialType, "id">,
   ): Promise<TestimonialType> => {
@@ -54,7 +57,7 @@ export const CommunityService = {
     return response.data;
   },
 
-  // Update testimonial (admin endpoint - with auth)
+  // Update testimonial (admin - with auth)
   updateTestimonial: async (
     id: number,
     data: Partial<TestimonialType>,
@@ -66,7 +69,7 @@ export const CommunityService = {
     return response.data;
   },
 
-  // Delete testimonial (admin endpoint - with auth)
+  // Delete testimonial (admin - with auth)
   deleteTestimonial: async (id: number): Promise<void> => {
     await apiClient.delete(`${TESTIMONIALS_ENDPOINT}${id}/`);
   },

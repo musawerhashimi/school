@@ -1305,7 +1305,12 @@
    "studentProjects.card.awards":"جایزې",
 "studentProjects.detail.notFound":"پروژه ونه موندل شوه",
 "studentProjects.detail.projectInfo":"د پروژې معلومات",
-"No books found":"هیڅ کتاب ونه موندل شو"
+"No books found":"هیڅ کتاب ونه موندل شو",
+"testimonials.modal.subtitle" :"زموږ ټولنې سره خپله تجربه شریکه کړئ",
+"Error submitting testimonial":"د داستان ارسال کولو هنگام خطا",
+"Something went wrong. Please try again.":"بخښنه غواړو، یوه تېروتنه رامنځته شوه. مهرباني وکړئ بیا هڅه وکړئ.",
+ "testimonials.modal.successMessage": "د داستان ارسال کولو په موفقیت سره ترسره شو!",
+  "testimonials.modal.successTitle": "مننه! ستاسو داستان شریک شو"
 
 
 

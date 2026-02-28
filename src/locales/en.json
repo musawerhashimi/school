@@ -1312,7 +1312,11 @@
 "studentProjects.detail.notFound":"Project not found",
 "studentProjects.detail.projectInfo":"Project Information",
 "No books found":"No books found matching your search criteria.",
-
+"testimonials.modal.subtitle":"Share your experience with our school community to help others make informed decisions.",
+"Error submitting testimonial:":"Error submitting testimonial:",
+"Something went wrong. Please try again.":"Something went wrong. Please try again.",
+ "testimonials.modal.successMessage":"Thank you for sharing your story with us!",
+ "testimonials.modal.successTitle": "Thank you!",
 
 
 

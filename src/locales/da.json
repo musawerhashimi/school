@@ -1310,9 +1310,13 @@
    "studentProjects.card.awards":"دستاورد",
    "studentProjects.detail.notFound":"پروژه یافت نشد",
    "studentProjects.detail.projectInfo":"اطلاعات پروژه",
-   "No books found":"هیچ کتابی مطابق با معیارهای جستجوی شما یافت نشد."
+   "No books found":"هیچ کتابی مطابق با معیارهای جستجوی شما یافت نشد.",
+   "testimonials.modal.subtitle":"داستان خود را با جامعه ما به اشتراک بگذارید",
 
-  
+  "Error submitting testimonial":"خطا در ارسال داستان",
+"Something went wrong. Please try again.":"مشکلی در ارسال داستان وجود دارد. لطفاً دوباره تلاش کنید.",
+ "testimonials.modal.successMessage":"از اشتراک‌گذاری داستان خود با ما متشکریم!",
+  "testimonials.modal.successTitle": "تشکر! داستان شما با موفقیت ارسال شد."
 
 
 
