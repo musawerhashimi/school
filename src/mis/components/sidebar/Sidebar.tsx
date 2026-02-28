@@ -29,7 +29,6 @@ import {
 import { useTranslation } from "react-i18next";
 import SidebarItem from "./SidebarItem";
 import { useSidebarState, type SubNavItem } from "./useSidebarState";
-import { sub } from "date-fns";
 
 /**
  * Enhanced Sidebar Component

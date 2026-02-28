@@ -47,6 +47,7 @@ import HallOfFame from "../pages/Achievements/HallOfFame";
 import FeedbackForm from "../pages/Contact/FeedbackForm";
 import AppLayout from "../components/layout/AppLayout";
 import TeamProfile from "@/pages/About/team/TeamProfile";
+import SchoolMIS from "@/components/MisChart";
 
 function AppRouterProvider() {
   const router = createBrowserRouter([
@@ -110,6 +111,7 @@ function AppRouterProvider() {
         { path: "/student-awards", element: <StudentAwards /> },
         { path: "/hallof-fame", element: <HallOfFame /> },
         { path: "/feedback-form", element: <FeedbackForm /> },
+        { path: "/chart", element: <SchoolMIS /> },
       ],
     },
     // Add a catch-all route that redirects to login for unauthenticated users
