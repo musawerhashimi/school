@@ -5,7 +5,7 @@ export interface MultiLangText {
 }
 
 export interface Book {
-  id: string;
+  id: number;
   title: MultiLangText;
   author: string;
   category_id: number;

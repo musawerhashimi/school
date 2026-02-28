@@ -1,25 +1,27 @@
 import { Search, X, Eye, BookOpen, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
-import { bookCategories, booksData } from "../../../data/online_library";
+import { useState } from "react";
+import { useBooks, useCategories } from "./Api/useLibrary";
 import BookSkeleton from "./BookSkilton";
 import { useTranslation } from "react-i18next";
 
 export default function OnlineLibrary() {
-  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+
+  // Fetch books and categories from API
+  const { data: booksData = [], isLoading: isBooksLoading } = useBooks();
+  const { data: categories = [], isLoading: isCategoriesLoading } =
+    useCategories();
+
+  const isLoading = isBooksLoading || isCategoriesLoading;
 
   // Get category by ID
   const getCategoryById = (categoryId: number) => {
-    return bookCategories.find((cat) => cat.id === categoryId);
+    return categories.find((cat) => cat.id === categoryId);
   };
 
   // Filter books
@@ -134,7 +136,7 @@ export default function OnlineLibrary() {
                     {t("library.action.allCategories")}
                   </button>
                   <div className="border-t border-border my-1" />
-                  {bookCategories.map((category) => (
+                  {categories?.map((category) => (
                     <button
                       key={category.id}
                       onClick={() => {
