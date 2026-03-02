@@ -1,10 +1,12 @@
 import { useTranslation } from "react-i18next";
-import type { Achievement } from "../../entities/AwardAchivement";
+import type { Achievement } from "./Api/awardService";
 import { Trophy, Award } from "lucide-react";
-interface Achiv {
+
+interface AchievementCardProps {
   achievement: Achievement;
 }
-export default function AchievementCard({ achievement }: Achiv) {
+
+export default function AchievementCard({ achievement }: AchievementCardProps) {
   const { i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
 

@@ -1,72 +1,7 @@
-// import { Trophy, Medal, Star, Users } from "lucide-react";
-// import { stats } from "../../data/awardAchivement";
-// import { useTranslation } from "react-i18next";
-
-// const getStatConfig = () => [
-//   {
-//     icon: Trophy,
-//     valueKey: "TotalAwards",
-//     labelKey: "stats.totalAwards",
-//   },
-//   {
-//     icon: Medal,
-//     valueKey: "NationalAwards",
-//     labelKey: "stats.nationalRecognitions",
-//   },
-//   {
-//     icon: Star,
-//     valueKey: "InternationalAwards",
-//     labelKey: "stats.internationalAwards",
-//   },
-//   {
-//     icon: Users,
-//     valueKey: "StudentAchievers",
-//     labelKey: "stats.studentAchievers",
-//   },
-// ];
-
-// export default function StatCard() {
-//   const { t } = useTranslation();
-//   const statConfig = getStatConfig();
-
-//   return (
-//     <section className="py-8 " aria-label={t("stats.sectionLabel")}>
-//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-//         {statConfig.map((stat) => {
-//           const IconComponent = stat.icon;
-//           const value = stats[stat.valueKey as keyof typeof stats];
-
-//           return (
-//             <article
-//               key={stat.valueKey}
-//               className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-primary-500"
-//             >
-//               <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-transparent dark:from-primary-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
-
-//               <div className="relative z-10">
-//                 <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors">
-//                   <IconComponent className="w-8 h-8" aria-hidden="true" />
-//                 </div>
-
-//                 <div className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2 tabular-nums">
-//                   {value?.toLocaleString() || "0"}
-//                 </div>
-
-//                 <div className="text-sm md:text-base font-medium text-gray-600 dark:text-gray-300">
-//                   {t(stat.labelKey)}
-//                 </div>
-//               </div>
-//             </article>
-//           );
-//         })}
-//       </div>
-//     </section>
-//   );
-// }
-
+import { useState, useEffect } from "react";
 import { Trophy, Medal, Star, Users } from "lucide-react";
-import { stats } from "../../data/awardAchivement";
 import { useTranslation } from "react-i18next";
+import { awardService, type AwardStats } from "./Api/awardService";
 
 const getStatConfig = () => [
   {
@@ -107,12 +42,50 @@ export default function StatCard() {
   const { t } = useTranslation();
   const statConfig = getStatConfig();
 
+  const [stats, setStats] = useState<AwardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await awardService.getStats();
+        setStats(data);
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+        // Set default values on error
+        setStats({
+          TotalAwards: 0,
+          InternationalAwards: 0,
+          StudentAchievers: 0,
+          NationalAwards: 0,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-12 md:py-16" aria-label={t("stats.sectionLabel")}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="animate-pulse">
+              <div className="bg-gray-200 dark:bg-gray-700 rounded-2xl h-48"></div>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-12 md:py-16" aria-label={t("stats.sectionLabel")}>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
         {statConfig.map((stat, index) => {
           const IconComponent = stat.icon;
-          const value = stats[stat.valueKey as keyof typeof stats];
+          const value = stats?.[stat.valueKey as keyof AwardStats] || 0;
 
           return (
             <article

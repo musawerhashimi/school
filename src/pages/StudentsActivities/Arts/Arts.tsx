@@ -1,37 +1,25 @@
 import { Calendar, Play, Clock, MapPin, X } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  culturalEventsData,
-  performanceHighlightsData,
-} from "../../../data/art";
+import { useCulturalEvents, usePerformanceHighlights } from "./Api";
 import CTASection from "../../../components/CTASection";
 import PageHeader from "../../../components/layout/PageHeader";
 import { CulturalEventSkeleton, HighlightSkeleton } from "./ArtSkilton";
+import { formatLocalDateTime } from "@/utils/formatLocalDateTime";
 
 const PerformingArtsPage: React.FC = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "en" | "da" | "pa";
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  // Fetch data from API
+  const { data: culturalEvents, isLoading: isLoadingEvents } =
+    useCulturalEvents();
+  const { data: performances, isLoading: isLoadingPerformances } =
+    usePerformanceHighlights();
+  const isLoading = isLoadingEvents || isLoadingPerformances;
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString(lang === "en" ? "en-US" : "fa-AF", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const activeVideo = performanceHighlightsData.find(
-    (v) => v.id === selectedVideo,
-  );
+  const activeVideo = performances?.find((v) => v.id === selectedVideo);
 
   return (
     <div className="min-h-screen bg-background font-sans text-text-primary">
@@ -66,7 +54,7 @@ const PerformingArtsPage: React.FC = () => {
                 <CulturalEventSkeleton />
               </>
             ) : (
-              culturalEventsData.map((event, index) => (
+              (culturalEvents || []).map((event, index) => (
                 <div
                   key={event.id}
                   className={`flex flex-col ${
@@ -88,10 +76,9 @@ const PerformingArtsPage: React.FC = () => {
                           {new Date(event.date).getDate()}
                         </span>
                         <span className="block text-xs font-semibold text-text-secondary uppercase tracking-wider">
-                          {new Date(event.date).toLocaleString(
-                            lang === "en" ? "en-US" : "fa-AF",
-                            { month: "short" },
-                          )}
+                          {new Date(event.date).toLocaleString("en-US", {
+                            month: "short",
+                          })}
                         </span>
                       </div>
                     </div>
@@ -111,7 +98,7 @@ const PerformingArtsPage: React.FC = () => {
                     <div className="flex items-center gap-6 text-sm text-text-secondary font-medium">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-primary" />
-                        <span>{formatDate(event.date)}</span>
+                        <span>{event.date}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-primary" />
@@ -120,7 +107,7 @@ const PerformingArtsPage: React.FC = () => {
                     </div>
 
                     <p className="text-text-secondary leading-relaxed text-lg">
-                      {event.description[lang]}
+                      {event.title[lang]}
                     </p>
                   </div>
                 </div>
@@ -151,7 +138,7 @@ const PerformingArtsPage: React.FC = () => {
               ? Array(3)
                   .fill(0)
                   .map((_, i) => <HighlightSkeleton key={i} />)
-              : performanceHighlightsData.map((performance) => (
+              : (performances || []).map((performance) => (
                   <div
                     key={performance.id}
                     className="group flex flex-col h-full bg-card rounded-2xl overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border border-border/50"
@@ -177,7 +164,7 @@ const PerformingArtsPage: React.FC = () => {
                     <div className="p-6 flex-1 flex flex-col">
                       <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider mb-3">
                         <Calendar className="w-3 h-3" />
-                        {formatDate(performance.date)}
+                        {formatLocalDateTime(performance.date)}
                       </div>
 
                       <h3 className="text-xl font-bold text-text-primary mb-3 line-clamp-2 group-hover:text-primary transition-colors">
@@ -185,7 +172,7 @@ const PerformingArtsPage: React.FC = () => {
                       </h3>
 
                       <p className="text-text-secondary text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
-                        {performance.description[lang]}
+                        {performance.title[lang]}
                       </p>
 
                       <div className="w-full h-px bg-border/50 group-hover:bg-primary/20 transition-colors mt-auto"></div>
@@ -208,7 +195,7 @@ const PerformingArtsPage: React.FC = () => {
             </button>
 
             <video
-              src={activeVideo.videoUrl}
+              src={activeVideo.video_url}
               controls
               autoPlay
               className="w-full h-auto max-h-[80vh] bg-black"

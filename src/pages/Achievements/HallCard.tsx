@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
-import type { HallOfFameHonoree } from "../../entities/HallOfFame";
+import type { HallOfFameHonoree } from "./Api/awardService";
 import { Award, Calendar } from "lucide-react";
-interface HallCard {
+
+interface HallCardProps {
   honoree: HallOfFameHonoree;
   lang: "en" | "da" | "pa";
 }
+
 // Honoree Card Component
-export default function HonoreeCard({ honoree, lang }: HallCard) {
+export default function HonoreeCard({ honoree, lang }: HallCardProps) {
   const { t } = useTranslation();
 
   return (
@@ -32,13 +34,13 @@ export default function HonoreeCard({ honoree, lang }: HallCard) {
         <div className="absolute bottom-4 left-4">
           <span
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm shadow-lg ${
-              honoree.type === "student"
+              honoree.honoree_type === "student"
                 ? "bg-secondary text-white"
                 : "bg-accent text-text-primary"
             }`}
           >
             <Award className="w-4 h-4" />
-            {t(`hallOfFame.type.${honoree.type}`)}
+            {t(`hallOfFame.type.${honoree.honoree_type}`)}
           </span>
         </div>
       </div>
