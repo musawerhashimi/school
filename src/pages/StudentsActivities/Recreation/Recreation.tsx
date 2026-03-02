@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {
-  recreationalActivities,
-  recreationCategories,
-} from "../../../data/recishnal";
+  useRecreationCategories,
+  useRecreationalActivities,
+} from "./Api/useRecreation";
 import type { RecreationalActivity } from "../../../entities/Recreation";
 import PageHeader from "../../../components/layout/PageHeader";
 import CTASection from "../../../components/CTASection";
@@ -14,33 +14,50 @@ export default function RecreationalActivities() {
   const lang = i18n.language as "en" | "da" | "pa";
   const navigate = useNavigate();
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const {
+    data: categories = [],
+    isLoading: isCategoriesLoading,
+    error: categoriesError,
+  } = useRecreationCategories();
+
+  const {
+    data: activities = [],
+    isLoading: isActivitiesLoading,
+    error: activitiesError,
+  } = useRecreationalActivities();
+
+  const isLoading = isCategoriesLoading || isActivitiesLoading;
+  const error = categoriesError || activitiesError;
+
+  const [selectedCategory, setSelectedCategory] = useState<number | "all">(
+    "all",
+  );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const filteredActivities =
     selectedCategory === "all"
-      ? recreationalActivities
-      : recreationalActivities.filter(
+      ? activities
+      : activities.filter(
           (activity) => activity.categoryId === selectedCategory,
         );
 
   const selectedCategoryName =
     selectedCategory === "all"
-      ? t("recreation.filter.allActivities")
-      : recreationCategories.find((cat) => cat.id === selectedCategory)?.name[
-          lang
-        ];
+      ? t("recreation.filter.selectCategory")
+      : (categories.find((cat) => cat.id === selectedCategory)?.name[lang] ??
+        "");
+
+  const handleCategorySelect = (id: number | "all") => {
+    setSelectedCategory(id);
+    setIsDropdownOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <PageHeader
         breadcrumb={[
           { name: t("nav.home"), path: "/" },
-
-          {
-            name: t("nav.students.recreational"),
-            path: "",
-          },
+          { name: t("nav.students.recreational"), path: "" },
         ]}
         image="images/recrish.jpeg"
         subtitle={t("recreation.hero.subtitle")}
@@ -54,10 +71,11 @@ export default function RecreationalActivities() {
               {t("recreation.filter.title")}
             </h2>
 
+            {/* Filter Controls */}
             <div className="flex flex-wrap gap-3 justify-center mb-12">
               {/* All Activities Button */}
               <button
-                onClick={() => setSelectedCategory("all")}
+                onClick={() => handleCategorySelect("all")}
                 className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
                   selectedCategory === "all"
                     ? "bg-primary text-white shadow-lg scale-105"
@@ -67,82 +85,119 @@ export default function RecreationalActivities() {
                 {t("recreation.filter.allActivities")}
               </button>
 
-              {/* Dropdown Button */}
-              <div className="relative">
+              {/* Category Buttons (direct, no dropdown needed if few categories) */}
+              {categories.map((category) => (
                 <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="px-6 py-3 rounded-xl font-medium transition-all duration-300 bg-surface text-text-secondary hover:bg-surface-hover hover:text-text-primary border border-border flex items-center gap-2"
+                  key={category.id}
+                  onClick={() => handleCategorySelect(category.id)}
+                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+                    selectedCategory === category.id
+                      ? "bg-primary text-white shadow-lg scale-105"
+                      : "bg-surface text-text-secondary hover:bg-surface-hover hover:text-text-primary border border-border"
+                  }`}
                 >
-                  <span>
-                    {selectedCategory === "all"
-                      ? t("recreation.filter.selectCategory")
-                      : selectedCategoryName}
-                  </span>
-                  <svg
-                    className={`w-5 h-5 transition-transform duration-300 ${
-                      isDropdownOpen ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                  {category.name[lang]}
                 </button>
+              ))}
 
-                {isDropdownOpen && (
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-surface rounded-xl shadow-xl border border-border z-50 overflow-hidden animate-fade-in">
-                    {recreationCategories.map((category) => (
+              {/* Optional Dropdown (hidden on mobile, shown when categories > 4) */}
+              {categories.length > 4 && (
+                <div className="relative">
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 border border-border ${
+                      selectedCategory !== "all"
+                        ? "bg-primary text-white shadow-lg scale-105"
+                        : "bg-surface text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                    }`}
+                  >
+                    <span>{selectedCategoryName}</span>
+                    <svg
+                      className={`w-5 h-5 transition-transform duration-300 ${
+                        isDropdownOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-surface rounded-xl shadow-xl border border-border z-50 overflow-hidden">
                       <button
-                        key={category.id}
-                        onClick={() => {
-                          setSelectedCategory(category.id);
-                          setIsDropdownOpen(false);
-                        }}
+                        onClick={() => handleCategorySelect("all")}
                         className={`w-full px-6 py-3 text-left transition-all duration-200 ${
-                          selectedCategory === category.id
+                          selectedCategory === "all"
                             ? "bg-primary text-white"
                             : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                         }`}
                       >
-                        {category.name[lang]}
+                        {t("recreation.filter.allActivities")}
                       </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      {categories.map((category) => (
+                        <button
+                          key={category.id}
+                          onClick={() => handleCategorySelect(category.id)}
+                          className={`w-full px-6 py-3 text-left transition-all duration-200 ${
+                            selectedCategory === category.id
+                              ? "bg-primary text-white"
+                              : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+                          }`}
+                        >
+                          {category.name[lang]}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
+            {/* Activities Grid */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredActivities.map((activity, index) => (
-                <ActivityCard
-                  key={activity.id}
-                  activity={activity}
-                  lang={lang}
-                  index={index}
-                  onNavigate={() =>
-                    navigate(`/recreational-activities/${activity.id}`)
-                  }
-                />
-              ))}
+              {isLoading ? (
+                <div className="col-span-full text-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                </div>
+              ) : error ? (
+                <div className="col-span-full text-center py-20">
+                  <div className="text-6xl mb-4">❌</div>
+                  <h3 className="text-2xl font-semibold text-text-primary mb-2">
+                    Error loading data
+                  </h3>
+                  <p className="text-text-secondary">{error.message}</p>
+                </div>
+              ) : filteredActivities.length === 0 ? (
+                <div className="col-span-full text-center py-20">
+                  <div className="text-6xl mb-4">🔍</div>
+                  <h3 className="text-2xl font-semibold text-text-primary mb-2">
+                    {t("recreation.noActivities.title")}
+                  </h3>
+                  <p className="text-text-secondary">
+                    {t("recreation.noActivities.message")}
+                  </p>
+                </div>
+              ) : (
+                filteredActivities.map((activity, index) => (
+                  <ActivityCard
+                    key={activity.id}
+                    activity={activity}
+                    lang={lang}
+                    index={index}
+                    onNavigate={() =>
+                      navigate(`/recreational-activities/${activity.id}`)
+                    }
+                  />
+                ))
+              )}
             </div>
-
-            {filteredActivities.length === 0 && (
-              <div className="text-center py-20">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-2xl font-semibold text-text-primary mb-2">
-                  {t("recreation.noActivities.title")}
-                </h3>
-                <p className="text-text-secondary">
-                  {t("recreation.noActivities.message")}
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </section>
@@ -171,7 +226,7 @@ const ActivityCard: React.FC<{
           alt={activity.title[lang]}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="absolute bottom-4 left-4 right-4">
           <h3 className="text-xl font-bold text-white drop-shadow-lg">
             {activity.title[lang]}
@@ -180,10 +235,6 @@ const ActivityCard: React.FC<{
       </div>
 
       <div className="space-y-4">
-        <p className="text-text-secondary line-clamp-3">
-          {activity.description[lang]}
-        </p>
-
         <div className="flex items-center gap-2 text-text-secondary">
           <svg
             className="w-5 h-5 text-primary"

@@ -1,5 +1,5 @@
 export interface RecreationCategory {
-  id: string;
+  id: number;
   name: {
     en: string;
     da: string;
@@ -8,18 +8,19 @@ export interface RecreationCategory {
 }
 
 export interface RecreationalActivity {
-  id: string;
+  id: number;
   title: {
     en: string;
     da: string;
     pa: string;
   };
-  description: {
+  description?: {
     en: string;
     da: string;
     pa: string;
   };
-  categoryId: string;
+  categoryId: number;
   location: string;
   image: string;
+  is_active: boolean;
 }
